@@ -12,6 +12,9 @@ export default {
 				primary: "#6b15c1",
 				secondary: "#E1E1EA",
 				accent: "#F7D44C"
+			},
+			spacing: {
+				navbar: "80px"
 			}
 		}
 	},

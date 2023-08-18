@@ -3,11 +3,11 @@
 </script>
 
 <div class="mx-[10%]">
-	<header class="box-content h-[80px]">
-		<a href="/">
-			<img src="/logo.png" alt="logo" class="mx-auto h-full" />
+	<nav class="h-navbar box-content text-center">
+		<a class="inline-block" href="/">
+			<img src="/logo.png" alt="logo" class="h-navbar" />
 		</a>
-	</header>
+	</nav>
 	<slot />
 </div>
 
