@@ -5,7 +5,7 @@
 <div class="mx-[10%]">
 	<header class="box-content h-[80px]">
 		<a href="/">
-			<img src="/logo.png" alt="logo" class="h-full mx-auto" />
+			<img src="/logo.png" alt="logo" class="mx-auto h-full" />
 		</a>
 	</header>
 	<slot />
