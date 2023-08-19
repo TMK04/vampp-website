@@ -5,35 +5,37 @@
 </script>
 
 <main>
-	<h1 class="mb-5 text-center font-bold leading-loose">
+	<h1
+		class="mb-5 flex flex-wrap items-end justify-center gap-x-1.5 font-bold sm:gap-x-2 sm:gap-y-1"
+	>
 		<span
-			class="bg-gradient-to-r from-primary to-accent bg-clip-text
-		text-4xl text-transparent"
+			class="whitespace-nowrap bg-gradient-to-r from-primary to-accent bg-clip-text text-3xl text-transparent sm:text-4xl"
 		>
 			Analyze & Grade
 		</span>
-		<br />
-		<span class="text-3xl">a Pitching Video</span>
+		<span class="whitespace-nowrap text-2xl sm:text-3xl">a Pitching Video</span>
 	</h1>
-	<form class="flex gap-5" id="article-input">
-		<div class="flex grow flex-wrap justify-center gap-4">
+	<form class="flex flex-wrap gap-5" id="article-input">
+		<div class="grow basis-full md:basis-0">
 			<Container class="basis-full">
 				<VideoInput />
 			</Container>
-			<button
-				class="from-secondary-dark/90 hover:from-secondary-dark/75 grow basis-0 rounded-md bg-gradient-to-tr to-secondary/90 px-2.5 py-2 font-semibold text-white/95 shadow-md hover:to-secondary/75"
-				type="reset"
-			>
-				Clear
-			</button>
-			<button
-				class="to-primary-light/90 hover:to-primary-light/80 grow basis-0 rounded-md bg-gradient-to-tr from-primary/90 from-10% to-90% px-2.5 py-2 font-semibold text-white/95 shadow-md hover:from-primary/80"
-				type="submit"
-			>
-				Grade
-			</button>
+			<fieldset class="mt-4 flex flex-col flex-wrap justify-center gap-2 sm:flex-row-reverse">
+				<button
+					class="grow basis-0 rounded-md bg-gradient-to-tr from-primary/90 from-10% to-primary-light/90 to-90% px-2.5 py-2 font-semibold text-white/95 shadow-md hover:from-primary/80 hover:to-primary-light/80"
+					type="submit"
+				>
+					Grade
+				</button>
+				<button
+					class="grow basis-0 rounded-md bg-gradient-to-tr from-secondary-dark/90 to-secondary/90 px-2.5 py-2 font-semibold text-white/95 shadow-md hover:from-secondary-dark/75 hover:to-secondary/75"
+					type="reset"
+				>
+					Clear
+				</button>
+			</fieldset>
 		</div>
-		<Container class="grow-[2]">
+		<Container class="grow-[3] basis-full md:basis-0">
 			<TopicInput />
 		</Container>
 	</form>
@@ -43,6 +45,5 @@
 	:global(#article-input > *) {
 		height: min-content;
 		min-width: min-content;
-		flex-basis: 0;
 	}
 </style>
