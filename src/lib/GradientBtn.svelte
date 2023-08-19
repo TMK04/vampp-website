@@ -10,7 +10,7 @@
 </script>
 
 <button
-	class="grow basis-0 rounded-md bg-gradient-to-tr from-{fromColor}/90 from-10% to-{toColor}/90 to-90% px-2.5 py-2 font-semibold text-{textColor}/95 shadow-md hover:from-{fromColor}/80 hover:to-{toColor}/80 {className}"
+	class="grow basis-0 rounded-md bg-gradient-to-tr from-{fromColor}/90 from-10% to-{toColor}/90 to-90% px-3 py-2 font-semibold text-{textColor}/95 shadow-md hover:from-{fromColor}/80 hover:to-{toColor}/80 {className}"
 	{type}
 >
 	<slot />

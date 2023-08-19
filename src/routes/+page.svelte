@@ -30,7 +30,7 @@
 			<Container class="basis-full">
 				<VideoInput bind:file />
 			</Container>
-			<fieldset class="mt-4 flex flex-col flex-wrap justify-center gap-2 sm:flex-row-reverse">
+			<fieldset class="mt-4 flex flex-row flex-wrap justify-center gap-2">
 				<GradientBtn fromColor="primary" toColor="primary-light" type="submit">Grade</GradientBtn>
 				<GradientBtn fromColor="secondary-dark" toColor="secondary" type="reset">Reset</GradientBtn>
 			</fieldset>
