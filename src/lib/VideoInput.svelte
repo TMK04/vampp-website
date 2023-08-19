@@ -35,4 +35,11 @@
 	</header>
 	Click to Upload
 </label>
-<input class="hidden" id="input-video" type="file" accept="video/*" on:change={handleFileInput} />
+<input
+	class="hidden"
+	id="input-video"
+	name="video"
+	type="file"
+	accept="video/*"
+	on:change={handleFileInput}
+/>

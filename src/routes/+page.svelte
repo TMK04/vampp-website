@@ -15,12 +15,20 @@
 		<br />
 		<span class="text-3xl">a Pitching Video</span>
 	</h1>
-	<article class="flex gap-5" id="article-input">
-		<Container class="h-min min-w-min grow-[1] basis-0">
+	<form class="flex gap-5" id="article-input">
+		<Container class="grow-[1]">
 			<VideoInput />
 		</Container>
-		<Container class="h-min min-w-min grow-[2] basis-0">
+		<Container class="grow-[2]">
 			<TopicInput />
 		</Container>
-	</article>
+	</form>
 </main>
+
+<style lang="postcss">
+	:global(#article-input > *) {
+		height: min-content;
+		min-width: min-content;
+		flex-basis: 0;
+	}
+</style>

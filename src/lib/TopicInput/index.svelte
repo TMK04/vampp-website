@@ -9,11 +9,12 @@
 	}
 </script>
 
-<form class="border-border rounded-sm border" id="topic-input-container">
+<div class="border-border rounded-sm border" id="topic-input-container">
 	<Fieldset id="input-topic" label="Topic">
 		<input
 			class="border-border block w-full rounded-sm border px-1 py-1.5"
 			id="input-topic"
+			name="topic"
 			type="text"
 			placeholder="e.g., Fake News Detection, Service Automation, ..."
 			on:change={handleTopicInput}
@@ -23,9 +24,10 @@
 		<textarea
 			class="border-border block w-full rounded-sm border px-1 py-1.5"
 			id="input-description"
+			name="description"
 		/>
 	</Fieldset>
-</form>
+</div>
 
 <style lang="postcss">
 	:global(#topic-input-container > *:not(:last-child)) {
