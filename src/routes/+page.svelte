@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Container from "$lib/Container.svelte";
+	import TopicInput from "$lib/TopicInput/index.svelte";
 	import VideoInput from "$lib/VideoInput.svelte";
 </script>
 
@@ -15,9 +16,11 @@
 		<span class="text-3xl">a Pitching Video</span>
 	</h1>
 	<article class="flex gap-5" id="article-input">
-		<Container class="min-w-min grow basis-0">
+		<Container class="h-min min-w-min grow-[1] basis-0">
 			<VideoInput />
 		</Container>
-		<Container class="min-w-min grow basis-0"></Container>
+		<Container class="h-min min-w-min grow-[2] basis-0">
+			<TopicInput />
+		</Container>
 	</article>
 </main>
