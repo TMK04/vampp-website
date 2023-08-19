@@ -10,8 +10,9 @@ export default {
 				text: "#010d1e",
 				background: "#ffffff",
 				primary: "#6b15c1",
-				secondary: "#E1E1EA",
-				accent: "#F7D44C"
+				secondary: "#A4A4AB",
+				"secondary-100": "#F2F2FC",
+				accent: "#E3A03B"
 			},
 			spacing: {
 				navbar: "80px"
