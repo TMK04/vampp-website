@@ -3,6 +3,15 @@
 	import GradientBtn from "$lib/GradientBtn.svelte";
 	import TopicInput from "$lib/TopicInput/index.svelte";
 	import VideoInput from "$lib/VideoInput.svelte";
+
+	let file: File;
+	let topic: string;
+	let description: string;
+
+	function handleSubmit(event: Event) {
+		event.preventDefault();
+		console.log({ file, topic, description });
+	}
 </script>
 
 <main>
@@ -16,10 +25,10 @@
 		</span>
 		<span class="whitespace-nowrap text-2xl sm:text-3xl">a Pitching Video</span>
 	</h1>
-	<form class="flex flex-wrap gap-5" id="article-input">
+	<form class="flex flex-wrap gap-5" id="article-input" on:submit={handleSubmit}>
 		<div class="grow basis-full md:basis-0">
 			<Container class="basis-full">
-				<VideoInput />
+				<VideoInput bind:file />
 			</Container>
 			<fieldset class="mt-4 flex flex-col flex-wrap justify-center gap-2 sm:flex-row-reverse">
 				<GradientBtn fromColor="primary" toColor="primary-light" type="submit">Grade</GradientBtn>
@@ -27,7 +36,7 @@
 			</fieldset>
 		</div>
 		<Container class="grow-[3] basis-full md:basis-0">
-			<TopicInput />
+			<TopicInput bind:topic bind:description />
 		</Container>
 	</form>
 </main>

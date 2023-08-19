@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Fieldset from "./Fieldset.svelte";
 
-	let topic: string;
-	let description: string;
+	export let topic: string;
+	export let description: string;
 	function handleDescriptionInput(event: Event) {
 		const target = event.target as HTMLInputElement;
 		target.style.height = "0";
@@ -10,10 +10,10 @@
 	}
 </script>
 
-<div class="border-border rounded-sm border" id="topic-input-container">
+<div class="rounded-sm border border-border" id="topic-input-container">
 	<Fieldset id="input-topic" label="Topic">
 		<input
-			class="border-border block w-full rounded-sm border px-1 py-1.5"
+			class="block w-full rounded-sm border border-border px-1 py-1.5"
 			id="input-topic"
 			name="topic"
 			type="text"
@@ -24,7 +24,7 @@
 	</Fieldset>
 	<Fieldset id="input-description" label="Description">
 		<textarea
-			class="border-border block max-h-[30vh] min-h-[12ch] w-full rounded-sm border px-1 py-1.5"
+			class="block max-h-[30vh] min-h-[12ch] w-full rounded-sm border border-border px-1 py-1.5"
 			id="input-description"
 			name="description"
 			required
