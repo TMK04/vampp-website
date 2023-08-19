@@ -24,11 +24,11 @@
 </script>
 
 <label
-	class="relative flex aspect-video cursor-pointer items-center justify-center rounded-sm border border-dashed border-secondary bg-background p-10 text-center text-xl leading-tight text-secondary"
+	class="border-border relative flex aspect-video cursor-pointer items-center justify-center rounded-sm border border-dashed bg-background p-10 text-center text-xl leading-tight text-secondary"
 	for="input-video"
 >
 	<header
-		class="border-secondary-100 absolute left-0 top-0 flex items-center gap-1.5 rounded-br-sm border py-0.5 pl-1 pr-1.5 text-xs shadow-sm"
+		class="border-border absolute left-0 top-0 flex items-center gap-1.5 rounded-br-sm border-b border-r border-opacity-50 py-0.5 pl-1 pr-1.5 text-xs shadow-sm"
 	>
 		<VideoIcon class="inline" size={12} />
 		<span>Input Video</span>
