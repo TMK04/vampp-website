@@ -46,5 +46,6 @@
 	name="video"
 	type="file"
 	accept="video/*"
+	required
 	on:change={handleFileChange}
 />

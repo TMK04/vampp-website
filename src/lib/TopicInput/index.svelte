@@ -18,6 +18,7 @@
 			name="topic"
 			type="text"
 			placeholder="e.g., Fake News Detection, Service Automation, ..."
+			required
 			bind:value={topic}
 		/>
 	</Fieldset>
@@ -26,6 +27,7 @@
 			class="border-border block max-h-[30vh] min-h-[12ch] w-full rounded-sm border px-1 py-1.5"
 			id="input-description"
 			name="description"
+			required
 			bind:value={description}
 			on:input={handleDescriptionInput}
 		/>
