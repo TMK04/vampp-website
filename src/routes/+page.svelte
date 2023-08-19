@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Container from "$lib/Container.svelte";
+	import GradientBtn from "$lib/GradientBtn.svelte";
 	import TopicInput from "$lib/TopicInput/index.svelte";
 	import VideoInput from "$lib/VideoInput.svelte";
 </script>
@@ -21,18 +22,8 @@
 				<VideoInput />
 			</Container>
 			<fieldset class="mt-4 flex flex-col flex-wrap justify-center gap-2 sm:flex-row-reverse">
-				<button
-					class="grow basis-0 rounded-md bg-gradient-to-tr from-primary/90 from-10% to-primary-light/90 to-90% px-2.5 py-2 font-semibold text-white/95 shadow-md hover:from-primary/80 hover:to-primary-light/80"
-					type="submit"
-				>
-					Grade
-				</button>
-				<button
-					class="grow basis-0 rounded-md bg-gradient-to-tr from-secondary-dark/90 to-secondary/90 px-2.5 py-2 font-semibold text-white/95 shadow-md hover:from-secondary-dark/75 hover:to-secondary/75"
-					type="reset"
-				>
-					Clear
-				</button>
+				<GradientBtn fromColor="primary" toColor="primary-light" type="submit">Grade</GradientBtn>
+				<GradientBtn fromColor="secondary-dark" toColor="secondary" type="reset">Reset</GradientBtn>
 			</fieldset>
 		</div>
 		<Container class="grow-[3] basis-full md:basis-0">

@@ -4,4 +4,4 @@
 	export { className as class };
 </script>
 
-<section class={`bg-light rounded-sm p-2 ${className}`}><slot /></section>
+<section class="rounded-sm bg-light p-2 {className}"><slot /></section>
