@@ -4,7 +4,7 @@
 
 	let file: File;
 
-	function handleFileInput(event: Event) {
+	function handleFileChange(event: Event) {
 		const target = event.target as HTMLInputElement;
 		if (target.files && target.files[0]) {
 			file = target.files[0];
@@ -41,5 +41,5 @@
 	name="video"
 	type="file"
 	accept="video/*"
-	on:change={handleFileInput}
+	on:change={handleFileChange}
 />

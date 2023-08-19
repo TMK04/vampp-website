@@ -2,10 +2,11 @@
 	import Fieldset from "./Fieldset.svelte";
 
 	let topic: string;
-
-	function handleTopicInput(event: Event) {
+	let description: string;
+	function handleDescriptionInput(event: Event) {
 		const target = event.target as HTMLInputElement;
-		topic = target.value;
+		target.style.height = "0";
+		target.style.height = target.scrollHeight + "px";
 	}
 </script>
 
@@ -17,14 +18,16 @@
 			name="topic"
 			type="text"
 			placeholder="e.g., Fake News Detection, Service Automation, ..."
-			on:change={handleTopicInput}
+			bind:value={topic}
 		/>
 	</Fieldset>
 	<Fieldset id="input-description" label="Description">
 		<textarea
-			class="border-border block w-full rounded-sm border px-1 py-1.5"
+			class="border-border block max-h-[30vh] min-h-[12ch] w-full rounded-sm border px-1 py-1.5"
 			id="input-description"
 			name="description"
+			bind:value={description}
+			on:input={handleDescriptionInput}
 		/>
 	</Fieldset>
 </div>
