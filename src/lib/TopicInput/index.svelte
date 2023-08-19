@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Fieldset from "./Fieldset.svelte";
 
-	export let topic: string;
-	export let description: string;
+	export let topic: string = "";
+	export let description: string = "";
 	function handleDescriptionInput(event: Event) {
 		const target = event.target as HTMLInputElement;
 		target.style.height = "0";

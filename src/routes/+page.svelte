@@ -4,13 +4,20 @@
 	import TopicInput from "$lib/TopicInput/index.svelte";
 	import VideoInput from "$lib/VideoInput.svelte";
 
-	let file: File;
+	let file: File | undefined;
 	let topic: string;
 	let description: string;
 
 	function handleSubmit(event: Event) {
 		event.preventDefault();
 		console.log({ file, topic, description });
+	}
+
+	function handleReset(event: Event) {
+		event.preventDefault();
+		file = undefined;
+		topic = "";
+		description = "";
 	}
 </script>
 
@@ -25,7 +32,12 @@
 		</span>
 		<span class="whitespace-nowrap text-2xl sm:text-3xl">a Pitching Video</span>
 	</h1>
-	<form class="flex flex-wrap gap-5" id="article-input" on:submit={handleSubmit}>
+	<form
+		class="flex flex-wrap gap-5"
+		id="article-input"
+		on:reset={handleReset}
+		on:submit={handleSubmit}
+	>
 		<div class="grow basis-full md:basis-0">
 			<Container class="basis-full">
 				<VideoInput bind:file />

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import VideoIcon from "$lib/VideoIcon.svelte";
 
-	export let file: File;
+	export let file: File | undefined = undefined;
 	$: src = file ? URL.createObjectURL(file) : "";
 
 	function handleFileChange(event: Event) {
