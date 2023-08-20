@@ -14,5 +14,7 @@
 <style lang="postcss">
 	:global(html) {
 		background-color: theme(colors.background);
+		color: theme(colors.text);
+		fill: theme(colors.text);
 	}
 </style>
