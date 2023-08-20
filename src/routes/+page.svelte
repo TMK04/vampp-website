@@ -43,8 +43,8 @@
 				<VideoInput bind:file />
 			</Container>
 			<fieldset class="mt-4 flex flex-row flex-wrap justify-center gap-2">
-				<GradientBtn fromColor="primary" toColor="primary-light" type="submit">Grade</GradientBtn>
-				<GradientBtn fromColor="secondary-dark" toColor="secondary" type="reset">Reset</GradientBtn>
+				<GradientBtn color="primary" type="submit">Grade</GradientBtn>
+				<GradientBtn color="secondary" type="reset">Reset</GradientBtn>
 			</fieldset>
 		</div>
 		<Container class="grow-[3] basis-full md:basis-0">
