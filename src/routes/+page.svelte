@@ -7,9 +7,25 @@
 	let file: File | undefined;
 	let topic: string;
 
-	function handleSubmit(event: Event) {
+	async function handleSubmit(event: Event) {
 		event.preventDefault();
+		if (!file) return;
+		const body = new FormData();
+		// convert file to blob
+		body.append("file", file);
+		body.append("topic", topic);
 		console.log({ file, topic });
+		const response = await fetch("http://localhost:8000", {
+			method: "POST",
+			body
+		});
+
+		if (!response.ok) {
+			console.error(response);
+			return;
+		}
+		const data = await response.json();
+		console.log(data);
 	}
 
 	function handleReset(event: Event) {
