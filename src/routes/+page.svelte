@@ -19,6 +19,7 @@
 		const formData = new FormData();
 		formData.append("file", file);
 		formData.append("topic", topic);
+		console.log(formData);
 		const response = fetch("?/receive_video", {
 			method: "POST",
 			body: formData
