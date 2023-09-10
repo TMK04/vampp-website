@@ -2,7 +2,6 @@
 	import Fieldset from "./Fieldset.svelte";
 
 	export let topic: string = "";
-	export let description: string = "";
 	function handleDescriptionInput(event: Event) {
 		const target = event.target as HTMLInputElement;
 		target.style.height = "0";
@@ -20,16 +19,6 @@
 			placeholder="e.g., Fake News Detection, Service Automation, ..."
 			required
 			bind:value={topic}
-		/>
-	</Fieldset>
-	<Fieldset id="input-description" label="Description">
-		<textarea
-			class="block max-h-[30vh] min-h-[12ch] w-full rounded-sm border border-border px-1 py-1.5"
-			id="input-description"
-			name="description"
-			required
-			bind:value={description}
-			on:input={handleDescriptionInput}
 		/>
 	</Fieldset>
 </div>

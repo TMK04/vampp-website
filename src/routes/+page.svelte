@@ -6,18 +6,16 @@
 
 	let file: File | undefined;
 	let topic: string;
-	let description: string;
 
 	function handleSubmit(event: Event) {
 		event.preventDefault();
-		console.log({ file, topic, description });
+		console.log({ file, topic });
 	}
 
 	function handleReset(event: Event) {
 		event.preventDefault();
 		file = undefined;
 		topic = "";
-		description = "";
 	}
 </script>
 
@@ -48,7 +46,7 @@
 			</fieldset>
 		</div>
 		<Container class="grow-[3] basis-full md:basis-0">
-			<TopicInput bind:topic bind:description />
+			<TopicInput bind:topic />
 		</Container>
 	</form>
 </main>
