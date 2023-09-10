@@ -16,7 +16,7 @@
 		body.append("file", file);
 		body.append("topic", topic);
 		console.log({ file, topic });
-		const response = await fetch("http://127.0.0.1:8000", {
+		const response = await fetch(HOST, {
 			method: "POST",
 			body
 		});
