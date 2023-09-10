@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { HOST } from "$env/static/private";
 	import Container from "$lib/Container.svelte";
 	import GradientBtn from "$lib/GradientBtn.svelte";
 	import TopicInput from "$lib/TopicInput/index.svelte";
@@ -7,27 +6,6 @@
 
 	let file: File | undefined;
 	let topic: string;
-
-	async function handleSubmit(event: Event) {
-		event.preventDefault();
-		if (!file) return;
-		const body = new FormData();
-		// convert file to blob
-		body.append("file", file);
-		body.append("topic", topic);
-		console.log({ file, topic });
-		const response = await fetch(HOST, {
-			method: "POST",
-			body
-		});
-
-		if (!response.ok) {
-			console.error(response);
-			return;
-		}
-		const data = await response.json();
-		console.log(data);
-	}
 
 	function handleReset(event: Event) {
 		event.preventDefault();
@@ -47,12 +25,7 @@
 		</span>
 		<span class="whitespace-nowrap text-2xl sm:text-3xl">a Pitching Video</span>
 	</h1>
-	<form
-		class="flex flex-wrap gap-5"
-		id="article-input"
-		on:reset={handleReset}
-		on:submit={handleSubmit}
-	>
+	<form class="flex flex-wrap gap-5" id="article-input" on:reset={handleReset} method="post">
 		<div class="grow basis-full md:basis-0">
 			<Container class="basis-full">
 				<VideoInput bind:file />
