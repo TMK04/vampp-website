@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { HOST } from "$env/static/private";
 	import Container from "$lib/Container.svelte";
 	import GradientBtn from "$lib/GradientBtn.svelte";
 	import TopicInput from "$lib/TopicInput/index.svelte";
@@ -15,7 +16,7 @@
 		body.append("file", file);
 		body.append("topic", topic);
 		console.log({ file, topic });
-		const response = await fetch("http://localhost:8000", {
+		const response = await fetch(HOST, {
 			method: "POST",
 			body
 		});
