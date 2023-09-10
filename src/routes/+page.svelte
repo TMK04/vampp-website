@@ -12,6 +12,19 @@
 		file = undefined;
 		topic = "";
 	}
+
+	async function handleSubmit(event: Event) {
+		event.preventDefault();
+		if (!file) return;
+		const formData = new FormData();
+		formData.append("file", file);
+		formData.append("topic", topic);
+		const response = fetch("?/receive_video", {
+			method: "POST",
+			body: formData
+		});
+		console.log(response);
+	}
 </script>
 
 <main>
@@ -25,7 +38,12 @@
 		</span>
 		<span class="whitespace-nowrap text-2xl sm:text-3xl">a Pitching Video</span>
 	</h1>
-	<form class="flex flex-wrap gap-5" id="article-input" on:reset={handleReset} method="post">
+	<form
+		class="flex flex-wrap gap-5"
+		id="article-input"
+		on:reset={handleReset}
+		on:submit={handleSubmit}
+	>
 		<div class="grow basis-full md:basis-0">
 			<Container class="basis-full">
 				<VideoInput bind:file />

@@ -2,7 +2,7 @@ import { HOST } from "$env/static/private";
 import type { Actions } from "@sveltejs/kit";
 
 export const actions: Actions = {
-	default: async ({ request }) => {
+	receive_video: async ({ request }) => {
 		const formData = await request.formData();
 		const video = formData.get("video") as File;
 		console.log(video);
