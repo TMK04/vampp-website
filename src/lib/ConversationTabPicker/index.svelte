@@ -1,16 +1,23 @@
 <script lang="ts">
-	import { onMount } from "svelte";
+	import { onDestroy, onMount, setContext } from "svelte";
 	import { obj_id_conversation_store, type ObjIdConversation } from "../../stores";
 	import ConversationTab from "./ConversationTab.svelte";
 	import NewConversationTab from "./NewConversationTab.svelte";
 	import CloseBtn from "./ToggleBtn.svelte";
 
-	export let picked_id: string;
+	let picked_id: string | null = null;
+	$: picked_null = picked_id === null;
 	let obj_id_conversation: ObjIdConversation = {};
 	const unsubcribe = obj_id_conversation_store.subscribe((obj) => {
 		obj_id_conversation = obj;
 	});
-	console.log(Object.entries(obj_id_conversation));
+
+	function handleClickFactory(id: string | null) {
+		return function handleClick() {
+			picked_id = id;
+			setContext("conversation", id === null ? null : obj_id_conversation[id]);
+		};
+	}
 
 	onMount(() => {
 		obj_id_conversation_store.update((obj) => {
@@ -29,17 +36,21 @@
 			return obj;
 		});
 	});
+
+	onDestroy(() => {
+		unsubcribe();
+	});
 </script>
 
 <nav class="bg-background-dark w-1/5">
 	<div class="fixed flex h-[100vh] w-1/5 flex-col gap-2 p-2">
 		<!-- New Conversation -->
 		<div class="mb-2 flex flex-wrap-reverse justify-end gap-2">
-			<NewConversationTab />
+			<NewConversationTab active={picked_null} handleClick={handleClickFactory(null)} />
 			<CloseBtn />
 		</div>
 		{#each Object.entries(obj_id_conversation) as [id, { topic }]}
-			<ConversationTab active={picked_id === id}>
+			<ConversationTab active={picked_id === id} handleClick={handleClickFactory(id)}>
 				{topic}
 			</ConversationTab>
 		{/each}

@@ -2,7 +2,7 @@
 	import ConversationIcon from "./ConversationIcon.svelte";
 
 	export let active: boolean = false;
-	console.log(active);
+	export let handleClick: () => void;
 </script>
 
 <button
@@ -10,6 +10,7 @@
 		? 'bg-secondary-dark'
 		: ''}"
 	type="button"
+	on:click={handleClick}
 >
 	<ConversationIcon class="inline" size={17} />
 	<!-- Spacing -->

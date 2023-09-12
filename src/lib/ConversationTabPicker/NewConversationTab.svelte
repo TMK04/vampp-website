@@ -1,8 +1,8 @@
 <script lang="ts">
 	import PlusIcon from "$lib/PlusIcon.svelte";
 
-	export let active: boolean = false;
-	console.log(active);
+	export let active: boolean;
+	export let handleClick: () => void;
 </script>
 
 <button
@@ -10,6 +10,7 @@
 		? 'bg-secondary-dark'
 		: ''}"
 	type="button"
+	on:click={handleClick}
 >
 	<PlusIcon class="inline" size={17} />
 	New Conversation
