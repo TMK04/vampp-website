@@ -42,7 +42,15 @@
 			obj["test"] = {
 				file,
 				topic,
-				...body
+				text: body.text.S,
+				creativity: body.creativity.N,
+				creativity_justification: body.creativity_justification.S,
+				impact: body.impact.N,
+				impact_justification: body.impact_justification,
+				feasibility: body.feasibility.N,
+				feasibility_justification: body.feasibility_justification.S,
+				clarity: body.clarity.N,
+				clarity_justification: body.clarity_justification.S
 			};
 			return obj;
 		});
