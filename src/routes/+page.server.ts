@@ -25,6 +25,6 @@ export const actions: Actions = {
 		}
 		const body = await response.json();
 		console.log(body);
-		return body;
+		return JSON.stringify(body);
 	}
 };
