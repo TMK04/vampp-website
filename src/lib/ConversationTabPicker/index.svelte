@@ -4,6 +4,8 @@
 	import ConversationTab from "./ConversationTab.svelte";
 	import NewConversationTab from "./NewConversationTab.svelte";
 	import CloseBtn from "./ToggleBtn.svelte";
+	import SidebarIcon from "$lib/SidebarIcon.svelte";
+	import OpenBtn from "./OpenSideBar.svelte";
 
 	export let picked_id: string;
 	let obj_id_conversation: ObjIdConversation = {};
@@ -31,12 +33,14 @@
 	});
 </script>
 
-<nav class="bg-background-dark w-1/5">
-	<div class="fixed flex h-[100vh] w-1/5 flex-col gap-2 p-2">
+
+<nav class="bg-background-dark w-1/5" id="sidebar">
+	<div class="fixed flex h-[100vh] w-1/5 flex-col gap-2 p-2" >
 		<!-- New Conversation -->
 		<div class="mb-2 flex flex-wrap-reverse justify-end gap-2">
 			<NewConversationTab />
 			<CloseBtn />
+			
 		</div>
 		{#each Object.entries(obj_id_conversation) as [id, { topic }]}
 			<ConversationTab active={picked_id === id}>
@@ -45,3 +49,9 @@
 		{/each}
 	</div>
 </nav>
+
+<div class="absolute left-2 top-2 z-10 hidden md:inline-block" data-projection-id="121" style="opacity: 1;">
+	<span class data-state="closed">
+		<OpenBtn/>
+	</span>
+</div>
