@@ -1,39 +1,41 @@
 <script lang="ts">
-	import Container from "$lib/Container.svelte";
 	import InputsContainer from "$lib/InputsContainer.svelte";
 	import PitchInput from "$lib/PitchInput.svelte";
 	import TopicInput from "$lib/TopicInput.svelte";
 	import VideoInput from "$lib/VideoInput.svelte";
 	import YtIdInput from "$lib/YtIdInput.svelte";
+	import Message from "./Message.svelte";
 
 	export let conversation: Conversation;
 
 	console.log(conversation);
 </script>
 
-<Container class="text-text">
-	<InputsContainer>
-		{#if typeof conversation.file === "string"}
-			<YtIdInput disabled ytid={conversation.file} />
-		{:else}
-			<VideoInput disabled video={conversation.file} />
-		{/if}
-		<TopicInput topic={conversation.topic} />
-		<PitchInput pitch={conversation.pitch} />
-	</InputsContainer>
-</Container>
+<div class="flex flex-col gap-4">
+	<Message role="User">
+		<InputsContainer>
+			{#if typeof conversation.file === "string"}
+				<YtIdInput disabled ytid={conversation.file} />
+			{:else}
+				<VideoInput disabled video={conversation.file} />
+			{/if}
+			<TopicInput topic={conversation.topic} />
+			<PitchInput pitch={conversation.pitch} />
+		</InputsContainer>
+	</Message>
 
-<Container>
-	<!-- Scores (creativity, creativity_justification) -->
-	<div>Creativity: {conversation.creativity}</div>
-	<div>Creativity Justification: {conversation.creativity_justification}</div>
+	<Message role="Beholder">
+		<!-- Scores (creativity, creativity_justification) -->
+		<div>Creativity: {conversation.creativity}</div>
+		<div>Creativity Justification: {conversation.creativity_justification}</div>
 
-	<div>Impact: {conversation.impact}</div>
-	<div>Impact Justification: {conversation.impact_justification}</div>
+		<div>Impact: {conversation.impact}</div>
+		<div>Impact Justification: {conversation.impact_justification}</div>
 
-	<div>Feasibility: {conversation.feasibility}</div>
-	<div>Feasibility Justification: {conversation.feasibility_justification}</div>
+		<div>Feasibility: {conversation.feasibility}</div>
+		<div>Feasibility Justification: {conversation.feasibility_justification}</div>
 
-	<div>Clarity: {conversation.clarity}</div>
-	<div>Clarity Justification: {conversation.clarity_justification}</div>
-</Container>
+		<div>Clarity: {conversation.clarity}</div>
+		<div>Clarity Justification: {conversation.clarity_justification}</div>
+	</Message>
+</div>
