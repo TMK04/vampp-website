@@ -33,12 +33,16 @@
 			body: formData
 		});
 		console.log(response);
-		const body = await response.json();
+		let body = await response.json();
+		if (body.type === "error") return console.error(body);
+
+		body = JSON.parse(body.data);
 		console.log(body);
 		obj_id_conversation_store.update((obj) => {
 			obj["test"] = {
 				file,
-				topic
+				topic,
+				...body
 			};
 			return obj;
 		});
