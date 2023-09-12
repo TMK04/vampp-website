@@ -1,8 +1,13 @@
 <script lang="ts">
+	import { id_store } from "$lib/stores";
 	import ConversationIcon from "./ConversationIcon.svelte";
 
+	export let id: string;
 	export let active: boolean = false;
-	console.log(active);
+
+	function handleClick() {
+		id_store.set(id);
+	}
 </script>
 
 <button
@@ -10,6 +15,7 @@
 		? 'bg-secondary-dark'
 		: ''}"
 	type="button"
+	on:click={handleClick}
 >
 	<ConversationIcon class="inline" size={17} />
 	<!-- Spacing -->

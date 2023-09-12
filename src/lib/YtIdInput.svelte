@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Fieldset from "./Fieldset.svelte";
 
+	export let disabled = false;
 	export let ytid: string = "";
 </script>
 
@@ -14,6 +15,7 @@
 			placeholder="e.g., dQw4w9WgXcQ"
 			required
 			bind:value={ytid}
+			{disabled}
 		/>
 	</Fieldset>
 </div>
