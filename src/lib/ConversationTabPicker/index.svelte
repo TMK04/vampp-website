@@ -12,12 +12,10 @@
 
 	let obj_id_conversation: ObjIdConversation = {};
 	const obj_id_conversation_store_unsubcribe = obj_id_conversation_store.subscribe((obj) => {
-		console.log(obj);
 		obj_id_conversation = obj;
 	});
 	let picked_id: Id = null;
 	const id_store_unsubcribe = id_store.subscribe((id) => {
-		console.log(id);
 		picked_id = id;
 	});
 
@@ -28,7 +26,7 @@
 </script>
 
 <nav class="w-1/5 bg-background-dark">
-	<div class="fixed flex h-[100vh] w-1/5 flex-col gap-2 p-2">
+	<div class="flex flex-col gap-2 p-2">
 		<!-- New Conversation -->
 		<div class="mb-2 flex flex-wrap-reverse justify-end gap-2">
 			<NewConversationTab active={picked_id === null} />

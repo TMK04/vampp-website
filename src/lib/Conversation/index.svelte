@@ -8,15 +8,14 @@
 	const conversation_store_unsubscribe = conversation_store.subscribe((value) => {
 		conversation = value;
 	});
-	$: conversation_null = conversation === null;
 
 	onDestroy(() => {
 		conversation_store_unsubscribe();
 	});
 </script>
 
-<main>
-	{#if conversation_null}
+<main class="pt-4">
+	{#if conversation === null}
 		<NewConversation />
 	{:else}
 		<ExistingConversation {conversation} />

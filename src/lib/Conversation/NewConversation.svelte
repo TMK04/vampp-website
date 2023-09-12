@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Container from "$lib/Container.svelte";
 	import GradientBtn from "$lib/GradientBtn.svelte";
+	import InputsContainer from "$lib/InputsContainer.svelte";
 	import OrDivider from "$lib/OrDivider.svelte";
 	import TopicInput from "$lib/TopicInput.svelte";
 	import VideoInput from "$lib/VideoInput.svelte";
@@ -61,7 +62,9 @@
 		<VideoInput bind:video disabled={ytid_provided} />
 	</Container>
 	<Container>
-		<TopicInput bind:topic />
+		<InputsContainer>
+			<TopicInput bind:topic />
+		</InputsContainer>
 	</Container>
 	<fieldset class="mt-3 flex flex-row flex-wrap justify-center gap-2">
 		<GradientBtn color="primary" type="submit">Grade</GradientBtn>
