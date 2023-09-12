@@ -36,21 +36,21 @@
 		let body = await response.json();
 		if (body.type === "error") return console.error(body);
 
-		body = JSON.parse(body.data);
+		body = JSON.parse(body.data)[0];
 		console.log(body);
 		obj_id_conversation_store.update((obj) => {
 			obj["test"] = {
 				file,
 				topic,
-				pitch: body.pitch.S,
-				creativity: body.creativity.N,
-				creativity_justification: body.creativity_justification.S,
-				impact: body.impact.N,
+				pitch: body.pitch,
+				creativity: body.creativity,
+				creativity_justification: body.creativity_justification,
+				impact: body.impact,
 				impact_justification: body.impact_justification,
-				feasibility: body.feasibility.N,
-				feasibility_justification: body.feasibility_justification.S,
-				clarity: body.clarity.N,
-				clarity_justification: body.clarity_justification.S
+				feasibility: body.feasibility,
+				feasibility_justification: body.feasibility_justification,
+				clarity: body.clarity,
+				clarity_justification: body.clarity_justification
 			};
 			return obj;
 		});
