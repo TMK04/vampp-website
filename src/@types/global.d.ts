@@ -1,10 +1,8 @@
 export {};
 
 declare global {
-	interface Conversation {
-		id: string;
+	type Conversation = {
 		topic: string;
 		file: File | string;
-	}
-	type ConversationContext = Conversation | null;
+	};
 }

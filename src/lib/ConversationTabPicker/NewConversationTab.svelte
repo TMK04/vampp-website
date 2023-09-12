@@ -1,12 +1,16 @@
 <script lang="ts">
 	import PlusIcon from "$lib/PlusIcon.svelte";
+	import { id_store } from "$lib/stores";
 
 	export let active: boolean;
-	export let handleClick: () => void;
+
+	function handleClick() {
+		id_store.set(null);
+	}
 </script>
 
 <button
-	class="border-border-dark grow overflow-hidden overflow-ellipsis whitespace-nowrap rounded-md border py-3 pe-2 ps-3 text-start align-middle text-sm text-light {active
+	class="grow overflow-hidden overflow-ellipsis whitespace-nowrap rounded-md border border-border-dark py-3 pe-2 ps-3 text-start align-middle text-sm text-light {active
 		? 'bg-secondary-dark'
 		: 'hover:bg-secondary-dark/50'}"
 	type="button"

@@ -1,8 +1,13 @@
 <script lang="ts">
+	import { id_store } from "$lib/stores";
 	import ConversationIcon from "./ConversationIcon.svelte";
 
+	export let id: string;
 	export let active: boolean = false;
-	export let handleClick: () => void;
+
+	function handleClick() {
+		id_store.set(id);
+	}
 </script>
 
 <button
