@@ -31,15 +31,17 @@
 	});
 </script>
 
-<nav class="bg-background-dark flex w-1/5 flex-col gap-2 p-2">
-	<!-- New Conversation -->
-	<div class="mb-2 flex flex-wrap-reverse justify-end gap-2">
-		<NewConversationTab />
-		<CloseBtn />
+<nav class="bg-background-dark h-[100vh] w-1/5">
+	<div class="fixed flex w-1/5 flex-col gap-2 p-2">
+		<!-- New Conversation -->
+		<div class="mb-2 flex flex-wrap-reverse justify-end gap-2">
+			<NewConversationTab />
+			<CloseBtn />
+		</div>
+		{#each Object.entries(obj_id_conversation) as [id, { topic }]}
+			<ConversationTab active={picked_id === id}>
+				{topic}
+			</ConversationTab>
+		{/each}
 	</div>
-	{#each Object.entries(obj_id_conversation) as [id, { topic }]}
-		<ConversationTab active={picked_id === id}>
-			{topic}
-		</ConversationTab>
-	{/each}
 </nav>
