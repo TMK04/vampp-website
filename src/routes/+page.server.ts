@@ -4,8 +4,7 @@ import type { Actions } from "@sveltejs/kit";
 export const actions: Actions = {
 	receive_video: async ({ request }) => {
 		const formData = await request.formData();
-		const video = formData.get("file") as File;
-		console.log(video);
+		console.log(formData);
 		const response = await fetch(HOST, {
 			method: "POST",
 			body: formData
