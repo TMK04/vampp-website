@@ -7,7 +7,7 @@
 	import YtIdInput from "$lib/YtIdInput.svelte";
 	import { getContext } from "svelte";
 
-	let context = getContext("conversation");
+	let context = getContext<ConversationContext>("conversation");
 	let video: File | undefined;
 	let topic: string;
 	let ytid: string;
@@ -50,12 +50,7 @@
 		</span>
 		<span class="whitespace-nowrap text-2xl sm:text-3xl">a Pitching Video</span>
 	</h1>
-	<form
-		class="flex flex-col gap-4"
-		id="article-input"
-		on:reset={handleReset}
-		on:submit={handleSubmit}
-	>
+	<form class="flex h-min min-w-min flex-col gap-4" on:reset={handleReset} on:submit={handleSubmit}>
 		<Container>
 			<YtIdInput bind:ytid />
 			<OrDivider />
@@ -70,10 +65,3 @@
 		</fieldset>
 	</form>
 </main>
-
-<style lang="postcss">
-	:global(#article-input > *) {
-		height: min-content;
-		min-width: min-content;
-	}
-</style>
