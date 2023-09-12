@@ -1,16 +1,16 @@
 <script lang="ts">
 	import Fieldset from "./Fieldset.svelte";
 
-	export let text: string = "";
+	export let pitch: string = "";
 </script>
 
-<Fieldset id="input-text" label="Topic">
+<Fieldset id="input-pitch" label="Pitch">
 	<input
 		class="block w-full rounded-sm border border-border px-1 py-1.5"
-		id="input-text"
-		name="text"
+		id="input-pitch"
+		name="pitch"
 		type="text"
 		required
-		bind:value={text}
+		bind:value={pitch}
 	/>
 </Fieldset>

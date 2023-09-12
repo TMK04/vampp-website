@@ -42,7 +42,7 @@
 			obj["test"] = {
 				file,
 				topic,
-				text: body.text.S,
+				pitch: body.pitch.S,
 				creativity: body.creativity.N,
 				creativity_justification: body.creativity_justification.S,
 				impact: body.impact.N,

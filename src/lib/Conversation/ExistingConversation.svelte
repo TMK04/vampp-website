@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Container from "$lib/Container.svelte";
 	import InputsContainer from "$lib/InputsContainer.svelte";
-	import TextInput from "$lib/TextInput.svelte";
+	import PitchInput from "$lib/PitchInput.svelte";
 	import TopicInput from "$lib/TopicInput.svelte";
 	import VideoInput from "$lib/VideoInput.svelte";
 	import YtIdInput from "$lib/YtIdInput.svelte";
@@ -19,7 +19,7 @@
 			<VideoInput disabled video={conversation.file} />
 		{/if}
 		<TopicInput topic={conversation.topic} />
-		<TextInput text={conversation.text} />
+		<PitchInput pitch={conversation.pitch} />
 	</InputsContainer>
 </Container>
 

@@ -13,7 +13,7 @@ declare global {
 	type Conversation = {
 		topic: string;
 		file: File | string;
-		text: string;
+		pitch: string;
 	} & Score &
 		ScoreJustification;
 }
