@@ -12,7 +12,7 @@ export const actions: Actions = {
 
 		if (!response.ok) {
 			console.error(response);
-			return;
+			return response;
 		}
 		const data = await response.json();
 		console.log(data);
