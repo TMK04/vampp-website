@@ -12,9 +12,14 @@ export const actions: Actions = {
 
 		if (!response.ok) {
 			console.error(response);
-			return response;
+			const body = await response
+				.json()
+				.then((data) => data["detail"])
+				.catch(() => response.statusText);
+			return { status: response.status, body };
 		}
 		const data = await response.json();
 		console.log(data);
+		return data;
 	}
 };
