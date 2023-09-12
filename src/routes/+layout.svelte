@@ -1,14 +1,19 @@
 <script>
+	import ConversationTabPicker from "$lib/ConversationTabPicker/index.svelte";
 	import "../app.css";
 </script>
 
-<div class="mx-[10%] pb-navbar">
-	<nav class="box-content h-navbar text-center">
-		<a class="inline-block" href="/">
-			<img src="/logo.png" alt="logo" class="h-navbar" />
-		</a>
-	</nav>
-	<slot />
+<div class="flex">
+	<!-- Sidebar -->
+	<ConversationTabPicker picked_id="EO53c-Sf2Ak-BVX73Df" />
+	<div class="grow-[3] pb-navbar">
+		<nav class="box-content h-navbar text-center">
+			<a class="inline-block" href="/">
+				<img src="/logo.png" alt="logo" class="h-navbar" />
+			</a>
+		</nav>
+		<slot />
+	</div>
 </div>
 
 <style lang="postcss">

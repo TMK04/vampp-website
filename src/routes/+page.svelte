@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Container from "$lib/Container.svelte";
 	import GradientBtn from "$lib/GradientBtn.svelte";
+	import OrDivider from "$lib/OrDivider.svelte";
 	import TopicInput from "$lib/TopicInput.svelte";
 	import VideoInput from "$lib/VideoInput.svelte";
 	import YtIdInput from "$lib/YtIdInput.svelte";
@@ -45,25 +46,23 @@
 		<span class="whitespace-nowrap text-2xl sm:text-3xl">a Pitching Video</span>
 	</h1>
 	<form
-		class="flex flex-wrap gap-5"
+		class="flex flex-col gap-5"
 		id="article-input"
 		on:reset={handleReset}
 		on:submit={handleSubmit}
 	>
-		<div class="grow basis-full md:basis-0">
-			<Container class="basis-full">
-				<YtIdInput bind:ytid />
-				<div class="my-1 text-center text-secondary-dark">- OR -</div>
-				<VideoInput bind:video disabled={ytid_provided} />
-			</Container>
-			<fieldset class="mt-4 flex flex-row flex-wrap justify-center gap-2">
-				<GradientBtn color="primary" type="submit">Grade</GradientBtn>
-				<GradientBtn color="secondary" type="reset">Reset</GradientBtn>
-			</fieldset>
-		</div>
-		<Container class="grow basis-full md:basis-0">
+		<Container>
+			<YtIdInput bind:ytid />
+			<OrDivider />
+			<VideoInput bind:video disabled={ytid_provided} />
+		</Container>
+		<Container>
 			<TopicInput bind:topic />
 		</Container>
+		<fieldset class="mt-4 flex flex-row flex-wrap justify-center gap-2">
+			<GradientBtn color="primary" type="submit">Grade</GradientBtn>
+			<GradientBtn color="secondary" type="reset">Reset</GradientBtn>
+		</fieldset>
 	</form>
 </main>
 
