@@ -7,12 +7,13 @@ export const actions: Actions = {
 		console.log(formData);
 		const controller = new AbortController();
 		// 5 minutes timeout
-		setTimeout(() => controller.abort(), 5 * 60 * 1000);
+		const timeout = setTimeout(() => controller.abort(), 5 * 60 * 1000);
 		const response = await fetch(HOST, {
 			method: "POST",
 			body: formData,
 			signal: controller.signal
 		});
+		clearTimeout(timeout);
 
 		if (!response.ok) {
 			console.error(response);
