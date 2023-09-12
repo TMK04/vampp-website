@@ -31,8 +31,8 @@
 	});
 </script>
 
-<nav class="bg-background-dark h-[100vh] w-1/5">
-	<div class="fixed flex w-1/5 flex-col gap-2 p-2">
+<nav class="bg-background-dark w-1/5">
+	<div class="fixed flex h-[100vh] w-1/5 flex-col gap-2 p-2">
 		<!-- New Conversation -->
 		<div class="mb-2 flex flex-wrap-reverse justify-end gap-2">
 			<NewConversationTab />
