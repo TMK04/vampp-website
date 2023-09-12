@@ -5,7 +5,9 @@
 	import TopicInput from "$lib/TopicInput.svelte";
 	import VideoInput from "$lib/VideoInput.svelte";
 	import YtIdInput from "$lib/YtIdInput.svelte";
+	import { getContext } from "svelte";
 
+	let context = getContext("conversation");
 	let video: File | undefined;
 	let topic: string;
 	let ytid: string;
@@ -20,17 +22,17 @@
 
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
-		const file = ytid_provided ? ytid : video;
-		if (!file) return;
-		const formData = new FormData();
-		formData.append("file", file);
-		formData.append("topic", topic);
-		console.log(formData);
-		const response = await fetch("?/receive_video", {
-			method: "POST",
-			body: formData
-		});
-		console.log(response);
+		// const file = ytid_provided ? ytid : video;
+		// if (!file) return;
+		// const formData = new FormData();
+		// formData.append("file", file);
+		// formData.append("topic", topic);
+		// console.log(formData);
+		// const response = await fetch("?/receive_video", {
+		// 	method: "POST",
+		// 	body: formData
+		// });
+		// console.log(response);
 	}
 </script>
 
