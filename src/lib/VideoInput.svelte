@@ -14,7 +14,9 @@
 </script>
 
 <label
-	class="relative flex aspect-video cursor-pointer flex-wrap items-center justify-center gap-x-[0.4ch] rounded-sm border border-dashed border-border bg-background p-12 text-center text-xl leading-tight text-secondary"
+	class="relative flex aspect-video flex-wrap items-center justify-center gap-x-[0.4ch] rounded-sm border border-dashed border-border bg-background p-12 text-center text-xl leading-tight text-secondary transition-opacity {disabled
+		? 'opacity-50'
+		: 'cursor-pointer'}"
 	for="input-video"
 >
 	{#if video}
