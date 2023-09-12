@@ -14,9 +14,9 @@
 </script>
 
 <label
-	class="relative flex items-center justify-center rounded-sm border border-dashed border-border bg-background p-12 text-center text-xl leading-tight text-secondary transition-all {disabled
-		? ''
-		: 'aspect-video cursor-pointer'}"
+	class="relative flex aspect-video items-center justify-center rounded-sm border border-dashed border-border bg-background p-12 text-center text-xl leading-tight text-secondary transition-all {disabled
+		? 'input-video-disabled'
+		: 'cursor-pointer'}"
 	for="input-video"
 >
 	{#if video}
@@ -44,3 +44,9 @@
 	on:change={handleFileChange}
 	{disabled}
 />
+
+<style>
+	.input-video-disabled {
+		transform: scale(0.95);
+	}
+</style>
