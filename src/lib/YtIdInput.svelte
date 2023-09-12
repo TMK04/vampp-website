@@ -13,7 +13,6 @@
 			name="ytid"
 			type="text"
 			placeholder="e.g., dQw4w9WgXcQ"
-			required
 			bind:value={ytid}
 			{disabled}
 		/>
