@@ -33,6 +33,8 @@
 			body: formData
 		});
 		console.log(response);
+		const body = await response.json();
+		console.log(body);
 		obj_id_conversation_store.update((obj) => {
 			obj["test"] = {
 				file,
