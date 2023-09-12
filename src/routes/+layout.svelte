@@ -6,7 +6,7 @@
 <div class="flex">
 	<!-- Sidebar -->
 	<ConversationTabPicker picked_id="EO53c-Sf2Ak-BVX73Df" />
-	<div class="grow-[3] pb-navbar">
+	<div class="mx-[10%] grow-[3] pb-navbar">
 		<nav class="box-content h-navbar text-center">
 			<a class="inline-block" href="/">
 				<img src="/logo.png" alt="logo" class="h-navbar" />

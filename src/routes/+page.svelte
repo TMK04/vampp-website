@@ -46,7 +46,7 @@
 		<span class="whitespace-nowrap text-2xl sm:text-3xl">a Pitching Video</span>
 	</h1>
 	<form
-		class="flex flex-col gap-5"
+		class="flex flex-col gap-4"
 		id="article-input"
 		on:reset={handleReset}
 		on:submit={handleSubmit}
@@ -59,7 +59,7 @@
 		<Container>
 			<TopicInput bind:topic />
 		</Container>
-		<fieldset class="mt-4 flex flex-row flex-wrap justify-center gap-2">
+		<fieldset class="mt-3 flex flex-row flex-wrap justify-center gap-2">
 			<GradientBtn color="primary" type="submit">Grade</GradientBtn>
 			<GradientBtn color="secondary" type="reset">Reset</GradientBtn>
 		</fieldset>
