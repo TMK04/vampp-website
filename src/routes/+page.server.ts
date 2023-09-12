@@ -18,8 +18,8 @@ export const actions: Actions = {
 				.catch(() => response.statusText);
 			throw error(response.status, body);
 		}
-		const data = await response.json();
-		console.log(data);
-		return data;
+		const body = await response.json();
+		console.log(body);
+		return body;
 	}
 };
