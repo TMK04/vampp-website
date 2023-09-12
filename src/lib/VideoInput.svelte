@@ -1,13 +1,14 @@
 <script lang="ts">
 	import VideoIcon from "$lib/VideoIcon.svelte";
 
-	export let file: File | undefined = undefined;
-	$: src = file ? URL.createObjectURL(file) : "";
+	export let video: File | undefined = undefined;
+	export let disabled = false;
+	$: src = video ? URL.createObjectURL(video) : "";
 
 	function handleFileChange(event: Event) {
 		const target = event.target as HTMLInputElement;
 		if (target.files && target.files[0]) {
-			file = target.files[0];
+			video = target.files[0];
 		}
 	}
 </script>
@@ -16,7 +17,7 @@
 	class="relative flex aspect-video cursor-pointer flex-wrap items-center justify-center gap-x-[0.4ch] rounded-sm border border-dashed border-border bg-background p-12 text-center text-xl leading-tight text-secondary"
 	for="input-video"
 >
-	{#if file}
+	{#if video}
 		<!-- svelte-ignore a11y-media-has-caption -->
 		<video class="absolute left-0 top-0 h-full w-full rounded-sm object-cover" controls {src} />
 	{/if}
@@ -34,6 +35,6 @@
 	name="video"
 	type="file"
 	accept="video/*"
-	required
+	{disabled}
 	on:change={handleFileChange}
 />

@@ -2,11 +2,6 @@
 	import Fieldset from "./Fieldset.svelte";
 
 	export let topic: string = "";
-	function handleDescriptionInput(event: Event) {
-		const target = event.target as HTMLInputElement;
-		target.style.height = "0";
-		target.style.height = target.scrollHeight + "px";
-	}
 </script>
 
 <div class="rounded-sm border border-border" id="topic-input-container">

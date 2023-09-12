@@ -1,20 +1,25 @@
 <script lang="ts">
 	import Container from "$lib/Container.svelte";
 	import GradientBtn from "$lib/GradientBtn.svelte";
-	import TopicInput from "$lib/TopicInput/index.svelte";
+	import TopicInput from "$lib/TopicInput.svelte";
 	import VideoInput from "$lib/VideoInput.svelte";
+	import YtIdInput from "$lib/YtIdInput.svelte";
 
-	let file: File | undefined;
+	let video: File | undefined;
 	let topic: string;
+	let ytid: string;
+	$: ytid_provided = Boolean(ytid);
 
 	function handleReset(event: Event) {
 		event.preventDefault();
-		file = undefined;
+		video = undefined;
 		topic = "";
+		ytid = "";
 	}
 
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
+		const file = ytid_provided ? ytid : video;
 		if (!file) return;
 		const formData = new FormData();
 		formData.append("file", file);
@@ -47,14 +52,16 @@
 	>
 		<div class="grow basis-full md:basis-0">
 			<Container class="basis-full">
-				<VideoInput bind:file />
+				<YtIdInput bind:ytid />
+				<div class="my-1 text-center text-secondary-dark">- OR -</div>
+				<VideoInput bind:video disabled={ytid_provided} />
 			</Container>
 			<fieldset class="mt-4 flex flex-row flex-wrap justify-center gap-2">
 				<GradientBtn color="primary" type="submit">Grade</GradientBtn>
 				<GradientBtn color="secondary" type="reset">Reset</GradientBtn>
 			</fieldset>
 		</div>
-		<Container class="grow-[3] basis-full md:basis-0">
+		<Container class="grow basis-full md:basis-0">
 			<TopicInput bind:topic />
 		</Container>
 	</form>
