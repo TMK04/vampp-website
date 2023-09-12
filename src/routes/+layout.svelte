@@ -7,11 +7,6 @@
 	<!-- Sidebar -->
 	<ConversationTabPicker />
 	<div class="mx-[10%] grow-[3] pb-navbar">
-		<nav class="box-content h-navbar text-center">
-			<a class="inline-block" href="/">
-				<img src="/logo.png" alt="logo" class="h-navbar" />
-			</a>
-		</nav>
 		<slot />
 	</div>
 </div>

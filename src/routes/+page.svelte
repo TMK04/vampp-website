@@ -37,6 +37,9 @@
 </script>
 
 <main>
+	<a class="block" href="/">
+		<img src="/logo.png" alt="logo" class="mx-auto h-navbar" />
+	</a>
 	<h1
 		class="mb-5 flex flex-wrap items-end justify-center gap-x-1.5 font-bold sm:gap-x-2 sm:gap-y-1"
 	>
