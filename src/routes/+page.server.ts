@@ -1,5 +1,5 @@
 import { HOST } from "$env/static/private";
-import { error, type Actions } from "@sveltejs/kit";
+import { error, json, type Actions } from "@sveltejs/kit";
 
 export const actions: Actions = {
 	receive_video: async ({ request }) => {
@@ -24,6 +24,6 @@ export const actions: Actions = {
 		}
 		const body = await response.json();
 		console.log(body);
-		return body;
+		return json(body);
 	}
 };
