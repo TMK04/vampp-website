@@ -28,7 +28,7 @@
 		formData.append("file", file);
 		formData.append("topic", topic);
 		console.log(formData);
-		const response = await fetch("?/receive_video", {
+		const response = await fetch("/", {
 			method: "POST",
 			body: formData
 		});
@@ -37,7 +37,7 @@
 		if (body.type === "error") return console.error(body);
 
 		console.log(body);
-		body = JSON.parse(JSON.parse(body.data)[0]);
+		body = JSON.parse(body);
 		console.log(body);
 		obj_id_conversation_store.update((obj) => {
 			obj[body.id] = {
