@@ -41,7 +41,6 @@
 		console.log(body);
 		obj_id_conversation_store.update((obj) => {
 			obj[body.id] = {
-				file,
 				topic,
 				pitch: body.pitch.S,
 				pe: body.pe.N,

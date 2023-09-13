@@ -17,7 +17,6 @@ declare global {
 	};
 	type Conversation = {
 		topic: string;
-		file: File | string;
 		pitch: string;
 	} & Score &
 		BeholderScore &

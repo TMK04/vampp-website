@@ -15,11 +15,6 @@
 <div>
 	<Message role="User">
 		<InputsContainer>
-			{#if typeof conversation.file === "string"}
-				<YtIdInput disabled ytid={conversation.file} />
-			{:else}
-				<VideoInput disabled video={conversation.file} />
-			{/if}
 			<TopicInput topic={conversation.topic} />
 			<PitchInput pitch={conversation.pitch} />
 		</InputsContainer>

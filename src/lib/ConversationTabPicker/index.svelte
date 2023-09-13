@@ -32,7 +32,6 @@
 		for (const { id, ...conversation } of body) {
 			obj_id_conversation[id.S] = {
 				topic: conversation.topic.S,
-				file: conversation.file.S,
 				pitch: conversation.pitch.S,
 				pe: conversation.pe.N,
 				clarity: conversation.clarity.N,
