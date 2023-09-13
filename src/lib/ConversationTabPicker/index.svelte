@@ -24,10 +24,10 @@
 
 	onMount(async () => {
 		const response = await fetch("/");
-		const body = await response.json();
+		let body = await response.json();
 		if (body.type === "error") return console.error(body);
 
-		console.log(body);
+		body = JSON.parse(body);
 		console.log(typeof body);
 		const obj_id_conversation: ObjIdConversation = {};
 		for (const { id, ...conversation } of body) {
