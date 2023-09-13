@@ -28,9 +28,9 @@
 		if (body.type === "error") return console.error(body);
 
 		body = JSON.parse(body);
-		console.log(typeof body);
 		const obj_id_conversation: ObjIdConversation = {};
 		for (const { id, ...conversation } of body) {
+			console.log(id);
 			obj_id_conversation[id] = conversation;
 		}
 
