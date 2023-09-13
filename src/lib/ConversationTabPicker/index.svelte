@@ -27,6 +27,7 @@
 		const body = await response.json();
 		if (body.type === "error") return console.error(body);
 
+		console.log(body);
 		const obj_id_conversation: ObjIdConversation = {};
 		for (const { id, ...conversation } of body) {
 			obj_id_conversation[id] = conversation;
