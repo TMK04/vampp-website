@@ -6,7 +6,7 @@
 <div class="flex">
 	<!-- Sidebar -->
 	<ConversationTabPicker />
-	<div class="mx-[10%] grow-[3] pb-navbar">
+	<div class="grow-[3] pb-navbar">
 		<slot />
 	</div>
 </div>

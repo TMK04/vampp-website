@@ -12,7 +12,7 @@
 	console.log(conversation);
 </script>
 
-<div class="flex flex-col gap-4">
+<div>
 	<Message role="User">
 		<InputsContainer>
 			{#if typeof conversation.file === "string"}
