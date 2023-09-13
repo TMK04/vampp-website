@@ -27,30 +27,9 @@
 
 	<Message role="Beholder">
 		<article class="flex flex-wrap gap-2">
-			<!-- Scores (creativity, creativity_justification) -->
-			<Score
-				label="Creativity"
-				score={conversation.creativity}
-				justification={conversation.creativity_justification}
-			/>
-
-			<Score
-				label="Impact"
-				score={conversation.impact}
-				justification={conversation.impact_justification}
-			/>
-
-			<Score
-				label="Feasibility"
-				score={conversation.feasibility}
-				justification={conversation.feasibility_justification}
-			/>
-
-			<Score
-				label="Clarity"
-				score={conversation.clarity}
-				justification={conversation.clarity_justification}
-			/>
+			<Score label="Professionalism & Enthusiasm" score={conversation.pe}></Score>
+			<Score label="Clarity" score={conversation.clarity}></Score>
+			<Score label="Business Value" score={conversation.bv}></Score>
 		</article>
 	</Message>
 </div>

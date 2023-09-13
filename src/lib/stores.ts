@@ -4,17 +4,20 @@ export type ObjIdConversation = Record<string, Conversation>;
 
 const blank_conversation: Omit<Conversation, "topic" | "file"> = {
 	pitch: "",
-	creativity: 1,
-	creativity_justification:
-		"The idea is unique since there may not be similar platforms specifically targeted towards training Master of Policy students for cybersecurity competitions using CTFD. However, other CTF platforms might exist for different audiences.",
-	feasibility: 1,
-	feasibility_justification:
-		"Resources like CTFD are available to implement this project, making its feasibility good. Though no mention was made about plans to mitigate potential risks in implementing and maintaining the platform.",
-	impact: 1,
-	impact_justification:
-		"This project is related to advanced infrastructure security implementation (+) since it focuses on training cybersecurity professionals. It targets a specific audience, i.e., Master of Policy students participating in competitions (+). By allowing them to practice and hone their skills, the project solves their needs (+). However, the difficulty level for the target audience isn't mentioned (-). Thus, the impact score is high.",
+	pe: 1,
 	clarity: 1,
-	clarity_justification:
+	bv: 1,
+	beholder_creativity: 1,
+	beholder_creativity_justification:
+		"The idea is unique since there may not be similar platforms specifically targeted towards training Master of Policy students for cybersecurity competitions using CTFD. However, other CTF platforms might exist for different audiences.",
+	beholder_feasibility: 1,
+	beholder_feasibility_justification:
+		"Resources like CTFD are available to implement this project, making its feasibility good. Though no mention was made about plans to mitigate potential risks in implementing and maintaining the platform.",
+	beholder_impact: 1,
+	beholder_impact_justification:
+		"This project is related to advanced infrastructure security implementation (+) since it focuses on training cybersecurity professionals. It targets a specific audience, i.e., Master of Policy students participating in competitions (+). By allowing them to practice and hone their skills, the project solves their needs (+). However, the difficulty level for the target audience isn't mentioned (-). Thus, the impact score is high.",
+	beholder_clarity: 1,
+	beholder_clarity_justification:
 		"The language used is clear and concise, key points are illustrated with examples, and coherent transitions between sections were evident."
 };
 

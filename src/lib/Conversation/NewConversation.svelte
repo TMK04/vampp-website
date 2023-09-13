@@ -51,14 +51,17 @@
 				file,
 				topic,
 				pitch: body.pitch,
-				creativity: body.creativity,
-				creativity_justification: body.creativity_justification,
-				impact: body.impact,
-				impact_justification: body.impact_justification,
-				feasibility: body.feasibility,
-				feasibility_justification: body.feasibility_justification,
+				pe: body.pe,
 				clarity: body.clarity,
-				clarity_justification: body.clarity_justification
+				bv: body.bv,
+				beholder_creativity: body.creativity,
+				beholder_creativity_justification: body.beholder_creativity_justification,
+				beholder_impact: body.impact,
+				beholder_impact_justification: body.beholder_impact_justification,
+				beholder_feasibility: body.feasibility,
+				beholder_feasibility_justification: body.beholder_feasibility_justification,
+				beholder_clarity: body.clarity,
+				beholder_clarity_justification: body.beholder_clarity_justification
 			};
 			return obj;
 		});
