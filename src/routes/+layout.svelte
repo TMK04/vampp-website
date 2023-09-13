@@ -3,10 +3,10 @@
 	import "../app.css";
 </script>
 
-<div class="flex">
+<div class="flex h-[100vh] overflow-hidden">
 	<!-- Sidebar -->
 	<ConversationTabPicker />
-	<div class="grow-[3] pb-navbar">
+	<div class="grow-[3] overflow-y-auto pb-navbar">
 		<slot />
 	</div>
 </div>

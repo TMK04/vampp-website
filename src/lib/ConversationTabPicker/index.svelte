@@ -26,19 +26,20 @@
 	});
 </script>
 
-<nav class="w-1/5 bg-background-dark" id="sidebar">
-	<div class="fixed flex h-[100vh] w-1/5 flex-col gap-2 p-2">
-		<!-- New Conversation -->
-		<div class="mb-2 flex flex-wrap-reverse justify-end gap-2">
-			<NewConversationTab active={picked_id === null} />
-			<CloseBtn />
-		</div>
-		{#each Object.entries(obj_id_conversation) as [id, { topic }]}
-			<ConversationTab {id} active={picked_id === id}>
-				{topic}
-			</ConversationTab>
-		{/each}
+<nav
+	class="flex h-full w-1/5 min-w-[250px] flex-col gap-2 overflow-y-auto bg-background-dark p-2"
+	id="sidebar"
+>
+	<!-- New Conversation -->
+	<div class="mb-2 flex flex-wrap-reverse justify-end gap-2">
+		<NewConversationTab active={picked_id === null} />
+		<CloseBtn />
 	</div>
+	{#each Object.entries(obj_id_conversation) as [id, { topic }]}
+		<ConversationTab {id} active={picked_id === id}>
+			{topic}
+		</ConversationTab>
+	{/each}
 </nav>
 
 <div
