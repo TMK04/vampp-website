@@ -8,8 +8,8 @@
 	} from "$lib/stores";
 	import ConversationTab from "./ConversationTab.svelte";
 	import NewConversationTab from "./NewConversationTab.svelte";
-	import CloseBtn from "./ToggleBtn.svelte";
-	import OpenBtn from "./OpenSideBar.svelte";
+	import CloseBtn from "./CloseBtn.svelte";
+	import OpenBtn from "./OpenBtn.svelte";
 
 	let obj_id_conversation: ObjIdConversation = {};
 	const obj_id_conversation_store_unsubcribe = obj_id_conversation_store.subscribe((obj) => {
@@ -20,6 +20,8 @@
 		picked_id = id;
 	});
 
+	let sidebar_hidden = false;
+
 	onDestroy(() => {
 		obj_id_conversation_store_unsubcribe();
 		id_store_unsubcribe();
@@ -27,13 +29,14 @@
 </script>
 
 <nav
-	class="flex h-full w-1/5 min-w-[250px] flex-col gap-2 overflow-y-auto bg-background-dark p-2"
-	id="sidebar"
+	class="flex h-full flex-col gap-2 overflow-y-auto bg-background-dark p-2 transition-all {sidebar_hidden
+		? 'w-0 min-w-0 overflow-hidden'
+		: 'w-1/5 min-w-[250px]'}"
 >
 	<!-- New Conversation -->
 	<div class="mb-2 flex flex-wrap-reverse justify-end gap-2">
 		<NewConversationTab active={picked_id === null} />
-		<CloseBtn />
+		<CloseBtn bind:sidebar_hidden />
 	</div>
 	{#each Object.entries(obj_id_conversation) as [id, { topic }]}
 		<ConversationTab {id} active={picked_id === id}>
@@ -42,10 +45,4 @@
 	{/each}
 </nav>
 
-<div
-	class="absolute left-2 top-2 z-10 hidden md:inline-block"
-	data-projection-id="121"
-	style="opacity: 1;"
->
-	<OpenBtn />
-</div>
+<OpenBtn bind:sidebar_hidden />
