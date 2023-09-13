@@ -36,24 +36,25 @@
 		let body = await response.json();
 		if (body.type === "error") return console.error(body);
 
+		console.log(body);
 		body = JSON.parse(body)[0];
 		console.log(body);
 		obj_id_conversation_store.update((obj) => {
 			obj[body.id] = {
 				file,
 				topic,
-				pitch: body.pitch,
-				pe: body.pe,
-				clarity: body.clarity,
-				bv: body.bv,
-				beholder_creativity: body.creativity,
-				beholder_creativity_justification: body.beholder_creativity_justification,
-				beholder_impact: body.impact,
-				beholder_impact_justification: body.beholder_impact_justification,
-				beholder_feasibility: body.feasibility,
-				beholder_feasibility_justification: body.beholder_feasibility_justification,
-				beholder_clarity: body.clarity,
-				beholder_clarity_justification: body.beholder_clarity_justification
+				pitch: body.pitch.S,
+				pe: body.pe.N,
+				clarity: body.clarity.N,
+				bv: body.bv.N,
+				beholder_creativity: body.creativity.N,
+				beholder_creativity_justification: body.beholder_creativity_justification.S,
+				beholder_impact: body.impact.N,
+				beholder_impact_justification: body.beholder_impact_justification.S,
+				beholder_feasibility: body.feasibility.N,
+				beholder_feasibility_justification: body.beholder_feasibility_justification.S,
+				beholder_clarity: body.clarity.N,
+				beholder_clarity_justification: body.beholder_clarity_justification.S
 			};
 			return obj;
 		});
