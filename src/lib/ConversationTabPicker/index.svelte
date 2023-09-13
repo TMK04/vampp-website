@@ -28,6 +28,7 @@
 		if (body.type === "error") return console.error(body);
 
 		console.log(body);
+		console.log(typeof body);
 		const obj_id_conversation: ObjIdConversation = {};
 		for (const { id, ...conversation } of body) {
 			obj_id_conversation[id] = conversation;
