@@ -36,6 +36,7 @@
 		let body = await response.json();
 		if (body.type === "error") return console.error(body);
 
+		body = JSON.parse(body)[0];
 		console.log(body);
 		obj_id_conversation_store.update((obj) => {
 			obj[body.id] = {
