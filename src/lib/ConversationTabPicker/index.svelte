@@ -26,8 +26,7 @@
 		const response = await fetch("?/getHistories");
 		const body = await response.json();
 		if (body.type === "error") return console.error(body);
-		const { histories } = body;
-		obj_id_conversation_store.set;
+		console.log(body);
 	});
 
 	onDestroy(() => {
