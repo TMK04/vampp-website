@@ -12,7 +12,7 @@ async function handleFastApiError(response: Response) {
 
 export const actions: Actions = {
 	getHistories: async () => {
-		const response = await fetch(`${HOST}/histories`);
+		const response = await fetch(HOST);
 		if (!response.ok) {
 			await handleFastApiError(response);
 		}
