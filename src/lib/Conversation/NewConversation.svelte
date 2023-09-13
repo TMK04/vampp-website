@@ -47,13 +47,13 @@
 				pe: body.pe.N,
 				clarity: body.clarity.N,
 				bv: body.bv.N,
-				beholder_creativity: body.creativity.N,
+				beholder_creativity: body.beholder_creativity.N,
 				beholder_creativity_justification: body.beholder_creativity_justification.S,
-				beholder_impact: body.impact.N,
+				beholder_impact: body.beholder_impact.N,
 				beholder_impact_justification: body.beholder_impact_justification.S,
-				beholder_feasibility: body.feasibility.N,
+				beholder_feasibility: body.beholder_feasibility.N,
 				beholder_feasibility_justification: body.beholder_feasibility_justification.S,
-				beholder_clarity: body.clarity.N,
+				beholder_clarity: body.beholder_clarity.N,
 				beholder_clarity_justification: body.beholder_clarity_justification.S
 			};
 			return obj;
