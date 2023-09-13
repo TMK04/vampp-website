@@ -3,29 +3,33 @@ import { derived, writable } from "svelte/store";
 export type ObjIdConversation = Record<string, Conversation>;
 
 const blank_conversation: Omit<Conversation, "topic" | "file"> = {
-	text: "",
+	pitch: "",
 	creativity: 1,
-	creativity_justification: "",
+	creativity_justification:
+		"The idea is unique since there may not be similar platforms specifically targeted towards training Master of Policy students for cybersecurity competitions using CTFD. However, other CTF platforms might exist for different audiences.",
 	feasibility: 1,
-	feasibility_justification: "",
+	feasibility_justification:
+		"Resources like CTFD are available to implement this project, making its feasibility good. Though no mention was made about plans to mitigate potential risks in implementing and maintaining the platform.",
 	impact: 1,
-	impact_justification: "",
+	impact_justification:
+		"This project is related to advanced infrastructure security implementation (+) since it focuses on training cybersecurity professionals. It targets a specific audience, i.e., Master of Policy students participating in competitions (+). By allowing them to practice and hone their skills, the project solves their needs (+). However, the difficulty level for the target audience isn't mentioned (-). Thus, the impact score is high.",
 	clarity: 1,
-	clarity_justification: ""
+	clarity_justification:
+		"The language used is clear and concise, key points are illustrated with examples, and coherent transitions between sections were evident."
 };
 
 export const obj_id_conversation_store = writable<ObjIdConversation>({
-	"EO53c-Sf2Ak-BVX73Df": {
+	"EBoeMc5QXyY-6sd98eT": {
 		topic: "Automation of Server Health Check-Ups and API Integration",
 		file: "EO53c-Sf2Ak",
 		...blank_conversation
 	},
-	"_JTd4rwRLgY-6RkYAmG": {
+	"bWoC6O_UVhY-43JSMFt": {
 		topic: "Cybersecurity For Seniors",
 		file: "_JTd4rwRLgY",
 		...blank_conversation
 	},
-	"B2Ft9Lk79D0-6XFwaKM": {
+	"AKE4n5-QQ7U-5PMawWE": {
 		topic: "End User Devices Dashboard",
 		file: "B2Ft9Lk79D0",
 		...blank_conversation

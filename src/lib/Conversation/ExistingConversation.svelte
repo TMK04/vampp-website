@@ -5,6 +5,7 @@
 	import VideoInput from "$lib/VideoInput.svelte";
 	import YtIdInput from "$lib/YtIdInput.svelte";
 	import Message from "./Message.svelte";
+	import Score from "./Score.svelte";
 
 	export let conversation: Conversation;
 
@@ -25,17 +26,31 @@
 	</Message>
 
 	<Message role="Beholder">
-		<!-- Scores (creativity, creativity_justification) -->
-		<div>Creativity: {conversation.creativity}</div>
-		<div>Creativity Justification: {conversation.creativity_justification}</div>
+		<article class="flex flex-wrap gap-2">
+			<!-- Scores (creativity, creativity_justification) -->
+			<Score
+				label="Creativity"
+				score={conversation.creativity}
+				justification={conversation.creativity_justification}
+			/>
 
-		<div>Impact: {conversation.impact}</div>
-		<div>Impact Justification: {conversation.impact_justification}</div>
+			<Score
+				label="Impact"
+				score={conversation.impact}
+				justification={conversation.impact_justification}
+			/>
 
-		<div>Feasibility: {conversation.feasibility}</div>
-		<div>Feasibility Justification: {conversation.feasibility_justification}</div>
+			<Score
+				label="Feasibility"
+				score={conversation.feasibility}
+				justification={conversation.feasibility_justification}
+			/>
 
-		<div>Clarity: {conversation.clarity}</div>
-		<div>Clarity Justification: {conversation.clarity_justification}</div>
+			<Score
+				label="Clarity"
+				score={conversation.clarity}
+				justification={conversation.clarity_justification}
+			/>
+		</article>
 	</Message>
 </div>
