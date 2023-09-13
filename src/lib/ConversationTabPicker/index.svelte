@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onDestroy, setContext } from "svelte";
+	import { onDestroy, onMount, setContext } from "svelte";
 	import {
 		id_store,
 		obj_id_conversation_store,
@@ -21,6 +21,14 @@
 	});
 
 	let sidebar_hidden = false;
+
+	onMount(async () => {
+		const response = await fetch("?/getHistories");
+		const body = await response.json();
+		if (body.type === "error") return console.error(body);
+		const { histories } = body;
+		obj_id_conversation_store.set;
+	});
 
 	onDestroy(() => {
 		obj_id_conversation_store_unsubcribe();

@@ -36,18 +36,9 @@
 		let body = await response.json();
 		if (body.type === "error") return console.error(body);
 
-		const aws_body = JSON.parse(body.data);
-		body = {};
-		for (const key in aws_body[0]) {
-			const value = aws_body[aws_body[key]];
-			for (const value_key in value) {
-				body[key] = aws_body[value[value_key]];
-				break;
-			}
-		}
 		console.log(body);
 		obj_id_conversation_store.update((obj) => {
-			obj["test"] = {
+			obj[body.id] = {
 				file,
 				topic,
 				pitch: body.pitch,
@@ -65,7 +56,7 @@
 			};
 			return obj;
 		});
-		id_store.set("test");
+		id_store.set(body.id);
 	}
 </script>
 
