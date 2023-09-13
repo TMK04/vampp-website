@@ -21,23 +21,7 @@ const blank_conversation: Omit<Conversation, "topic" | "file"> = {
 		"The language used is clear and concise, key points are illustrated with examples, and coherent transitions between sections were evident."
 };
 
-export const obj_id_conversation_store = writable<ObjIdConversation>({
-	"EBoeMc5QXyY-6sd98eT": {
-		topic: "Automation of Server Health Check-Ups and API Integration",
-		file: "EO53c-Sf2Ak",
-		...blank_conversation
-	},
-	"bWoC6O_UVhY-43JSMFt": {
-		topic: "Cybersecurity For Seniors",
-		file: "_JTd4rwRLgY",
-		...blank_conversation
-	},
-	"AKE4n5-QQ7U-5PMawWE": {
-		topic: "End User Devices Dashboard",
-		file: "B2Ft9Lk79D0",
-		...blank_conversation
-	}
-});
+export const obj_id_conversation_store = writable<ObjIdConversation>({});
 
 export type Id = string | null;
 export const id_store = writable<Id>(null);
