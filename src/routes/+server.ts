@@ -8,5 +8,9 @@ export async function GET() {
 	}
 	const body = await response.json();
 	console.log(body);
-	return JSON.stringify(body);
+	return new Response(body, {
+		headers: {
+			"Content-Type": "application/json"
+		}
+	});
 }
