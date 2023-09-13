@@ -1,4 +1,5 @@
 import { HOST } from "$env/static/private";
+import { json } from "@sveltejs/kit";
 import { handleFastApiError } from "../server-helpers";
 
 export async function GET() {
@@ -7,10 +8,5 @@ export async function GET() {
 		await handleFastApiError(response);
 	}
 	const body = await response.json();
-	console.log(body);
-	return new Response(body, {
-		headers: {
-			"Content-Type": "application/json"
-		}
-	});
+	return json(JSON.stringify(body));
 }
