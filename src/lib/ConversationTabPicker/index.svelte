@@ -23,7 +23,7 @@
 	let sidebar_hidden = false;
 
 	onMount(async () => {
-		const response = await fetch("?/getHistories");
+		const response = await fetch("/");
 		const body = await response.json();
 		if (body.type === "error") return console.error(body);
 		console.log(body);
