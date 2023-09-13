@@ -37,7 +37,7 @@
 		if (body.type === "error") return console.error(body);
 
 		console.log(body);
-		body = JSON.parse(body)[0];
+		body = JSON.parse(JSON.parse(body.data)[0]);
 		console.log(body);
 		obj_id_conversation_store.update((obj) => {
 			obj[body.id] = {
