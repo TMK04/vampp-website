@@ -6,6 +6,7 @@
 	import TopicInput from "$lib/TopicInput.svelte";
 	import VideoInput from "$lib/VideoInput.svelte";
 	import YtIdInput from "$lib/YtIdInput.svelte";
+	import { setConversation } from "$lib/helpers";
 	import { id_store, obj_id_conversation_store } from "$lib/stores";
 
 	let video: File | undefined;
@@ -41,21 +42,7 @@
 		body = JSON.parse(body);
 		console.log(body);
 		obj_id_conversation_store.update((obj) => {
-			obj[body.id] = {
-				topic,
-				pitch: body.pitch.S,
-				pe: body.pe.N,
-				clarity: body.clarity.N,
-				bv: body.bv.N,
-				beholder_creativity: body.beholder_creativity.N,
-				beholder_creativity_justification: body.beholder_creativity_justification.S,
-				beholder_impact: body.beholder_impact.N,
-				beholder_impact_justification: body.beholder_impact_justification.S,
-				beholder_feasibility: body.beholder_feasibility.N,
-				beholder_feasibility_justification: body.beholder_feasibility_justification.S,
-				beholder_clarity: body.beholder_clarity.N,
-				beholder_clarity_justification: body.beholder_clarity_justification.S
-			};
+			setConversation(obj, body);
 			return obj;
 		});
 		id_store.set(body.id);
