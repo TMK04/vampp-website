@@ -25,6 +25,6 @@ export function setConversation(
 		beholder_impact_justification: conversation.beholder_impact_justification.S,
 		beholder_clarity: conversation.beholder_clarity.N,
 		beholder_clarity_justification: conversation.beholder_clarity_justification.S,
-		professional_attire: conversation.professional_attire.BOOL
+		pa: conversation.pa.BOOL
 	};
 }

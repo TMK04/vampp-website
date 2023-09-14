@@ -14,7 +14,7 @@ declare global {
 		 * Eye contact
 		 */
 		ec: number;
-		professional_attire: boolean;
+		pa: boolean;
 	};
 	type SpeechScore = {
 		speech_clarity: number;
