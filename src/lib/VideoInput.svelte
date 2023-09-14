@@ -43,6 +43,7 @@
 	accept="video/*"
 	on:change={handleFileChange}
 	{disabled}
+	required
 />
 
 <style>

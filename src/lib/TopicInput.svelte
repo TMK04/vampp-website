@@ -11,7 +11,6 @@
 		name="topic"
 		type="text"
 		placeholder="e.g., Fake News Detection, Service Automation, ..."
-		required
 		bind:value={topic}
 	/>
 </Fieldset>

@@ -12,6 +12,7 @@
 	let topic: string;
 	let ytid: string;
 	$: ytid_provided = Boolean(ytid);
+	$: ytid_required = typeof video === "undefined";
 
 	function handleReset(event: Event) {
 		event.preventDefault();
@@ -77,7 +78,7 @@
 	</h1>
 	<form class="flex h-min min-w-min flex-col gap-4" on:reset={handleReset} on:submit={handleSubmit}>
 		<Container>
-			<YtIdInput bind:ytid />
+			<YtIdInput bind:ytid required={ytid_required} />
 			<OrDivider />
 			<VideoInput bind:video disabled={ytid_provided} />
 		</Container>
