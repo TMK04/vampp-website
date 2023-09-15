@@ -75,8 +75,8 @@
 			</InputsContainer>
 		</Container>
 		<fieldset class="mt-3 flex flex-row flex-wrap justify-center gap-2">
-			<GradientBtn color="primary" type="submit">Grade</GradientBtn>
-			<GradientBtn color="secondary" type="reset">Reset</GradientBtn>
+			<GradientBtn color="primary" props={{ title: "Grade", type: "submit" }}>Grade</GradientBtn>
+			<GradientBtn color="secondary" props={{ title: "Reset", type: "reset" }}>Reset</GradientBtn>
 		</fieldset>
 	</form>
 </div>

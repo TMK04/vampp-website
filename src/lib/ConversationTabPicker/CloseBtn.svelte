@@ -9,6 +9,8 @@
 
 <button
 	class="z-10 aspect-square h-full rounded-md border border-border-dark text-light hover:bg-secondary-dark/50"
+	title="Close Tab Picker"
+	type="button"
 	on:click={handleClick}
 >
 	<SidebarIcon class="inline" size={17} />

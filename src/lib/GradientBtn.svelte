@@ -9,7 +9,7 @@
 	};
 
 	export let color: keyof typeof obj_color_class;
-	export let type: HTMLButtonAttributes["type"] = "button";
+	export let props: Omit<HTMLButtonAttributes, "class"> = {};
 	let className = "";
 	export { className as class };
 </script>
@@ -18,7 +18,7 @@
 	class="grow basis-0 rounded-md bg-gradient-to-tr from-10% to-90% px-3 py-2 font-semibold shadow-md {obj_color_class[
 		color
 	]} {className}"
-	{type}
+	{...props}
 >
 	<slot />
 </button>

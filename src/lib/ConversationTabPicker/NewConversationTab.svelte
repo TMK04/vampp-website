@@ -13,6 +13,7 @@
 	class="grow overflow-hidden overflow-ellipsis whitespace-nowrap rounded-md border border-border-dark py-3 pe-2 ps-3 text-start align-middle text-sm text-light {active
 		? 'bg-secondary-dark'
 		: 'hover:bg-secondary-dark/50'}"
+	title="New Conversation"
 	type="button"
 	on:click={handleClick}
 >

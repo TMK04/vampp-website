@@ -4,6 +4,7 @@
 
 	export let id: string;
 	export let show: boolean;
+	export let title: string;
 
 	function handleClick() {
 		if ($id_store === id) $id_store = null;
@@ -16,7 +17,7 @@
 
 <button
 	class="absolute right-3 top-0 h-full transition-opacity {show ? 'opacity-100' : 'opacity-0'}"
-	title="Delete"
+	title={`Delete ${title}`}
 	type="button"
 	on:click={handleClick}
 >
