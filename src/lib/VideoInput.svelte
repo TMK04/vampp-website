@@ -15,7 +15,7 @@
 
 <label
 	class="relative flex aspect-video items-center justify-center rounded-sm border border-dashed border-border bg-background p-12 text-center text-xl leading-tight text-secondary transition-all {disabled
-		? 'input-video-disabled'
+		? 'scale-95'
 		: 'cursor-pointer'}"
 	for="input-video"
 >
@@ -30,9 +30,11 @@
 			<VideoIcon class="inline" size={12} />
 			<span>Input Video</span>
 		</header>
-		<span class="flex gap-x-[0.4ch]">
-			<span class="whitespace-nowrap">Click to</span><span>Upload</span>
-		</span>
+		{#if typeof video === "undefined"}
+			<span class="flex gap-x-[0.4ch]">
+				<span class="whitespace-nowrap">Click to</span><span>Upload</span>
+			</span>
+		{/if}
 	</div>
 </label>
 <input
@@ -45,9 +47,3 @@
 	{disabled}
 	required
 />
-
-<style>
-	.input-video-disabled {
-		transform: scale(0.95);
-	}
-</style>
