@@ -6,7 +6,7 @@
 	export let active: boolean = false;
 
 	function handleClick() {
-		id_store.set(id);
+		$id_store = id;
 	}
 </script>
 

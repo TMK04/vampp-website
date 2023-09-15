@@ -45,7 +45,7 @@
 			setConversation(obj, body);
 			return obj;
 		});
-		id_store.set(body.id);
+		$id_store = body.id;
 	}
 </script>
 
