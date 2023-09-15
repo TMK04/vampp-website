@@ -1,8 +1,9 @@
 import { derived, writable } from "svelte/store";
+import samples from "./samples.json";
 
 export type ObjIdConversation = Record<string, Conversation>;
 
-export const obj_id_conversation_store = writable<ObjIdConversation>({});
+export const obj_id_conversation_store = writable<ObjIdConversation>(samples);
 
 export type Id = string | null;
 export const id_store = writable<Id>(null);
