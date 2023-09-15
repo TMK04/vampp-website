@@ -25,7 +25,7 @@
 </script>
 
 <nav
-	class="flex h-full flex-col gap-2 overflow-y-auto bg-background-dark transition-all {sidebar_hidden
+	class="absolute z-10 flex h-full flex-col gap-2 overflow-y-auto bg-background-dark transition-all md:static {sidebar_hidden
 		? 'w-0 min-w-0'
 		: 'w-1/5 min-w-[250px] p-2'}"
 >
