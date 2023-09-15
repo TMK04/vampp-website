@@ -1,5 +1,5 @@
 <script lang="ts">
-	import VideoIcon from "$lib/VideoIcon.svelte";
+	import VideoIcon from "$lib/icons/VideoIcon.svelte";
 
 	export let video: File | undefined = undefined;
 	export let disabled = false;

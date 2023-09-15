@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SidebarIcon from "$lib/SidebarIcon.svelte";
+	import SidebarIcon from "$lib/icons/SidebarIcon.svelte";
 	export let sidebar_hidden: boolean;
 	$: hidden = !sidebar_hidden;
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { id_store } from "$lib/stores";
-	import ConversationIcon from "./ConversationIcon.svelte";
+	import ConversationIcon from "$lib/icons/ConversationIcon.svelte";
 
 	export let id: string;
 	export let active: boolean = false;

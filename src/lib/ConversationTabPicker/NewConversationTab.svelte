@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PlusIcon from "$lib/PlusIcon.svelte";
+	import PlusIcon from "$lib/icons/PlusIcon.svelte";
 	import { id_store } from "$lib/stores";
 
 	export let active: boolean;
