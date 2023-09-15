@@ -16,10 +16,12 @@
 </script>
 
 <button
-	class="absolute right-3 top-0 h-full transition-opacity {show ? 'opacity-100' : 'opacity-0'}"
+	class=" hover:bg-error-dark/95 text-error absolute right-2 top-0 aspect-square h-full bg-secondary-dark/90 text-center backdrop-blur-[1px] transition-all hover:text-white {show
+		? 'opacity-100'
+		: 'opacity-0'}"
 	title={`Delete ${title}`}
 	type="button"
 	on:click={handleClick}
 >
-	<DeleteIcon size={18} />
+	<DeleteIcon class="inline" size={18} />
 </button>
