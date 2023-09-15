@@ -11,9 +11,9 @@
 </script>
 
 <button
-	class="overflow-hidden overflow-ellipsis whitespace-nowrap rounded-sm py-3 pe-2 ps-3 text-start text-sm text-light hover:bg-secondary-dark/50 {active
+	class="overflow-hidden overflow-ellipsis whitespace-nowrap rounded-sm py-3 pe-2 ps-3 text-start text-sm text-light {active
 		? 'bg-secondary-dark'
-		: ''}"
+		: 'hover:bg-secondary-dark/50'}"
 	type="button"
 	on:click={handleClick}
 >
