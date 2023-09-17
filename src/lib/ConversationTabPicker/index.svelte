@@ -12,7 +12,8 @@
 	onMount(async () => {
 		const response = await fetch("/");
 		const body = await response.json();
-		if (body.type === "error") return console.error(body);
+		console.log(body);
+		if (body.type === "error") return;
 
 		const dynamo_conversation_arr = JSON.parse(body) as DynamoConversation[];
 		const obj_id_conversation: ObjIdConversation = {};
