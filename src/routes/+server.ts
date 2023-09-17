@@ -1,6 +1,6 @@
 import { HOST, TMP_DIR, TMP_FILENAME } from "$env/static/private";
 import { json } from "@sveltejs/kit";
-import { spawn } from "child_process";
+import { spawnSync } from "child_process";
 import { createWriteStream, existsSync, mkdirSync } from "fs";
 import { nanoid } from "nanoid";
 import path from "path";
@@ -33,7 +33,7 @@ export async function POST({ request }) {
 	mkdirSync(basename_random);
 	basename_random = path.join(basename_random, `${TMP_FILENAME}.mp4`);
 	if (file_is_ytid) {
-		spawn("yt-dlp", [
+		spawnSync("yt-dlp", [
 			"-f",
 			"bv[height<=1080][fps<=60]+ba",
 			"--merge-output-format",
