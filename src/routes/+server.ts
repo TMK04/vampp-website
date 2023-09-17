@@ -3,6 +3,7 @@ import { json } from "@sveltejs/kit";
 import { spawn } from "child_process";
 import { createWriteStream, existsSync, mkdirSync } from "fs";
 import { nanoid } from "nanoid";
+import path from "path";
 import { WritableStream } from "stream/web";
 import { handleFastApiError } from "../server-helpers";
 
@@ -26,11 +27,11 @@ export async function POST({ request }) {
 	let basename_random: string;
 	do {
 		random = nanoid(7);
-		basename_random = `${TMP_DIR}/${basename}-${random}`;
+		basename_random = path.join(TMP_DIR, `${basename}-${random}`);
 	} while (existsSync(basename_random));
 
 	mkdirSync(basename_random);
-	basename_random = `${basename_random}/${TMP_FILENAME}.mp4`;
+	basename_random = path.join(basename_random, `${TMP_FILENAME}.mp4`);
 	if (file_is_ytid) {
 		spawn("yt-dlp", [
 			"-f",
