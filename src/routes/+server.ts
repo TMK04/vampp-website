@@ -57,6 +57,8 @@ export async function POST({ request }) {
 
 	formData.append("basename", basename);
 	formData.append("random", random);
+	console.log("formData", formData);
+
 	const controller = new AbortController();
 	// 5 minutes timeout
 	const timeout = setTimeout(() => controller.abort(), 5 * 60 * 1000);
