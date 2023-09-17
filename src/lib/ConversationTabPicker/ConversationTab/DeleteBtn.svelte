@@ -6,8 +6,12 @@
 	export let show: boolean;
 	export let title: string;
 
-	function handleClick() {
+	async function handleClick() {
 		if ($id_store === id) $id_store = null;
+		const response = await fetch(`/${id}`, { method: "DELETE" });
+		if (!response.ok) throw new Error(response.statusText);
+		const body = await response.text();
+		console.log(body);
 		obj_id_conversation_store.update((obj) => {
 			delete obj[id];
 			return obj;
@@ -16,7 +20,7 @@
 </script>
 
 <button
-	class=" hover:bg-error-dark/95 text-error absolute right-2 top-0 aspect-square h-full bg-secondary-dark/90 text-center backdrop-blur-[1px] transition-all hover:text-white {show
+	class=" absolute right-2 top-0 aspect-square h-full bg-secondary-dark/90 text-center text-error backdrop-blur-[1px] transition-all hover:bg-error-dark/95 hover:text-white {show
 		? 'opacity-100'
 		: 'opacity-0'}"
 	title={`Delete ${title}`}
