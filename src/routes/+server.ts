@@ -22,7 +22,7 @@ export async function POST({ request }) {
 	formData.delete("file");
 	const file_is_ytid = typeof file === "string";
 
-	const basename = file_is_ytid ? file : file.name;
+	const basename = file_is_ytid ? file : file.name.replace(/\.\w+?$/, "");
 	let random: string;
 	let basename_random: string;
 	do {
