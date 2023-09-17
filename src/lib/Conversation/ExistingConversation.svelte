@@ -2,8 +2,6 @@
 	import InputsContainer from "$lib/InputsContainer.svelte";
 	import PitchInput from "$lib/PitchInput.svelte";
 	import TopicInput from "$lib/TopicInput.svelte";
-	import VideoInput from "$lib/VideoInput.svelte";
-	import YtIdInput from "$lib/YtIdInput.svelte";
 	import Message from "./Message.svelte";
 	import Score from "./Score.svelte";
 
