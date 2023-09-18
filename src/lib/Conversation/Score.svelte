@@ -1,14 +1,29 @@
 <script lang="ts">
 	export let label: string;
 	export let score: number;
+	score = +score;
+	export let format: "1-10 float" | "1-10 int" | "pct" = "1-10 float";
 	let className = "";
 	export { className as class };
+
+	let formatted_score: string;
+	switch (format) {
+		case "1-10 float":
+			formatted_score = score.toFixed(1);
+			break;
+		case "1-10 int":
+			formatted_score = score.toFixed(0);
+			break;
+		case "pct":
+			formatted_score = `${(score * 100).toFixed(0)}%`;
+			break;
+	}
 </script>
 
 <section class="grow rounded-sm border border-border p-4 {className}">
 	<header class="mb-1 basis-full text-center font-bold">
 		<h1>{label}</h1>
-		<p class="text-lg">{Number(score).toFixed(1)}</p>
+		<p class="text-lg">{formatted_score}</p>
 	</header>
 	<p class="flex flex-wrap"><slot /></p>
 </section>
