@@ -3,13 +3,13 @@
 	import ConversationIcon from "$lib/icons/ConversationIcon.svelte";
 	import DeleteBtn from "./DeleteBtn.svelte";
 
-	export let id: string;
+	export let active: boolean;
 	export let conversation: Conversation;
 	$: title = conversation.topic;
-	export let active: boolean = false;
+	export let id: string;
 
 	function handleClick() {
-		$id_store = id;
+		id_store.set(id);
 	}
 
 	let hover = false;
@@ -39,5 +39,5 @@
 	<!-- Spacing -->
 	<span class="inline-block" />
 	<slot />
-	<DeleteBtn {id} show={active || hover} {title} />
+	<DeleteBtn {active} {id} show={active || hover} {title} />
 </button>

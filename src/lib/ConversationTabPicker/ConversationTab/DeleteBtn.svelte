@@ -4,10 +4,11 @@
 
 	export let id: string;
 	export let show: boolean;
+	export let active: boolean;
 	export let title: string;
 
 	async function handleClick() {
-		if ($id_store === id) $id_store = null;
+		if (active) id_store.set(null);
 		const response = await fetch(`/${id}`, { method: "DELETE" });
 		if (!response.ok) throw new Error(response.statusText);
 		obj_id_conversation_store.update((obj) => {

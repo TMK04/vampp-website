@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { id_store, obj_id_conversation_store, type ObjIdConversation } from "$lib/stores";
+	import {
+		id_store,
+		obj_id_conversation_store,
+		type Id,
+		type ObjIdConversation
+	} from "$lib/stores";
 	import ConversationTab from "./ConversationTab/index.svelte";
 	import NewConversationTab from "./NewConversationTab.svelte";
 	import CloseBtn from "./CloseBtn.svelte";
@@ -12,6 +17,10 @@
 	let obj_id_conversation: ObjIdConversation;
 	const obj_id_conversation_store_unsubscribe = obj_id_conversation_store.subscribe((value) => {
 		obj_id_conversation = value;
+	});
+	let picked_id: Id;
+	const id_store_unsubscribe = id_store.subscribe((value) => {
+		picked_id = value;
 	});
 
 	onMount(async () => {
@@ -30,6 +39,7 @@
 
 	onDestroy(() => {
 		obj_id_conversation_store_unsubscribe();
+		id_store_unsubscribe();
 	});
 </script>
 
@@ -40,11 +50,11 @@
 >
 	<!-- New Conversation -->
 	<div class="mb-2 flex justify-end gap-2">
-		<NewConversationTab active={$id_store === null} />
+		<NewConversationTab active={picked_id === null} />
 		<CloseBtn bind:sidebar_hidden />
 	</div>
 	{#each Object.entries(obj_id_conversation) as [id, { topic }]}
-		<ConversationTab {id} conversation={obj_id_conversation[id]} active={$id_store === id}>
+		<ConversationTab active={picked_id === id} conversation={obj_id_conversation[id]} {id}>
 			{topic}
 		</ConversationTab>
 	{/each}
