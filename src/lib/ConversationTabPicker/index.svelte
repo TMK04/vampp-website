@@ -54,7 +54,7 @@
 		<CloseBtn bind:sidebar_hidden />
 	</div>
 	{#each Object.entries(obj_id_conversation) as [id, { topic }]}
-		<ConversationTab active={picked_id === id} conversation={obj_id_conversation[id]} {id}>
+		<ConversationTab active={picked_id === id} {id} {topic}>
 			{topic}
 		</ConversationTab>
 	{/each}

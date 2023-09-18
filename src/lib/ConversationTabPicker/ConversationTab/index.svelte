@@ -4,8 +4,8 @@
 	import DeleteBtn from "./DeleteBtn.svelte";
 
 	export let active: boolean;
-	export let conversation: Conversation;
-	$: title = conversation.topic;
+	export let topic: string;
+	$: title = `Conversation: ${topic}`;
 	export let id: string;
 
 	function handleClick() {
