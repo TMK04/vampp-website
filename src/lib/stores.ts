@@ -12,7 +12,7 @@ export const conversation_store = derived(
 	[obj_id_conversation_store, id_store],
 	([$obj_id_conversation_store, $id_store]) => {
 		if ($id_store === null) return null;
-		const conversation = $obj_id_conversation_store[$id_store];
-		return conversation;
+		if ($id_store in $obj_id_conversation_store) return $obj_id_conversation_store[$id_store];
+		return null;
 	}
 );
