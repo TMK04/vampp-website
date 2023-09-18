@@ -6,6 +6,7 @@
 
 	let conversation: Conversation | null;
 	const conversation_store_unsubcribe = conversation_store.subscribe((value) => {
+		console.log(value);
 		conversation = value;
 	});
 
