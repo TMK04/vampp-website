@@ -8,7 +8,10 @@
 	export let title: string;
 
 	async function handleClick() {
-		if (active) id_store.set(null);
+		if (active) {
+			console.log("Active on delete:", id);
+			id_store.set(null);
+		}
 		const response = await fetch(`/${id}`, { method: "DELETE" });
 		if (!response.ok) throw new Error(response.statusText);
 		obj_id_conversation_store.update((obj) => {
