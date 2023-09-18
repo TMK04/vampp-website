@@ -9,6 +9,8 @@
 
 	let sidebar_hidden = false;
 
+	const obj_id_conversation = $obj_id_conversation_store;
+
 	onMount(async () => {
 		const response = await fetch("/");
 		const body = await response.json();
@@ -34,8 +36,8 @@
 		<NewConversationTab active={$id_store === null} />
 		<CloseBtn bind:sidebar_hidden />
 	</div>
-	{#each Object.entries($obj_id_conversation_store) as [id, { topic }]}
-		<ConversationTab {id} active={$id_store === id}>
+	{#each Object.entries(obj_id_conversation) as [id, { topic }]}
+		<ConversationTab {id} conversation={obj_id_conversation[id]} active={$id_store === id}>
 			{topic}
 		</ConversationTab>
 	{/each}

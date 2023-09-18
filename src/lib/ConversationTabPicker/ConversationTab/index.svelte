@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { id_store, obj_id_conversation_store } from "$lib/stores";
+	import { id_store } from "$lib/stores";
 	import ConversationIcon from "$lib/icons/ConversationIcon.svelte";
 	import DeleteBtn from "./DeleteBtn.svelte";
 
 	export let id: string;
-	$: title = `Conversation: ${$obj_id_conversation_store[id]!.topic}`;
+	export let conversation: Conversation;
+	$: title = conversation.topic;
 	export let active: boolean = false;
 
 	function handleClick() {
