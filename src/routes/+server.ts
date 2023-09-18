@@ -18,6 +18,7 @@ export async function GET() {
 
 export async function POST({ request }) {
 	const formData = await request.formData();
+	let topic = formData.get("topic") ?? "";
 	const file = formData.get("file") as File | string;
 	formData.delete("file");
 	const file_is_ytid = typeof file === "string";
@@ -43,6 +44,18 @@ export async function POST({ request }) {
 			"--",
 			file
 		]);
+		if (!topic) {
+			topic = spawnSync("yt-dlp", [
+				"--skip-download",
+				"--no-warning",
+				"--print",
+				"title",
+				"--",
+				file
+			])
+				.stdout.toString()
+				.trim();
+		}
 	} else {
 		const read_stream = file.stream();
 		const write_stream = createWriteStream(basename_random);
@@ -55,6 +68,7 @@ export async function POST({ request }) {
 		write_stream.end();
 	}
 
+	formData.set("topic", topic);
 	formData.append("basename", basename);
 	formData.append("random", random);
 	console.log("formData", formData);
