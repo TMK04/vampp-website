@@ -1,19 +1,23 @@
-import { HOST, TMP_DIR, TMP_FILENAME } from "$env/static/private";
+import { AWS_DYNAMO_TABLE, HOST, TMP_DIR, TMP_FILENAME } from "$env/static/private";
+import { ScanCommand } from "@aws-sdk/client-dynamodb";
 import { json } from "@sveltejs/kit";
 import { spawnSync } from "child_process";
 import { createWriteStream, existsSync, mkdirSync } from "fs";
 import { nanoid } from "nanoid";
 import path from "path";
 import { WritableStream } from "stream/web";
-import { handleFastApiError } from "../server-helpers";
+import { dynamo_client, handleFastApiError } from "../server-helpers";
 
 export async function GET() {
-	const response = await fetch(HOST);
-	if (!response.ok) {
-		await handleFastApiError(response);
-	}
-	const body = await response.json();
-	return json(JSON.stringify(body));
+	const result = await dynamo_client.send(
+		new ScanCommand({
+			TableName: AWS_DYNAMO_TABLE,
+			FilterExpression:
+				"attribute_exists(ec) AND attribute_exists(pa) AND attribute_exists(speech_clarity) AND attribute_exists(beholder_clarity) AND attribute_exists(beholder_clarity_justification) AND attribute_exists(pe)"
+		})
+	);
+	const conversation_arr = result.Items!;
+	return json(conversation_arr);
 }
 
 export async function POST({ request }) {

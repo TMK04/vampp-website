@@ -13,11 +13,10 @@
 		const response = await fetch("/");
 		const body = await response.json();
 		console.log(body);
-		if (body.type === "error") return;
+		if (body.type === "error") return console.error(body);
 
-		const dynamo_conversation_arr = JSON.parse(body) as DynamoConversation[];
 		const obj_id_conversation: ObjIdConversation = {};
-		for (const conversation of dynamo_conversation_arr) {
+		for (const conversation of body) {
 			setConversation(obj_id_conversation, conversation);
 		}
 
