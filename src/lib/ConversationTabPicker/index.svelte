@@ -4,12 +4,15 @@
 	import NewConversationTab from "./NewConversationTab.svelte";
 	import CloseBtn from "./CloseBtn.svelte";
 	import OpenBtn from "./OpenBtn.svelte";
-	import { onMount } from "svelte";
+	import { onDestroy, onMount } from "svelte";
 	import { setConversation } from "$lib/helpers";
 
 	let sidebar_hidden = false;
 
-	const obj_id_conversation = $obj_id_conversation_store;
+	let obj_id_conversation: ObjIdConversation;
+	const obj_id_conversation_store_unsubscribe = obj_id_conversation_store.subscribe((value) => {
+		obj_id_conversation = value;
+	});
 
 	onMount(async () => {
 		const response = await fetch("/");
@@ -22,7 +25,11 @@
 			setConversation(obj_id_conversation, conversation);
 		}
 
-		$obj_id_conversation_store = obj_id_conversation;
+		obj_id_conversation_store.set(obj_id_conversation);
+	});
+
+	onDestroy(() => {
+		obj_id_conversation_store_unsubscribe();
 	});
 </script>
 
