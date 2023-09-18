@@ -1,6 +1,6 @@
 import { AWS_DYNAMO_TABLE } from "$env/static/private";
+import { dynamo_client } from "$lib/server/aws.js";
 import { DeleteItemCommand } from "@aws-sdk/client-dynamodb";
-import { dynamo_client } from "../../server-helpers.js";
 
 export async function DELETE({ params }) {
 	const id = params.id;

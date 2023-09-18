@@ -1,4 +1,6 @@
 import { AWS_DYNAMO_TABLE, HOST, TMP_DIR, TMP_FILENAME } from "$env/static/private";
+import { handleFastApiError } from "$lib/server/api";
+import { dynamo_client } from "$lib/server/aws";
 import { ScanCommand } from "@aws-sdk/client-dynamodb";
 import { json } from "@sveltejs/kit";
 import { spawnSync } from "child_process";
@@ -6,7 +8,6 @@ import { createWriteStream, existsSync, mkdirSync } from "fs";
 import { nanoid } from "nanoid";
 import path from "path";
 import { WritableStream } from "stream/web";
-import { dynamo_client, handleFastApiError } from "../server-helpers";
 
 export async function GET() {
 	const result = await dynamo_client.send(

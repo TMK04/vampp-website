@@ -1,7 +1,4 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { error } from "@sveltejs/kit";
-
-export const dynamo_client = new DynamoDBClient();
 
 export async function handleFastApiError(response: Response) {
 	console.error(response);
