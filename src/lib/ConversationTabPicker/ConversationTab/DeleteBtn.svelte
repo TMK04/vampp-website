@@ -10,8 +10,6 @@
 		if ($id_store === id) $id_store = null;
 		const response = await fetch(`/${id}`, { method: "DELETE" });
 		if (!response.ok) throw new Error(response.statusText);
-		const body = await response.text();
-		console.log(body);
 		obj_id_conversation_store.update((obj) => {
 			delete obj[id];
 			return obj;
