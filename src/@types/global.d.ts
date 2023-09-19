@@ -38,6 +38,9 @@ declare global {
 		BeholderScore &
 		BeholderScoreJustification;
 
+	type ObjIdConversation = Record<string, Conversation>;
+	type Id = string | null;
+
 	namespace Dynamo {
 		type StringType = {
 			S: string;

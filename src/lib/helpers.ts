@@ -1,5 +1,3 @@
-import type { ObjIdConversation } from "./stores";
-
 export function setConversation(
 	obj_id_conversation: ObjIdConversation,
 	dynamo_conversation: DynamoConversation

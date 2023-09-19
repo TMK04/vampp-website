@@ -1,10 +1,5 @@
 <script lang="ts">
-	import {
-		id_store,
-		obj_id_conversation_store,
-		type Id,
-		type ObjIdConversation
-	} from "$lib/stores";
+	import { id_store, obj_id_conversation_store } from "$lib/stores";
 	import ConversationTab from "./ConversationTab/index.svelte";
 	import NewConversationTab from "./NewConversationTab.svelte";
 	import CloseBtn from "./CloseBtn.svelte";
