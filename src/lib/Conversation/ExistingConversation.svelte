@@ -25,8 +25,8 @@
 				<Score label="Smiling" score={conversation.smiling} format="pct" />
 				<Score label="Upright" score={conversation.upright} format="pct" />
 				<Score label="Eye Contact" score={conversation.ec} format="pct" />
-				<Score label="Professional Attire" score={+conversation.pa} format="pct" />
-				<Score label="Speech Enthusiasm" score={+conversation.speech_enthusiasm} format="pct" />
+				<Score label="Professional Attire" score={conversation.pa} format="pct" />
+				<Score label="Speech Enthusiasm" score={conversation.speech_enthusiasm} format="pct" />
 			</Score>
 			<Score class="basis-1/3" label="Clarity" score={conversation.clarity}>
 				<Score label="Speech Clarity" score={conversation.speech_clarity} format="pct" />

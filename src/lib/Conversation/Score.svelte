@@ -1,22 +1,27 @@
 <script lang="ts">
 	export let label: string;
-	export let score: number;
-	score = +score;
+	export let score: number | boolean;
 	export let format: "1-10 float" | "1-10 int" | "pct" = "1-10 float";
 	let className = "";
 	export { className as class };
 
 	let formatted_score: string;
-	switch (format) {
-		case "1-10 float":
-			formatted_score = score.toFixed(1);
+	switch (typeof score) {
+		case "boolean":
+			formatted_score = score ? "Yes" : "No";
 			break;
-		case "1-10 int":
-			formatted_score = score.toFixed(0);
-			break;
-		case "pct":
-			formatted_score = `${(score * 100).toFixed(0)}%`;
-			break;
+		case "number":
+			switch (format) {
+				case "1-10 float":
+					formatted_score = score.toFixed(1);
+					break;
+				case "1-10 int":
+					formatted_score = score.toFixed(0);
+					break;
+				case "pct":
+					formatted_score = `${(score * 100).toFixed(0)}%`;
+					break;
+			}
 	}
 </script>
 
