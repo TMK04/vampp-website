@@ -48,7 +48,7 @@
 		<NewConversationTab active={picked_id === null} />
 		<CloseBtn bind:sidebar_hidden />
 	</div>
-	{#each Object.entries(obj_id_conversation) as [id, { topic }]}
+	{#each Object.entries(obj_id_conversation).sort((a, b) => a[1].timestamp - b[1].timestamp) as [id, { topic }]}
 		<ConversationTab active={picked_id === id} {id} {topic}>
 			{topic}
 		</ConversationTab>

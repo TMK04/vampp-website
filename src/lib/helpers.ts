@@ -4,6 +4,7 @@ export function setConversation(
 ) {
 	const { id, ...conversation } = dynamo_conversation;
 	obj_id_conversation[id.S] = {
+		timestamp: +conversation.timestamp.N,
 		topic: conversation.topic.S,
 		pitch: conversation.pitch.S,
 		pe: +conversation.pe.N,

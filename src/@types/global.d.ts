@@ -30,6 +30,7 @@ declare global {
 		[key in keyof BeholderScore as `${key}_justification`]: string;
 	};
 	type Conversation = {
+		timestamp: number;
 		topic: string;
 		pitch: string;
 	} & Score &
