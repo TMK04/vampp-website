@@ -1,6 +1,6 @@
 import { AWS_DYNAMO_TABLE, HOST, TMP_DIR, TMP_FILENAME } from "$env/static/private";
 import { handleFastApiError } from "$lib/server/api";
-import { dynamo_client } from "$lib/server/aws";
+import { attributesExist, dynamo_client } from "$lib/server/aws";
 import { ScanCommand } from "@aws-sdk/client-dynamodb";
 import { json } from "@sveltejs/kit";
 import { spawnSync } from "child_process";
@@ -13,8 +13,16 @@ export async function GET() {
 	const result = await dynamo_client.send(
 		new ScanCommand({
 			TableName: AWS_DYNAMO_TABLE,
-			FilterExpression:
-				"attribute_exists(ec) AND attribute_exists(pa) AND attribute_exists(speech_clarity) AND attribute_exists(beholder_clarity) AND attribute_exists(beholder_clarity_justification) AND attribute_exists(pe)"
+			FilterExpression: attributesExist(
+				"timestamp",
+				"pitch",
+				"ec",
+				"pa",
+				"speech_clarity",
+				"beholder_clarity",
+				"beholder_clarity_justification",
+				"pe"
+			)
 		})
 	);
 	const conversation_arr = result.Items!;
