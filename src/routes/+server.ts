@@ -14,7 +14,7 @@ export async function GET() {
 		new ScanCommand({
 			TableName: AWS_DYNAMO_TABLE,
 			FilterExpression: attributesExist(
-				"timestamp",
+				"ts",
 				"pitch",
 				"ec",
 				"pa",
