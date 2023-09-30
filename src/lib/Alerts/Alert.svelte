@@ -1,10 +1,11 @@
 <script lang="ts">
 	import CloseIcon from "$lib/icons/CloseIcon.svelte";
-	import { alert_linked_list_store } from "$lib/stores";
+	import { alert_linked_list_store, obj_alert_type_memoized } from "$lib/stores";
 
 	export let id: string;
 	export let type: AlertTypeType;
-	export let title: string;
+	let titleProp: string;
+	export { titleProp as title };
 	export let message: string;
 
 	const obj_type_class: Record<AlertTypeType, string> = {
@@ -30,7 +31,12 @@
 		<CloseIcon size={18} />
 	</button>
 	<div>
-		<header class={`font-bold ${obj_type_class[type]}`}>{title}</header>
+		<header class={`font-bold ${obj_type_class[type]}`}>
+			{obj_alert_type_memoized[type].capitalized}
+			{#if titleProp}
+				: {titleProp}
+			{/if}
+		</header>
 		<p>{message}</p>
 	</div>
 </div>
