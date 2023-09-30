@@ -1,6 +1,13 @@
 export {};
 
 declare global {
+	type AlertTypeType = "success" | "info" | "warning" | "error";
+	type AlertType = {
+		type: AlertTypeType;
+		title: string;
+		message: string;
+	};
+
 	type ScoreType = {
 		pe: number;
 		clarity: number;

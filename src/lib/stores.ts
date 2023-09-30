@@ -1,5 +1,8 @@
 import { derived, writable } from "svelte/store";
+import { LinkedListStore } from "./LinkedListStore";
 import samples from "./samples.json";
+
+export const alert_linked_list_store = LinkedListStore<AlertType>();
 
 export const obj_id_convo_store = writable<ObjIdConvo>(samples);
 
