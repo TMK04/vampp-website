@@ -7,14 +7,13 @@
 	import VideoInput from "$lib/VideoInput.svelte";
 	import YtIdInput from "$lib/YtIdInput.svelte";
 	import { setConvo } from "$lib/helpers";
-	import { id_store, obj_id_convo_store } from "$lib/stores";
+	import { alert_linked_list_store, id_store, obj_id_convo_store } from "$lib/stores";
 
 	let video: File | undefined;
 	let topic: string;
 	let ytid: string;
 	$: ytid_provided = Boolean(ytid);
 	$: ytid_required = typeof video === "undefined";
-	let error: string;
 
 	function handleReset(event: Event) {
 		event.preventDefault();
@@ -30,7 +29,6 @@
 		const formData = new FormData();
 		formData.append("file", file);
 		formData.append("topic", topic);
-		console.log(formData);
 		const response = await fetch("/", {
 			method: "POST",
 			body: formData
@@ -38,13 +36,13 @@
 		console.log(response);
 		let body = await response.json();
 		console.log(body);
-		body = JSON.parse(body);
 
-		if (body.error) {
-			error = body.error;
+		if ("type" in body && body.type === "error") {
+			alert_linked_list_store.push(body);
 			return;
 		}
 
+		body = JSON.parse(body);
 		obj_id_convo_store.update((obj) => {
 			setConvo(obj, body);
 			return obj;
@@ -70,9 +68,6 @@
 </header>
 <section class="px-[10%]">
 	<article class="pb-5 pt-3.5">
-		{#if error}
-			<p class="text-error">{error}</p>
-		{/if}
 		<form
 			class="flex h-min min-w-min flex-col gap-4"
 			on:reset={handleReset}

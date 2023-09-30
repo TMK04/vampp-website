@@ -34,15 +34,9 @@ export async function POST({ request }) {
 	let topic = formData.get("topic") ?? "";
 	const file = formData.get("file") as File | string;
 
+	if (!file) return json({ type: "error", title: 422, message: "file is invalid" });
 	const file_is_ytid = typeof file === "string";
-	let basename: string;
-	if (file_is_ytid) {
-		basename = file;
-	} else if (file instanceof File) {
-		basename = file.name.replace(/\.\w+?$/, "");
-	} else {
-		return json({ error: "file is not a string or File" });
-	}
+	const basename = file_is_ytid ? file : file.name.replace(/\.\w+?$/, "");
 	formData.delete("file");
 
 	let random: string;
