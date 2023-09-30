@@ -22,9 +22,13 @@
 <div
 	class="mt-3 flex basis-full items-start gap-1.5 rounded-md border border-b-border-dark/20 border-l-border-dark/20 border-r-border/80 border-t-border/80 bg-light/90 p-3 shadow backdrop-blur"
 >
-	<button class="mt-1 text-secondary" type="button" on:click={handleClick}
-		><CloseIcon size={18} /></button
+	<button
+		class="mt-1 text-secondary hover:text-secondary-dark"
+		type="button"
+		on:click={handleClick}
 	>
+		<CloseIcon size={18} />
+	</button>
 	<div>
 		<header class={`font-bold ${obj_type_class[type]}`}>{title}</header>
 		<p>{message}</p>
