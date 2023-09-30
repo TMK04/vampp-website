@@ -5,7 +5,7 @@
 	import Message from "./Message.svelte";
 	import Score from "./Score.svelte";
 
-	export let convo: Convo;
+	export let convo: ConvoType;
 
 	console.log(convo);
 </script>

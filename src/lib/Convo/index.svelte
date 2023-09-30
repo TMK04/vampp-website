@@ -4,7 +4,7 @@
 	import { convo_store } from "$lib/stores";
 	import { onDestroy } from "svelte";
 
-	let convo: Convo | null;
+	let convo: ConvoType | null;
 	const convo_store_unsubcribe = convo_store.subscribe((value) => {
 		console.log(value);
 		convo = value;

@@ -1,6 +1,6 @@
 export function setConvo(
 	obj_id_convo: ObjIdConvo,
-	dynamo_convo: DynamoConvo
+	dynamo_convo: DynamoConvoType
 ) {
 	const { id, ...convo } = dynamo_convo;
 	obj_id_convo[id.S] = {
