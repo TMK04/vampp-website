@@ -25,7 +25,7 @@ export default {
 		},
 		extend: {
 			spacing: {
-				navbar: "80px"
+				navbar: "72px"
 			}
 		}
 	},
