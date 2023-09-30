@@ -1,5 +1,5 @@
 import { AWS_DYNAMO_TABLE, HOST, TMP_DIR, TMP_FILENAME } from "$env/static/private";
-import { handleFastApiError } from "$lib/server/api";
+import { error, handleFastApiError } from "$lib/server/api";
 import { attributesExist, dynamo_client } from "$lib/server/aws";
 import { ScanCommand } from "@aws-sdk/client-dynamodb";
 import { json } from "@sveltejs/kit";
@@ -34,7 +34,7 @@ export async function POST({ request }) {
 	let topic = formData.get("topic") ?? "";
 	const file = formData.get("file") as File | string;
 
-	if (!file) return json({ type: "error", title: 422, message: "file is invalid" });
+	if (!file) return error(422, "file is invalid");
 	const file_is_ytid = typeof file === "string";
 	const basename = file_is_ytid ? file : file.name.replace(/\.\w+?$/, "");
 	formData.delete("file");
@@ -99,7 +99,7 @@ export async function POST({ request }) {
 	clearTimeout(timeout);
 
 	if (!response.ok) {
-		await handleFastApiError(response);
+		return handleFastApiError(response);
 	}
 	const body = await response.json();
 	return json(JSON.stringify(body));

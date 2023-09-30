@@ -1,4 +1,8 @@
-import { error } from "@sveltejs/kit";
+import { json } from "@sveltejs/kit";
+
+export function error(status: number, message: string) {
+	return json({ type: "error", title: status, message });
+}
 
 export async function handleFastApiError(response: Response) {
 	console.error(response);
@@ -6,5 +10,5 @@ export async function handleFastApiError(response: Response) {
 		.json()
 		.then((data) => data["detail"])
 		.catch(() => response.statusText);
-	throw error(response.status, body);
+	return error(response.status, body);
 }
