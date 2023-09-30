@@ -51,7 +51,7 @@
 	}
 </script>
 
-<header class="bg-background-fade px-[10%] pb-5 pt-3.5">
+<header class="px-[10%] pb-5 pt-3.5">
 	<div class="flex justify-center">
 		<a href="/">
 			<img src="/logo.png" alt="logo" class="h-navbar" />
@@ -66,7 +66,7 @@
 		<span class="whitespace-nowrap text-2xl sm:text-3xl">a Pitching Video</span>
 	</h1>
 </header>
-<section class="px-[10%]">
+<section class="bg-background-fade px-[10%]">
 	<article class="pb-5 pt-3.5">
 		<form
 			class="flex h-min min-w-min flex-col gap-4"
