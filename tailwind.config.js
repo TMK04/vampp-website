@@ -5,6 +5,7 @@ export default {
 		colors: {
 			text: "#010d1e",
 			background: "#ffffff",
+			"background-fade": "#fafaff",
 			"background-dark": "#1A1A1A",
 			primary: "#6b15c1",
 			"primary-light": "#7E19E3",

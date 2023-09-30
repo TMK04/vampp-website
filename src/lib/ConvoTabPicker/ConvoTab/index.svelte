@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { id_store } from "$lib/stores";
-	import ConversationIcon from "$lib/icons/ConversationIcon.svelte";
+	import ConvoIcon from "$lib/icons/ConvoIcon.svelte";
 	import DeleteBtn from "./DeleteBtn.svelte";
 
 	export let active: boolean;
@@ -35,7 +35,7 @@
 	on:mouseover={handleFocus}
 	on:mouseout={handleBlur}
 >
-	<ConversationIcon class="inline" size={17} />
+	<ConvoIcon class="inline" size={17} />
 	<!-- Spacing -->
 	<span class="inline-block" />
 	<slot />

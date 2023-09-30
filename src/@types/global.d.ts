@@ -29,7 +29,7 @@ declare global {
 	type BeholderScoreJustification = {
 		[key in keyof BeholderScore as `${key}_justification`]: string;
 	};
-	type Conversation = {
+	type Convo = {
 		ts: number;
 		topic: string;
 		pitch: string;
@@ -39,7 +39,7 @@ declare global {
 		BeholderScore &
 		BeholderScoreJustification;
 
-	type ObjIdConversation = Record<string, Conversation>;
+	type ObjIdConvo = Record<string, Convo>;
 	type Id = string | null;
 
 	namespace Dynamo {
@@ -58,5 +58,5 @@ declare global {
 		};
 	}
 
-	type DynamoConversation = Dynamo.ObjectType<Conversation, "id">;
+	type DynamoConvo = Dynamo.ObjectType<Convo, "id">;
 }

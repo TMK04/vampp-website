@@ -1,11 +1,11 @@
 <script>
-	import ConversationTabPicker from "$lib/ConversationTabPicker/index.svelte";
+	import ConvoTabPicker from "$lib/ConvoTabPicker/index.svelte";
 	import "../app.css";
 </script>
 
 <div class="flex h-[100vh] overflow-hidden">
 	<!-- Sidebar -->
-	<ConversationTabPicker />
+	<ConvoTabPicker />
 	<div class="grow-[3] overflow-y-auto pb-navbar">
 		<slot />
 	</div>

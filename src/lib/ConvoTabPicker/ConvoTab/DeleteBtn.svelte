@@ -1,6 +1,6 @@
 <script lang="ts">
 	import DeleteIcon from "$lib/icons/DeleteIcon.svelte";
-	import { id_store, obj_id_conversation_store } from "$lib/stores";
+	import { id_store, obj_id_convo_store } from "$lib/stores";
 
 	export let id: string;
 	export let show: boolean;
@@ -14,7 +14,7 @@
 		}
 		const response = await fetch(`/${id}`, { method: "DELETE" });
 		if (!response.ok) throw new Error(response.statusText);
-		obj_id_conversation_store.update((obj) => {
+		obj_id_convo_store.update((obj) => {
 			delete obj[id];
 			return obj;
 		});

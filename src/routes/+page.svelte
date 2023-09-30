@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Conversation from "$lib/Conversation/index.svelte";
+	import Convo from "$lib/Convo/index.svelte";
 </script>
 
-<Conversation />
+<Convo />

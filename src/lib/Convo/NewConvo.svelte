@@ -6,8 +6,8 @@
 	import TopicInput from "$lib/TopicInput.svelte";
 	import VideoInput from "$lib/VideoInput.svelte";
 	import YtIdInput from "$lib/YtIdInput.svelte";
-	import { setConversation } from "$lib/helpers";
-	import { id_store, obj_id_conversation_store } from "$lib/stores";
+	import { setConvo } from "$lib/helpers";
+	import { id_store, obj_id_convo_store } from "$lib/stores";
 
 	let video: File | undefined;
 	let topic: string;
@@ -41,15 +41,15 @@
 		console.log(body);
 		body = JSON.parse(body);
 		console.log(body);
-		obj_id_conversation_store.update((obj) => {
-			setConversation(obj, body);
+		obj_id_convo_store.update((obj) => {
+			setConvo(obj, body);
 			return obj;
 		});
 		id_store.set(body.id);
 	}
 </script>
 
-<header class="bg-[#fafafa] px-[10%] pb-5 pt-3.5">
+<header class="bg-background-fade fade px-[10%] pb-5 pt-3.5">
 	<div class="flex justify-center">
 		<a href="/">
 			<img src="/logo.png" alt="logo" class="h-navbar" />

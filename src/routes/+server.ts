@@ -25,8 +25,8 @@ export async function GET() {
 			)
 		})
 	);
-	const conversation_arr = result.Items!;
-	return json(conversation_arr);
+	const convo_arr = result.Items!;
+	return json(convo_arr);
 }
 
 export async function POST({ request }) {
