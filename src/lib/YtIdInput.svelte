@@ -8,12 +8,12 @@
 
 <div class="rounded-sm border border-border" id="ytid-input-container">
 	<Fieldset id="input-ytid" label="YouTube ID">
-		<input
+		<textarea
 			class="block w-full rounded-sm border border-border px-1 py-1.5"
 			id="input-ytid"
 			name="ytid"
-			type="text"
 			placeholder="e.g., dQw4w9WgXcQ"
+			rows="2"
 			bind:value={ytid}
 			{disabled}
 			{required}
