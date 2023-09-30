@@ -1,6 +1,6 @@
 <script lang="ts">
-	import NewConvo from "./NewConvo.svelte";
-	import ExistingConvo from "./ExistingConvo.svelte";
+	import NewConvo from "./NewConvo/index.svelte";
+	import ExistingConvo from "./ExistingConvo/index.svelte";
 	import { convo_store } from "$lib/stores";
 	import { onDestroy } from "svelte";
 

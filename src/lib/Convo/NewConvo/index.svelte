@@ -66,27 +66,21 @@
 		<span class="whitespace-nowrap text-2xl sm:text-3xl">a Pitching Video</span>
 	</h1>
 </header>
-<section class="bg-background-fade px-[10%]">
-	<article class="pb-5 pt-3.5">
-		<form
-			class="flex h-min min-w-min flex-col gap-4"
-			on:reset={handleReset}
-			on:submit={handleSubmit}
-		>
-			<Container>
-				<YtIdInput bind:ytid required={ytid_required} />
-				<OrDivider />
-				<VideoInput bind:video disabled={ytid_provided} />
-			</Container>
-			<Container>
-				<InputsContainer>
-					<TopicInput bind:topic />
-				</InputsContainer>
-			</Container>
-			<fieldset class="mt-3 flex flex-row flex-wrap justify-center gap-2">
-				<GradientBtn color="primary" props={{ title: "Grade", type: "submit" }}>Grade</GradientBtn>
-				<GradientBtn color="secondary" props={{ title: "Reset", type: "reset" }}>Reset</GradientBtn>
-			</fieldset>
-		</form>
-	</article>
+<section class="bg-background-fade px-[10%] pb-5 pt-3.5">
+	<form class="flex h-min min-w-min flex-col gap-4" on:reset={handleReset} on:submit={handleSubmit}>
+		<Container>
+			<YtIdInput bind:ytid required={ytid_required} />
+			<OrDivider />
+			<VideoInput bind:video disabled={ytid_provided} />
+		</Container>
+		<Container>
+			<InputsContainer>
+				<TopicInput bind:topic />
+			</InputsContainer>
+		</Container>
+		<fieldset class="mt-3 flex flex-row flex-wrap justify-center gap-2">
+			<GradientBtn color="primary" props={{ title: "Grade", type: "submit" }}>Grade</GradientBtn>
+			<GradientBtn color="secondary" props={{ title: "Reset", type: "reset" }}>Reset</GradientBtn>
+		</fieldset>
+	</form>
 </section>
