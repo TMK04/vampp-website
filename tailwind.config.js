@@ -19,6 +19,9 @@ export default {
 			white: "#ffffff",
 			error: "#FA1414",
 			"error-dark": "#CC1010",
+			success: "#12DB4B",
+			warning: "#FA9214",
+			info: "#19E3C5",
 			transparent: "transparent"
 		},
 		fontFamily: {

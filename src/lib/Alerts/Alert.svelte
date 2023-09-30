@@ -9,9 +9,9 @@
 
 	const obj_type_class: Record<AlertTypeType, string> = {
 		error: "text-error",
-		success: "",
-		warning: "",
-		info: ""
+		success: "text-success",
+		warning: "text-warning",
+		info: "text-info"
 	};
 
 	function handleClick() {
