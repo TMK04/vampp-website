@@ -49,15 +49,13 @@
 	}
 </script>
 
-<div class="mx-[10%]">
+<header class="bg-[#fafafa] px-[10%] pb-5 pt-3.5">
 	<div class="flex justify-center">
 		<a href="/">
 			<img src="/logo.png" alt="logo" class="h-navbar" />
 		</a>
 	</div>
-	<h1
-		class="mb-5 flex flex-wrap items-end justify-center gap-x-1.5 font-bold sm:gap-x-2 sm:gap-y-1"
-	>
+	<h1 class="flex flex-wrap items-end justify-center gap-x-1.5 font-bold sm:gap-x-2 sm:gap-y-1">
 		<span
 			class="whitespace-nowrap bg-gradient-to-r from-primary to-accent bg-clip-text text-3xl text-transparent sm:text-4xl"
 		>
@@ -65,20 +63,28 @@
 		</span>
 		<span class="whitespace-nowrap text-2xl sm:text-3xl">a Pitching Video</span>
 	</h1>
-	<form class="flex h-min min-w-min flex-col gap-4" on:reset={handleReset} on:submit={handleSubmit}>
-		<Container>
-			<YtIdInput bind:ytid required={ytid_required} />
-			<OrDivider />
-			<VideoInput bind:video disabled={ytid_provided} />
-		</Container>
-		<Container>
-			<InputsContainer>
-				<TopicInput bind:topic />
-			</InputsContainer>
-		</Container>
-		<fieldset class="mt-3 flex flex-row flex-wrap justify-center gap-2">
-			<GradientBtn color="primary" props={{ title: "Grade", type: "submit" }}>Grade</GradientBtn>
-			<GradientBtn color="secondary" props={{ title: "Reset", type: "reset" }}>Reset</GradientBtn>
-		</fieldset>
-	</form>
-</div>
+</header>
+<section class="px-[10%]">
+	<article class="pb-5 pt-3.5">
+		<form
+			class="flex h-min min-w-min flex-col gap-4"
+			on:reset={handleReset}
+			on:submit={handleSubmit}
+		>
+			<Container>
+				<YtIdInput bind:ytid required={ytid_required} />
+				<OrDivider />
+				<VideoInput bind:video disabled={ytid_provided} />
+			</Container>
+			<Container>
+				<InputsContainer>
+					<TopicInput bind:topic />
+				</InputsContainer>
+			</Container>
+			<fieldset class="mt-3 flex flex-row flex-wrap justify-center gap-2">
+				<GradientBtn color="primary" props={{ title: "Grade", type: "submit" }}>Grade</GradientBtn>
+				<GradientBtn color="secondary" props={{ title: "Reset", type: "reset" }}>Reset</GradientBtn>
+			</fieldset>
+		</form>
+	</article>
+</section>
