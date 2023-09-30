@@ -7,7 +7,7 @@
 	import VideoInput from "$lib/VideoInput.svelte";
 	import YtIdInput from "$lib/YtIdInput.svelte";
 	import { setConvo } from "$lib/helpers";
-	import { alert_linked_list_store, id_store, obj_id_convo_store } from "$lib/stores";
+	import { alert_linked_list_store, obj_id_convo_store } from "$lib/stores";
 
 	let video: File | undefined;
 	let topic: string;
@@ -47,7 +47,6 @@
 			setConvo(obj, body);
 			return obj;
 		});
-		id_store.set(body.id);
 	}
 </script>
 
