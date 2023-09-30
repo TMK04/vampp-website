@@ -14,6 +14,7 @@
 	let ytid: string;
 	$: ytid_provided = Boolean(ytid);
 	$: ytid_required = typeof video === "undefined";
+	let error: string;
 
 	function handleReset(event: Event) {
 		event.preventDefault();
@@ -36,11 +37,14 @@
 		});
 		console.log(response);
 		let body = await response.json();
-		if (body.type === "error") return console.error(body);
-
 		console.log(body);
 		body = JSON.parse(body);
-		console.log(body);
+
+		if (body.error) {
+			error = body.error;
+			return;
+		}
+
 		obj_id_convo_store.update((obj) => {
 			setConvo(obj, body);
 			return obj;
@@ -49,7 +53,7 @@
 	}
 </script>
 
-<header class="bg-background-fade fade px-[10%] pb-5 pt-3.5">
+<header class="bg-background-fade px-[10%] pb-5 pt-3.5">
 	<div class="flex justify-center">
 		<a href="/">
 			<img src="/logo.png" alt="logo" class="h-navbar" />
@@ -66,6 +70,9 @@
 </header>
 <section class="px-[10%]">
 	<article class="pb-5 pt-3.5">
+		{#if error}
+			<p class="text-error">{error}</p>
+		{/if}
 		<form
 			class="flex h-min min-w-min flex-col gap-4"
 			on:reset={handleReset}
