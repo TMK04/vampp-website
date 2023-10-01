@@ -54,19 +54,16 @@ function PostBody(topic: string, basename: string, random: string) {
 export async function POST({ request }) {
 	const formData = await request.formData();
 
-	let topic = formData.get("topic") ?? "";
+	const topic = formData.get("topic") ?? "";
 	if (typeof topic !== "string") return error(422, "Topic must be a string");
 
-	let basename: string;
-	let random: string;
+	let request_body: FormData;
 	if (formData.has("ytid")) {
-		basename = formData.get("ytid") as string;
+		const basename = formData.get("ytid") as string;
 		if (typeof basename !== "string") return error(422, "YT ID must be a string");
 		if (!REGEX_YTID.test(basename)) return error(422, "Invalid YT ID");
-		formData.delete("ytid");
 
-		const { basename_random, ...basename_random_obj } = BasenameRandom(basename);
-		random = basename_random_obj.random;
+		const { basename_random, random } = BasenameRandom(basename);
 
 		spawnSync("yt-dlp", [
 			"-f",
@@ -78,8 +75,11 @@ export async function POST({ request }) {
 			"--",
 			basename
 		]);
+
+		request_body = PostBody(topic, basename, random);
+
 		if (!topic) {
-			topic = spawnSync("yt-dlp", [
+			const title = spawnSync("yt-dlp", [
 				"--skip-download",
 				"--no-warning",
 				"--print",
@@ -89,15 +89,14 @@ export async function POST({ request }) {
 			])
 				.stdout.toString()
 				.trim();
+			if (title) request_body.append("title", title);
 		}
 	} else if (formData.has("video")) {
 		const video = formData.get("video") as File;
 		if (!(video instanceof File)) return error(422, "Video must be a file");
-		formData.delete("video");
 
-		basename = video.name.replace(/\.[^.]+$/, "");
-		const { basename_random, ...basename_random_obj } = BasenameRandom(basename);
-		random = basename_random_obj.random;
+		const basename = video.name.replace(/\.[^.]+$/, "");
+		const { basename_random, random } = BasenameRandom(basename);
 
 		const read_stream = video.stream();
 		const write_stream = createWriteStream(basename_random);
@@ -108,9 +107,9 @@ export async function POST({ request }) {
 		});
 		await read_stream.pipeTo(writable_stream);
 		write_stream.end();
-	} else return error(422, "No YT ID or video file provided");
 
-	const request_body = PostBody(topic, basename, random);
+		request_body = PostBody(topic, basename, random);
+	} else return error(422, "No YT ID or video file provided");
 
 	const controller = new AbortController();
 	// 5 minutes timeout
