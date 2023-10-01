@@ -18,6 +18,7 @@
 	let prev_error_alert_id: string | null = null;
 	let error_i_arr: number[] = [];
 	let ytids_provided = false;
+	let ytids_gt1 = false;
 	$: {
 		const casted_ytids = castYtIds(ytids_str);
 		ytid_arr = casted_ytids.ytid_arr;
@@ -25,6 +26,11 @@
 	}
 	$: if (ytid_arr.length > 0) {
 		ytids_provided = true;
+		if (ytid_arr.length > 1) ytids_gt1 = true;
+		else ytids_gt1 = false;
+	} else {
+		ytids_provided = false;
+		ytids_gt1 = false;
 	}
 	$: if (error_i_arr.length > 0) {
 		if (prev_error_alert_id !== null) {
@@ -65,7 +71,7 @@
 		} else {
 			formData.append("file", video);
 		}
-		formData.append("topic", topic);
+		if (!ytids_gt1) formData.append("topic", topic);
 
 		const response = await fetch("/", {
 			method: "POST",
@@ -96,7 +102,7 @@
 	</Container>
 	<Container>
 		<InputsContainer>
-			<TopicInput bind:topic />
+			<TopicInput bind:topic disabled={ytids_gt1} />
 		</InputsContainer>
 	</Container>
 	<fieldset class="mt-3 flex flex-row flex-wrap justify-center gap-2">
