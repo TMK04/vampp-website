@@ -59,18 +59,16 @@
 
 		const formData = new FormData();
 
-		if (ytids_provided) {
-			ytid_arr.forEach((ytid) => formData.append("file", ytid));
-		} else if (typeof video === "undefined") {
+		if (ytids_provided) ytid_arr.forEach((ytid) => formData.append("file", ytid));
+		else if (typeof video === "undefined") {
 			alert_linked_list_store.push({
 				type: "error",
 				title: "422",
 				message: "Please provide a video file or a YouTube video ID"
 			});
 			return;
-		} else {
-			formData.append("file", video);
-		}
+		} else formData.append("file", video);
+
 		if (!ytids_gt1) formData.append("topic", topic);
 
 		const response = await fetch("/", {
