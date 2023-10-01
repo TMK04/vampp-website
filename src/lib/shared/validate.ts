@@ -19,7 +19,7 @@ export function castYtIdsStr(ytids_str: string) {
 	ytids_str = ytids_str.trim();
 	if (ytids_str === "") return { ytid_arr: [], error_i_arr: [] };
 	// Trim here to remove trailing "\n"
-	const temp_ytid_arr = ytids_str.trim().split("\n");
+	const temp_ytid_arr = ytids_str.trim().split(/\s|,/);
 	return castYtIdArr(temp_ytid_arr);
 }
 
