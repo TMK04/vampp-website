@@ -7,7 +7,9 @@
 
 	export let convo: ConvoType;
 
-	console.log(convo);
+	$: {
+		console.log(convo);
+	}
 </script>
 
 <div>
