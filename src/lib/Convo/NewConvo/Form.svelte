@@ -45,21 +45,7 @@
 		ytids_str = "";
 	}
 
-	async function handleSubmit(event: Event) {
-		event.preventDefault();
-
-		const formData = new FormData();
-
-		if (ytids_provided) ytid_arr.forEach((ytid) => formData.append("file", ytid));
-		else if (typeof video === "undefined") {
-			alert_linked_list_store.push({
-				type: "error",
-				title: "422",
-				message: "Please provide a video file or a YouTube video ID"
-			});
-			return;
-		} else formData.append("file", video);
-
+	async function post(formData: FormData) {
 		formData.append("topic", topic);
 
 		const response = await fetch("/", {
@@ -75,11 +61,43 @@
 			return;
 		}
 
-		body = JSON.parse(body);
+		const dynamo_convo = JSON.parse(body) as DynamoConvoType;
 		obj_id_convo_store.update((obj) => {
-			setConvo(obj, body);
+			setConvo(obj, dynamo_convo);
 			return obj;
 		});
+
+		alert_linked_list_store.push({
+			type: "success",
+			title: "Success",
+			message: `Created Conversation: ${dynamo_convo.topic.S}`
+		});
+	}
+
+	async function handleSubmit(event: Event) {
+		event.preventDefault();
+
+		if (ytids_provided) {
+			ytid_arr.forEach(async (ytid) => {
+				const formData = new FormData();
+				formData.append("ytid", ytid);
+				await post(formData);
+			});
+			return;
+		}
+
+		if (typeof video === "undefined") {
+			alert_linked_list_store.push({
+				type: "error",
+				title: "422",
+				message: "Please provide a video file or a YouTube video ID"
+			});
+			return;
+		}
+
+		const formData = new FormData();
+		formData.append("video", video);
+		await post(formData);
 	}
 </script>
 
