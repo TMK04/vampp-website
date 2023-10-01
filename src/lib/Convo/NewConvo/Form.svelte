@@ -105,7 +105,7 @@
 	<Container>
 		<YtIdsInput bind:ytids_str required={ytids_required} />
 		<OrDivider />
-		<VideoInput bind:video />
+		<VideoInput bind:video disabled={ytids_provided} />
 	</Container>
 	<Container>
 		<InputsContainer>
