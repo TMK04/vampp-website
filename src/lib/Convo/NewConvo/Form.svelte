@@ -15,13 +15,29 @@
 	$: ytids_required = typeof video === "undefined";
 	let ytids_str: string = "";
 	let ytid_arr: string[] = [];
+	let prev_error_alert_id: string | null = null;
+	let error_i_arr: number[] = [];
 	let ytids_provided = false;
 	$: {
 		const casted_ytids = castYtIds(ytids_str);
 		ytid_arr = casted_ytids.ytid_arr;
+		error_i_arr = casted_ytids.error_i_arr;
 	}
 	$: if (ytid_arr.length > 0) {
 		ytids_provided = true;
+	}
+	$: if (error_i_arr.length > 0) {
+		if (prev_error_alert_id !== null) {
+			alert_linked_list_store.pop(prev_error_alert_id);
+		}
+		prev_error_alert_id = alert_linked_list_store.push({
+			type: "error",
+			title: "422",
+			message: `Lines ${error_i_arr.join(", ")} are invalid YT IDs`
+		});
+	} else if (prev_error_alert_id !== null) {
+		alert_linked_list_store.pop(prev_error_alert_id);
+		prev_error_alert_id = null;
 	}
 
 	function handleReset(event: Event) {
