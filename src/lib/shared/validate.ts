@@ -1,7 +1,7 @@
 /**
  * From https://webapps.stackexchange.com/a/101153
  */
-const REGEX_YTID = /^[0-9A-Za-z_-]{10}[048AEIMQUYcgkosw]$/;
+export const REGEX_YTID = /^[0-9A-Za-z_-]{10}[048AEIMQUYcgkosw]$/;
 
 export function castYtIdArr(temp_ytid_arr: string[]) {
 	const ytid_arr: string[] = [];

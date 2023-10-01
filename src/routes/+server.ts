@@ -1,6 +1,7 @@
 import { AWS_DYNAMO_TABLE, HOST, TMP_DIR, TMP_FILENAME } from "$env/static/private";
 import { error, handleFastApiError } from "$lib/server/api";
 import { attributesExist, dynamo_client } from "$lib/server/aws";
+import { REGEX_YTID } from "$lib/shared/validate.js";
 import { ScanCommand } from "@aws-sdk/client-dynamodb";
 import { json } from "@sveltejs/kit";
 import { spawnSync } from "child_process";
@@ -29,16 +30,7 @@ export async function GET() {
 	return json(convo_arr);
 }
 
-export async function POST({ request }) {
-	const formData = await request.formData();
-	let topic = formData.get("topic") ?? "";
-	const file = formData.get("file") as File | string;
-
-	if (!file) return error(422, "file is invalid");
-	const file_is_ytid = typeof file === "string";
-	const basename = file_is_ytid ? file : file.name.replace(/\.\w+?$/, "");
-	formData.delete("file");
-
+function BasenameRandom(basename: string) {
 	let random: string;
 	let basename_random: string;
 	do {
@@ -48,7 +40,34 @@ export async function POST({ request }) {
 
 	mkdirSync(basename_random);
 	basename_random = path.join(basename_random, `${TMP_FILENAME}.mp4`);
-	if (file_is_ytid) {
+
+	return { basename_random, random };
+}
+function PostBody(topic: string, basename: string, random: string) {
+	const formData = new FormData();
+	formData.append("topic", topic);
+	formData.append("basename", basename);
+	formData.append("random", random);
+	return formData;
+}
+
+export async function POST({ request }) {
+	const formData = await request.formData();
+
+	let topic = formData.get("topic") ?? "";
+	if (typeof topic !== "string") return error(422, "Topic must be a string");
+
+	let basename: string;
+	let random: string;
+	if (formData.has("ytid")) {
+		basename = formData.get("ytid") as string;
+		if (typeof basename !== "string") return error(422, "YT ID must be a string");
+		if (!REGEX_YTID.test(basename)) return error(422, "Invalid YT ID");
+		formData.delete("ytid");
+
+		const { basename_random, ...basename_random_obj } = BasenameRandom(basename);
+		random = basename_random_obj.random;
+
 		spawnSync("yt-dlp", [
 			"-f",
 			"bv[height<=1080][fps<=60]+ba",
@@ -57,7 +76,7 @@ export async function POST({ request }) {
 			"-o",
 			basename_random,
 			"--",
-			file
+			basename
 		]);
 		if (!topic) {
 			topic = spawnSync("yt-dlp", [
@@ -66,13 +85,21 @@ export async function POST({ request }) {
 				"--print",
 				"title",
 				"--",
-				file
+				basename
 			])
 				.stdout.toString()
 				.trim();
 		}
-	} else {
-		const read_stream = file.stream();
+	} else if (formData.has("video")) {
+		const video = formData.get("video") as File;
+		if (!(video instanceof File)) return error(422, "Video must be a file");
+		formData.delete("video");
+
+		basename = video.name.replace(/\.[^.]+$/, "");
+		const { basename_random, ...basename_random_obj } = BasenameRandom(basename);
+		random = basename_random_obj.random;
+
+		const read_stream = video.stream();
 		const write_stream = createWriteStream(basename_random);
 		const writable_stream = new WritableStream({
 			write(chunk) {
@@ -81,19 +108,16 @@ export async function POST({ request }) {
 		});
 		await read_stream.pipeTo(writable_stream);
 		write_stream.end();
-	}
+	} else return error(422, "No YT ID or video file provided");
 
-	formData.set("topic", topic);
-	formData.append("basename", basename);
-	formData.append("random", random);
-	console.log("formData", formData);
+	const request_body = PostBody(topic, basename, random);
 
 	const controller = new AbortController();
 	// 5 minutes timeout
 	const timeout = setTimeout(() => controller.abort(), 5 * 60 * 1000);
 	const response = await fetch(HOST, {
 		method: "POST",
-		body: formData,
+		body: request_body,
 		signal: controller.signal
 	});
 	clearTimeout(timeout);
@@ -101,6 +125,6 @@ export async function POST({ request }) {
 	if (!response.ok) {
 		return handleFastApiError(response);
 	}
-	const body = await response.json();
-	return json(JSON.stringify(body));
+	const response_body = await response.json();
+	return json(JSON.stringify(response_body));
 }
