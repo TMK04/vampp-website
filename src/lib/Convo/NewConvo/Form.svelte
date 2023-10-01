@@ -7,7 +7,7 @@
 	import VideoInput from "$lib/VideoInput.svelte";
 	import YtIdsInput from "$lib/YtIdsInput.svelte";
 	import { setConvo } from "$lib/helpers";
-	import { InvalidYtIdsMessage, castYtIds } from "$lib/shared/validate";
+	import { InvalidYtIdsMessage, castYtIdsStr } from "$lib/shared/validate";
 	import { alert_linked_list_store, obj_id_convo_store } from "$lib/stores";
 
 	let topic: string;
@@ -20,7 +20,7 @@
 	let ytids_provided = false;
 	let ytids_gt1 = false;
 	$: {
-		const casted_ytids = castYtIds(ytids_str);
+		const casted_ytids = castYtIdsStr(ytids_str);
 		ytid_arr = casted_ytids.ytid_arr;
 		error_i_arr = casted_ytids.error_i_arr;
 	}
