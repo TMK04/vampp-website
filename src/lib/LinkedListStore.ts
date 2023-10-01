@@ -36,7 +36,7 @@ export function LinkedListStore<T>() {
 		subscribe,
 		push(data: T) {
 			update((linked_list) => {
-				let id;
+				let id: string;
 				do {
 					id = nanoid(2);
 				} while (typeof linked_list.obj_id_node[id] !== "undefined");
