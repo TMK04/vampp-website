@@ -1,6 +1,6 @@
-# create-svelte
+# Video Analytics for Major Project Pitching (Website)
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Analyze & Grade Pitching Videos
 
 ## Developing
 

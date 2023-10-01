@@ -1,5 +1,6 @@
 {
-	"name": "major-project-website",
+	"name": "vampp-website",
+	"description": "Analyze & Grade Pitching Videos",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
