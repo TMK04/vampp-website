@@ -5,30 +5,51 @@
 	import OrDivider from "$lib/OrDivider.svelte";
 	import TopicInput from "$lib/TopicInput.svelte";
 	import VideoInput from "$lib/VideoInput.svelte";
-	import YtIdInput from "$lib/YtIdInput.svelte";
+	import YtIdsInput from "$lib/YtIdsInput.svelte";
 	import { setConvo } from "$lib/helpers";
+	import { castYtIds } from "$lib/shared/validate";
 	import { alert_linked_list_store, obj_id_convo_store } from "$lib/stores";
 
-	let video: File | undefined;
 	let topic: string;
-	let ytid: string;
-	$: ytid_provided = Boolean(ytid);
-	$: ytid_required = typeof video === "undefined";
+	let video: File | undefined;
+	$: ytids_required = typeof video === "undefined";
+	let ytids_str: string = "";
+	let ytid_arr: string[] = [];
+	let ytids_provided = false;
+	$: {
+		const casted_ytids = castYtIds(ytids_str);
+		ytid_arr = casted_ytids.ytid_arr;
+	}
+	$: if (ytid_arr.length > 0) {
+		ytids_provided = true;
+	}
 
 	function handleReset(event: Event) {
 		event.preventDefault();
 		video = undefined;
 		topic = "";
-		ytid = "";
+		ytids_str = "";
 	}
 
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
-		const file = ytid_provided ? ytid : video;
-		if (!file) return;
+
 		const formData = new FormData();
-		formData.append("file", file);
+
+		if (ytids_provided) {
+			ytid_arr.forEach((ytid) => formData.append("file", ytid));
+		} else if (typeof video === "undefined") {
+			alert_linked_list_store.push({
+				type: "error",
+				title: "422",
+				message: "Please provide a video file or a YouTube video ID"
+			});
+			return;
+		} else {
+			formData.append("file", video);
+		}
 		formData.append("topic", topic);
+
 		const response = await fetch("/", {
 			method: "POST",
 			body: formData
@@ -52,9 +73,9 @@
 
 <form class="flex h-min min-w-min flex-col gap-4" on:reset={handleReset} on:submit={handleSubmit}>
 	<Container>
-		<YtIdInput bind:ytid required={ytid_required} />
+		<YtIdsInput bind:ytids_str required={ytids_required} />
 		<OrDivider />
-		<VideoInput bind:video disabled={ytid_provided} />
+		<VideoInput bind:video disabled={ytids_provided} />
 	</Container>
 	<Container>
 		<InputsContainer>
