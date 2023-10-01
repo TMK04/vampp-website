@@ -17,21 +17,12 @@
 	let ytid_arr: string[] = [];
 	let prev_error_alert_id: string | null = null;
 	let error_i_arr: number[] = [];
-	let ytids_provided = false;
-	let ytids_gt1 = false;
 	$: {
 		const casted_ytids = castYtIdsStr(ytids_str);
 		ytid_arr = casted_ytids.ytid_arr;
 		error_i_arr = casted_ytids.error_i_arr;
 	}
-	$: if (ytid_arr.length > 0) {
-		ytids_provided = true;
-		if (ytid_arr.length > 1) ytids_gt1 = true;
-		else ytids_gt1 = false;
-	} else {
-		ytids_provided = false;
-		ytids_gt1 = false;
-	}
+	$: ytids_provided = ytid_arr.length > 0;
 	$: if (error_i_arr.length > 0) {
 		if (prev_error_alert_id !== null) {
 			alert_linked_list_store.pop(prev_error_alert_id);
@@ -69,7 +60,7 @@
 			return;
 		} else formData.append("file", video);
 
-		if (!ytids_gt1) formData.append("topic", topic);
+		formData.append("topic", topic);
 
 		const response = await fetch("/", {
 			method: "POST",
@@ -96,11 +87,11 @@
 	<Container>
 		<YtIdsInput bind:ytids_str required={ytids_required} />
 		<OrDivider />
-		<VideoInput bind:video disabled={ytids_provided} />
+		<VideoInput bind:video />
 	</Container>
 	<Container>
 		<InputsContainer>
-			<TopicInput bind:topic disabled={ytids_gt1} />
+			<TopicInput bind:topic />
 		</InputsContainer>
 	</Container>
 	<fieldset class="mt-3 flex flex-row flex-wrap justify-center gap-2">

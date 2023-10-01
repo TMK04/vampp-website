@@ -1,8 +1,6 @@
 <script lang="ts">
 	import Fieldset from "./Fieldset.svelte";
 
-	export let disabled = false;
-
 	export let topic: string = "";
 </script>
 
@@ -14,6 +12,5 @@
 		type="text"
 		placeholder="e.g., Fake News Detection, Service Automation, ..."
 		bind:value={topic}
-		{disabled}
 	/>
 </Fieldset>
