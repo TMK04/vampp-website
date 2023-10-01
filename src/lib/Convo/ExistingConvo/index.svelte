@@ -6,8 +6,6 @@
 	import Score from "./Score.svelte";
 
 	export let convo: ConvoType;
-
-	console.log(convo);
 </script>
 
 <div>

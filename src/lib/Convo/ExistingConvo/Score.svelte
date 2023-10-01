@@ -6,7 +6,7 @@
 	export { className as class };
 
 	let formatted_score: string;
-	switch (typeof score) {
+	$: switch (typeof score) {
 		case "boolean":
 			formatted_score = score ? "Yes" : "No";
 			break;
