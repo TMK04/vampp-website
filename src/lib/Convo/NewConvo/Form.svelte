@@ -7,7 +7,7 @@
 	import VideoInput from "$lib/VideoInput.svelte";
 	import YtIdsInput from "$lib/YtIdsInput.svelte";
 	import { setConvo } from "$lib/helpers";
-	import { castYtIds } from "$lib/shared/validate";
+	import { InvalidYtIdsMessage, castYtIds } from "$lib/shared/validate";
 	import { alert_linked_list_store, obj_id_convo_store } from "$lib/stores";
 
 	let topic: string;
@@ -30,10 +30,11 @@
 		if (prev_error_alert_id !== null) {
 			alert_linked_list_store.pop(prev_error_alert_id);
 		}
+
 		prev_error_alert_id = alert_linked_list_store.push({
 			type: "error",
 			title: "422",
-			message: `Lines ${error_i_arr.join(", ")} are invalid YT IDs`
+			message: InvalidYtIdsMessage(error_i_arr)
 		});
 	} else if (prev_error_alert_id !== null) {
 		alert_linked_list_store.pop(prev_error_alert_id);
