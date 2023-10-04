@@ -82,7 +82,7 @@
 			for (const ytid of ytid_arr) {
 				const formData = new FormData();
 				formData.append("ytid", ytid);
-				await post(formData);
+				await post(formData).catch(console.error);
 			}
 			return;
 		}
