@@ -62,6 +62,7 @@ export async function POST({ request }) {
 		const basename = formData.get("ytid") as string;
 		if (typeof basename !== "string") return error(422, "YT ID must be a string");
 		if (!REGEX_YTID.test(basename)) return error(422, "Invalid YT ID");
+		console.log("POST", basename);
 
 		const { basename_random, random } = BasenameRandom(basename);
 
@@ -96,6 +97,7 @@ export async function POST({ request }) {
 		if (!(video instanceof File)) return error(422, "Video must be a file");
 
 		const basename = video.name.replace(/\.[^.]+$/, "");
+		console.log("POST", basename);
 		const { basename_random, random } = BasenameRandom(basename);
 
 		const read_stream = video.stream();
