@@ -54,7 +54,7 @@
 		});
 		console.log(response);
 		let body = await response.json();
-		console.log(body);
+		if (typeof body === "string") body = JSON.parse(body);
 
 		if ("type" in body && body.type === "error") {
 			alert_linked_list_store.push(body);
