@@ -32,7 +32,9 @@
 			</Score>
 			<Score class="basis-1/3" label="Clarity" score={convo.clarity}>
 				<Score label="Speech Clarity" score={convo.speech_clarity} format="pct" />
-				<Score label="Content Clarity" score={convo.beholder_clarity} format="1-10 int" />
+				<Score label="Content Clarity" score={convo.beholder_clarity} format="1-10 int">
+					{convo.beholder_clarity_justification}
+				</Score>
 			</Score>
 			<Score class="basis-full" label="Business Value" score={convo.bv}>
 				<Score label="Creativity" score={convo.beholder_creativity} format="1-10 int">
