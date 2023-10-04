@@ -40,6 +40,7 @@ declare global {
 		ts: number;
 		topic: string;
 		pitch: string;
+		summary: string;
 	} & ScoreType &
 		CvScoreType &
 		SpeechScoreType &

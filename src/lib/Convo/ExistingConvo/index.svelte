@@ -4,6 +4,7 @@
 	import TopicInput from "$lib/TopicInput.svelte";
 	import Message from "./Message.svelte";
 	import Score from "./Score.svelte";
+	import Summary from "./Summary.svelte";
 
 	export let convo: ConvoType;
 </script>
@@ -18,6 +19,9 @@
 
 	<Message role="Beholder">
 		<article class="flex flex-wrap gap-2">
+			<InputsContainer class="basis-full">
+				<Summary>{convo.summary}</Summary>
+			</InputsContainer>
 			<Score class="basis-1/3" label="Professionalism & Enthusiasm" score={convo.pe}>
 				<Score label="Moving" score={convo.moving} format="pct" />
 				<Score label="Smiling" score={convo.smiling} format="pct" />

@@ -1,4 +1,9 @@
-<div class="inputs-container rounded-sm border border-border">
+<script lang="ts">
+	let className = "";
+	export { className as class };
+</script>
+
+<div class="inputs-container rounded-sm border border-border {className}">
 	<slot />
 </div>
 

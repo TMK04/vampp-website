@@ -1,12 +1,10 @@
-export function setConvo(
-	obj_id_convo: ObjIdConvo,
-	dynamo_convo: DynamoConvoType
-) {
+export function setConvo(obj_id_convo: ObjIdConvo, dynamo_convo: DynamoConvoType) {
 	const { id, ...convo } = dynamo_convo;
 	obj_id_convo[id.S] = {
 		ts: +convo.ts.N,
 		topic: convo.topic.S,
 		pitch: convo.pitch.S,
+		summary: convo.summary.S,
 		pe: +convo.pe.N,
 		clarity: +convo.clarity.N,
 		bv: +convo.bv.N,
