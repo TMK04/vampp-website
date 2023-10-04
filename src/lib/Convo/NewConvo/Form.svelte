@@ -78,11 +78,12 @@
 		event.preventDefault();
 
 		if (ytids_provided) {
-			ytid_arr.forEach(async (ytid) => {
+			// No parallelism (server-side doesn't even support it)
+			for (const ytid of ytid_arr) {
 				const formData = new FormData();
 				formData.append("ytid", ytid);
 				await post(formData);
-			});
+			}
 			return;
 		}
 
