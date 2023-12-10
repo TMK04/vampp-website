@@ -2,15 +2,35 @@
 
 Analyze & Grade Pitching Videos
 
+## Installation
+
+1. Clone
+
+```bash
+git clone https://github.com/TMK04/vampp-website.git
+```
+
+2. Install dependencies
+
+```bash
+pnpm install
+```
+
+3. Set environment variables
+
+```bash
+cp .env.example .env
+```
+
 ## Developing
 
 Start a development server:
 
 ```bash
-yarn dev
+pnpm dev
 
 # or start the server and open the app in a new browser tab
-yarn dev -- --open
+pnpm dev -- --open
 ```
 
 ## Building
@@ -18,9 +38,9 @@ yarn dev -- --open
 To create a production version:
 
 ```bash
-yarn build
+pnpm build
 ```
 
-Preview the production build with `yarn preview`.
+Start the production build with `pnpm start`.
 
-> To deploy, install an [adapter](https://kit.svelte.dev/docs/adapters) for target environment.
+Preview it with `pnpm preview`.
