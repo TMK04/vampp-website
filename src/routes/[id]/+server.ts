@@ -1,18 +1,9 @@
-import { AWS_DYNAMO_TABLE } from "$env/static/private";
-import { dynamo_client } from "$server/aws.js";
-import { DeleteItemCommand } from "@aws-sdk/client-dynamodb";
+import { delConvo } from "$server/db/convo";
 
 export async function DELETE({ params }) {
 	const id = params.id;
 	console.log("DELETE", id);
-	const result = await dynamo_client.send(
-		new DeleteItemCommand({
-			TableName: AWS_DYNAMO_TABLE,
-			Key: {
-				id: { S: id }
-			}
-		})
-	);
+	const result = await delConvo(id);
 	console.log(result);
 
 	return new Response(null, {

@@ -61,16 +61,16 @@
 			return;
 		}
 
-		const dynamo_convo = JSON.parse(body) as DynamoConvoType;
+		const db_convo = JSON.parse(body) as DbConvoType;
 		obj_id_convo_store.update((obj) => {
-			setConvo(obj, dynamo_convo);
+			setConvo(obj, db_convo);
 			return obj;
 		});
 
 		alert_linked_list_store.push({
 			type: "success",
 			title: "Success",
-			message: `Created Conversation: ${dynamo_convo.topic.S}`
+			message: `Created Conversation: ${db_convo.topic}`
 		});
 	}
 

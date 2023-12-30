@@ -1,8 +1,7 @@
-import { AWS_DYNAMO_TABLE, HOST, TMP_DIR, TMP_FILENAME } from "$env/static/private";
+import { HOST, OUT_DIR } from "$env/static/private";
 import { REGEX_YTID } from "$lib/shared/validate";
 import { error, handleFastApiError } from "$server/api";
-import { attributesExist, dynamo_client } from "$server/aws";
-import { ScanCommand } from "@aws-sdk/client-dynamodb";
+import { selectFinishedConvos } from "$server/db/convo";
 import { json } from "@sveltejs/kit";
 import { spawnSync } from "child_process";
 import { createWriteStream, existsSync, mkdirSync } from "fs";
@@ -11,22 +10,7 @@ import path from "path";
 import { WritableStream } from "stream/web";
 
 export async function GET() {
-	const result = await dynamo_client.send(
-		new ScanCommand({
-			TableName: AWS_DYNAMO_TABLE,
-			FilterExpression: attributesExist(
-				"ts",
-				"pitch",
-				"ec",
-				"pa",
-				"speech_clarity",
-				"beholder_clarity",
-				"beholder_clarity_justification",
-				"pe"
-			)
-		})
-	);
-	const convo_arr = result.Items!;
+	const convo_arr = await selectFinishedConvos();
 	return json(convo_arr);
 }
 
@@ -35,11 +19,11 @@ function BasenameRandom(basename: string) {
 	let basename_random: string;
 	do {
 		random = nanoid(7);
-		basename_random = path.join(TMP_DIR, `${basename}-${random}`);
+		basename_random = path.join(OUT_DIR, `${basename}-${random}`);
 	} while (existsSync(basename_random));
 
 	mkdirSync(basename_random);
-	basename_random = path.join(basename_random, `${TMP_FILENAME}.mp4`);
+	basename_random = path.join(basename_random, `temp.mp4`);
 
 	return { basename_random, random };
 }
