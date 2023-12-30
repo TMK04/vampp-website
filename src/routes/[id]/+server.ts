@@ -1,5 +1,5 @@
 import { AWS_DYNAMO_TABLE } from "$env/static/private";
-import { dynamo_client } from "$lib/server/aws.js";
+import { dynamo_client } from "$server/aws.js";
 import { DeleteItemCommand } from "@aws-sdk/client-dynamodb";
 
 export async function DELETE({ params }) {

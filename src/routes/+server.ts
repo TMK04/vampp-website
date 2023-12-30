@@ -1,7 +1,7 @@
 import { AWS_DYNAMO_TABLE, HOST, TMP_DIR, TMP_FILENAME } from "$env/static/private";
-import { error, handleFastApiError } from "$lib/server/api";
-import { attributesExist, dynamo_client } from "$lib/server/aws";
 import { REGEX_YTID } from "$lib/shared/validate";
+import { error, handleFastApiError } from "$server/api";
+import { attributesExist, dynamo_client } from "$server/aws";
 import { ScanCommand } from "@aws-sdk/client-dynamodb";
 import { json } from "@sveltejs/kit";
 import { spawnSync } from "child_process";
