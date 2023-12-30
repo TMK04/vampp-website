@@ -22,7 +22,7 @@
 			<InputsContainer class="basis-full">
 				<Summary>{convo.summary}</Summary>
 			</InputsContainer>
-			<Score class="basis-1/3" label="Professionalism & Enthusiasm" score={convo.pe}>
+			<Score class="basis-[300px]" label="Professionalism & Enthusiasm" score={convo.pe}>
 				<Score label="Moving" score={convo.moving} format="pct" />
 				<Score label="Smiling" score={convo.smiling} format="pct" />
 				<Score label="Upright" score={convo.upright} format="pct" />
@@ -30,7 +30,7 @@
 				<Score label="Professional Attire" score={convo.pa} format="pct" />
 				<Score label="Speech Enthusiasm" score={convo.speech_enthusiasm} format="pct" />
 			</Score>
-			<Score class="basis-1/3" label="Clarity" score={convo.clarity}>
+			<Score class="basis-[300px]" label="Clarity" score={convo.clarity}>
 				<Score label="Speech Clarity" score={convo.speech_clarity} format="pct" />
 				<Score label="Content Clarity" score={convo.beholder_clarity} format="1-10 int">
 					{convo.beholder_clarity_justification}

@@ -25,10 +25,14 @@
 	}
 </script>
 
-<section class="grow rounded-sm border border-border p-4 {className}">
+<section
+	class="grow rounded-sm border border-border p-4 md:max-w-[70vw] lg:max-w-[55vw] {className}"
+>
 	<header class="mb-1 basis-full text-center font-bold">
 		<h1>{label}</h1>
 		<p class="text-lg">{formatted_score}</p>
 	</header>
-	<p class="flex flex-wrap"><slot /></p>
+	{#if $$slots.default}
+		<p class="flex flex-wrap"><slot /></p>
+	{/if}
 </section>

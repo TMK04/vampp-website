@@ -5,8 +5,8 @@
 		Beholder: "bg-light"
 	};
 	const obj_role_header_class = {
-		User: "text-primary",
-		Beholder: "text-accent"
+		User: "text-accent",
+		Beholder: "text-primary"
 	};
 </script>
 
