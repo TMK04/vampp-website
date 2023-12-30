@@ -1,3 +1,6 @@
+/**
+ * @type {import('eslint').Linter.Config}
+ */
 module.exports = {
 	root: true,
 	extends: [
@@ -24,6 +27,21 @@ module.exports = {
 			parser: "svelte-eslint-parser",
 			parserOptions: {
 				parser: "@typescript-eslint/parser"
+			},
+			rules: {
+				"@typescript-eslint/no-unused-vars": [
+					"error",
+					{
+						varsIgnorePattern: "^\\$\\$Props$"
+					}
+				],
+				"no-undef": "off"
+			}
+		},
+		{
+			files: ["*.cjs"],
+			rules: {
+				"@typescript-eslint/no-var-requires": "off"
 			}
 		}
 	]

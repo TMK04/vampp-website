@@ -25,8 +25,8 @@
 	class="relative overflow-hidden overflow-ellipsis whitespace-nowrap rounded-sm py-3 pe-2 ps-3 text-start text-sm text-light {active
 		? 'bg-secondary-dark'
 		: hover
-		? 'bg-secondary-dark/50'
-		: ''}"
+			? 'bg-secondary-dark/50'
+			: ''}"
 	{title}
 	type="button"
 	on:click={handleClick}
