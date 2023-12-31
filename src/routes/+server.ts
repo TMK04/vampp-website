@@ -26,38 +26,6 @@ async function mkIdDir(out_dir: string) {
 		throw error(500, "Failed to create directory for convo");
 	}
 }
-async function compressVideo(tmp_path: string, out_path: string) {
-	try {
-		const compress_proc = await spawnAndThrow("ffmpeg", [
-			"-i",
-			tmp_path,
-			"-c:a",
-			"pcm_s16le",
-			"-ac",
-			"1",
-			"-ar",
-			"16000",
-			"-c:v",
-			"libx265",
-			"-crf",
-			"28",
-			"-vf",
-			"fps=1",
-			"-f",
-			"matroska",
-			"--",
-			out_path
-		]);
-
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-empty
-		for await (const _ of compress_proc.stdout) {
-		}
-		unlinkSync(tmp_path);
-	} catch (e) {
-		logError(e);
-		throw error(500, "Failed to compress video");
-	}
-}
 async function ytdlpVideo(ytid: string, tmp_path: string) {
 	try {
 		const download_proc = await spawnAndThrow("yt-dlp", [
@@ -100,7 +68,6 @@ async function ytdlpTitle(ytid: string) {
 		return "";
 	}
 }
-
 async function videoWrite(video: File, tmp_path: string) {
 	try {
 		const read_stream = video.stream();
@@ -117,16 +84,70 @@ async function videoWrite(video: File, tmp_path: string) {
 		throw error(500, "Failed to write video file");
 	}
 }
+async function compressVideo(tmp_path: string, out_path: string) {
+	try {
+		const compress_proc = await spawnAndThrow("ffmpeg", [
+			"-i",
+			tmp_path,
+			"-c:a",
+			"pcm_s16le",
+			"-ac",
+			"1",
+			"-ar",
+			"16000",
+			"-b:a",
+			"128k",
+			"-c:v",
+			"libx265",
+			"-crf",
+			"28",
+			"-vf",
+			"fps=1",
+			"-f",
+			"matroska",
+			"--",
+			out_path
+		]);
+
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-empty
+		for await (const _ of compress_proc.stdout) {
+		}
+		unlinkSync(tmp_path);
+	} catch (e) {
+		logError(e);
+		throw error(500, "Failed to compress video");
+	}
+}
+async function extractAudio(out_path: string, wav_path: string) {
+	try {
+		const extract_proc = await spawnAndThrow("ffmpeg", [
+			"-i",
+			out_path,
+			"-vn",
+			"-c:a",
+			"copy",
+			"--",
+			wav_path
+		]);
+
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-empty
+		for await (const _ of extract_proc.stdout) {
+		}
+	} catch (e) {
+		logError(e);
+		throw error(500, "Failed to extract audio");
+	}
+}
+
 const size_1gb = 1024 ** 3;
 /**
  * Setup this_form_data
  */
 async function setupTFD(client_form_data: FormData, this_form_data: FormData, id: string) {
-	const out_dir = `${OUT_DIR}/${id}`;
-	const tmp_path = `${out_dir}/tmp.mkv`;
-	const out_path = `${out_dir}/og.mkv`;
-
 	try {
+		const out_dir = `${OUT_DIR}/${id}`;
+		const tmp_path = `${out_dir}/tmp.mkv`;
+
 		const topic = client_form_data.get("topic") ?? "";
 		if (typeof topic !== "string") throw error(400, "Topic must be a string");
 		this_form_data.set("topic", topic);
@@ -151,7 +172,10 @@ async function setupTFD(client_form_data: FormData, this_form_data: FormData, id
 		} else throw error(400, "No YT ID or video file provided");
 
 		await Promise.all(promise_arr);
+
+		const out_path = `${out_dir}/og.mkv`;
 		await compressVideo(tmp_path, out_path);
+		await extractAudio(out_path, `${out_dir}/og.wav`);
 
 		await initConvo(id);
 	} catch (e) {
