@@ -19,6 +19,15 @@ export function selectFinishedConvos() {
 	return query;
 }
 
+export async function convoExists(id: string) {
+	const row = await db("convo").where({ id }).select("id").first();
+	return row !== undefined;
+}
+
+export function initConvo(id: string) {
+	return db("convo").insert({ id, ts: Date.now() });
+}
+
 export function delConvo(id: string) {
 	return db("convo").where({ id }).del();
 }

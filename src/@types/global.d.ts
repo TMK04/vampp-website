@@ -9,8 +9,14 @@ declare global {
 	};
 
 	type ScoreType = {
+		/**
+		 * Professionalism & Enthusiasm
+		 */
 		pe: number;
 		clarity: number;
+		/**
+		 * Business Value
+		 */
 		bv: number;
 	};
 	type CvScoreType = {
@@ -18,9 +24,12 @@ declare global {
 		smiling: number;
 		upright: number;
 		/**
-		 * Eye contact
+		 * Eye Contact
 		 */
 		ec: number;
+		/**
+		 * Professional Attire
+		 */
 		pa: boolean;
 	};
 	type SpeechScoreType = {
@@ -37,6 +46,9 @@ declare global {
 		[key in keyof BeholderScoreType as `${key}_justification`]: string;
 	};
 	type ConvoType = {
+		/**
+		 * Timestamp
+		 */
 		ts: number;
 		topic: string;
 		pitch: string;
