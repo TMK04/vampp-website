@@ -44,6 +44,10 @@ declare module "knex/types/tables.js" {
 
 	interface Tables {
 		convo: Convo;
-		convo_composite: Knex.CompositeTableType<Convo, Convo, Partial<Omit<Convo, "id">>>;
+		convo_composite: Knex.CompositeTableType<
+			Convo,
+			Pick<Convo, "id" | "ts">,
+			Partial<Omit<Convo, "id">>
+		>;
 	}
 }

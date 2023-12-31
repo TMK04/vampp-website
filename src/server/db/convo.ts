@@ -29,9 +29,9 @@ async function main() {
 		await db.schema.createTable("convo", (table) => {
 			table.specificType("id", "CHAR(21)").primary().notNullable(); // https://www.npmjs.com/package/nanoid#:~:text=from%C2%A036%C2%A0to-,21%C2%A0symbols,-.
 			table.integer("ts").unsigned().notNullable();
-			table.string("topic", 100).notNullable(); // https://boldcontentvideo.com/2018/01/24/optimise-youtube-title-description-tags/#:~:text=YouTube%20Video%20Title,for%20your%20title
-			table.text("pitch").notNullable();
-			table.text("summary").notNullable();
+			table.string("topic", 100); // https://boldcontentvideo.com/2018/01/24/optimise-youtube-title-description-tags/#:~:text=YouTube%20Video%20Title,for%20your%20title
+			table.text("pitch");
+			table.text("summary");
 			table.float("pe").unsigned();
 			table.float("clarity").unsigned();
 			table.float("bv").unsigned();
