@@ -5,9 +5,8 @@ import { spawnAndThrow } from "$server/child_process.js";
 import { logError } from "$server/console.js";
 import { convoExists, initConvo, selectFinishedConvos } from "$server/db/convo";
 import { json } from "@sveltejs/kit";
-import { createWriteStream, mkdirSync, rmSync } from "fs";
+import { createWriteStream, mkdirSync, unlinkSync } from "fs";
 import { nanoid } from "nanoid";
-import { WritableStream } from "stream/web";
 
 export async function GET() {
 	const convo_arr = await selectFinishedConvos();
@@ -27,23 +26,17 @@ async function mkIdDir(out_dir: string) {
 		throw error(500, "Failed to create directory for convo");
 	}
 }
-async function ytdlpVideo(ytid: string, out_path: string) {
+async function compressVideo(tmp_path: string, out_path: string) {
 	try {
-		const download_proc = await spawnAndThrow("yt-dlp", [
-			"-f",
-			"bv[height<=1080][fps<=60]+ba",
-			"--merge-output-format",
-			"mkv",
-			"-o",
-			"-",
-			"--",
-			ytid
-		]);
 		const compress_proc = await spawnAndThrow("ffmpeg", [
 			"-i",
-			"-",
+			tmp_path,
 			"-c:a",
-			"copy",
+			"pcm_s16le",
+			"-ac",
+			"1",
+			"-ar",
+			"16000",
 			"-c:v",
 			"libx265",
 			"-crf",
@@ -52,13 +45,34 @@ async function ytdlpVideo(ytid: string, out_path: string) {
 			"fps=1",
 			"-f",
 			"matroska",
+			"--",
 			out_path
 		]);
 
-		for await (const chunk of download_proc.stdout) {
-			compress_proc.stdin.write(chunk);
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-empty
+		for await (const _ of compress_proc.stdout) {
 		}
-		compress_proc.stdin.end();
+		unlinkSync(tmp_path);
+	} catch (e) {
+		logError(e);
+		throw error(500, "Failed to compress video");
+	}
+}
+async function ytdlpVideo(ytid: string, tmp_path: string) {
+	try {
+		const download_proc = await spawnAndThrow("yt-dlp", [
+			"-f",
+			"bv[height<=1080][fps<=60]+ba",
+			"--merge-output-format",
+			"mkv",
+			"-o",
+			tmp_path,
+			"--",
+			ytid
+		]);
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-empty
+		for await (const _ of download_proc.stdout) {
+		}
 	} catch (e) {
 		logError(e);
 		throw error(500, "Failed to download video");
@@ -87,10 +101,10 @@ async function ytdlpTitle(ytid: string) {
 	}
 }
 
-async function videoWrite(video: File, out_path: string) {
+async function videoWrite(video: File, tmp_path: string) {
 	try {
 		const read_stream = video.stream();
-		const write_stream = createWriteStream(out_path);
+		const write_stream = createWriteStream(tmp_path, { flags: "w" });
 		const writable_stream = new WritableStream({
 			write(chunk) {
 				write_stream.write(chunk);
@@ -103,11 +117,14 @@ async function videoWrite(video: File, out_path: string) {
 		throw error(500, "Failed to write video file");
 	}
 }
+const size_1gb = 1024 ** 3;
 /**
  * Setup this_form_data
  */
 async function setupTFD(client_form_data: FormData, this_form_data: FormData, id: string) {
-	const out_path = `${OUT_DIR}/${id}/og.mkv`;
+	const out_dir = `${OUT_DIR}/${id}`;
+	const tmp_path = `${out_dir}/tmp.mkv`;
+	const out_path = `${out_dir}/og.mkv`;
 
 	try {
 		const topic = client_form_data.get("topic") ?? "";
@@ -120,7 +137,7 @@ async function setupTFD(client_form_data: FormData, this_form_data: FormData, id
 			if (typeof ytid !== "string") throw error(400, "YT ID must be a string");
 			if (!REGEX_YTID.test(ytid)) throw error(400, `Invalid YT ID: Must match ${REGEX_YTID}`);
 
-			promise_arr.push(ytdlpVideo(ytid, out_path));
+			promise_arr.push(ytdlpVideo(ytid, tmp_path));
 			if (!topic) {
 				promise_arr.push(ytdlpTitle(ytid).then((title) => this_form_data.set("topic", title)));
 			}
@@ -128,16 +145,18 @@ async function setupTFD(client_form_data: FormData, this_form_data: FormData, id
 			const video = client_form_data.get("video") as File;
 			if (!(video instanceof File)) throw error(400, "Video must be a file");
 			// TODO: Check file type
+			if (video.size > size_1gb) throw error(400, "Video must be under 1GB");
 
-			promise_arr.push(videoWrite(video, out_path));
+			promise_arr.push(videoWrite(video, tmp_path));
 		} else throw error(400, "No YT ID or video file provided");
 
-		promise_arr.push(initConvo(id));
-
 		await Promise.all(promise_arr);
+		await compressVideo(tmp_path, out_path);
+
+		await initConvo(id);
 	} catch (e) {
 		logError(e);
-		rmSync(id, { recursive: true, force: true });
+		unlinkSync(id);
 		if (e instanceof Response) {
 			throw e;
 		}
