@@ -84,19 +84,12 @@ async function videoWrite(video: File, tmp_path: string) {
 		throw error(500, "Failed to write video file");
 	}
 }
-async function compressVideo(tmp_path: string, out_path: string) {
+async function splitAudioVideo(tmp_path: string, mkv_path: string, wav_path: string) {
 	try {
-		const compress_proc = await spawnAndThrow("ffmpeg", [
+		const splitav_proc = await spawnAndThrow("ffmpeg", [
 			"-i",
 			tmp_path,
-			"-c:a",
-			"pcm_s16le",
-			"-ac",
-			"1",
-			"-ar",
-			"16000",
-			"-b:a",
-			"128k",
+			"-an",
 			"-c:v",
 			"libx265",
 			"-crf",
@@ -105,37 +98,26 @@ async function compressVideo(tmp_path: string, out_path: string) {
 			"fps=1",
 			"-f",
 			"matroska",
-			"--",
-			out_path
-		]);
-
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-empty
-		for await (const _ of compress_proc.stdout) {
-		}
-		unlinkSync(tmp_path);
-	} catch (e) {
-		logError(e);
-		throw error(500, "Failed to compress video");
-	}
-}
-async function extractAudio(out_path: string, wav_path: string) {
-	try {
-		const extract_proc = await spawnAndThrow("ffmpeg", [
-			"-i",
-			out_path,
+			mkv_path,
 			"-vn",
 			"-c:a",
-			"copy",
-			"--",
+			"pcm_s16le",
+			"-ac",
+			"1",
+			"-ar",
+			"16000",
+			"-b:a",
+			"128k",
 			wav_path
 		]);
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-empty
-		for await (const _ of extract_proc.stdout) {
+		for await (const _ of splitav_proc.stdout) {
 		}
+		unlinkSync(tmp_path);
 	} catch (e) {
 		logError(e);
-		throw error(500, "Failed to extract audio");
+		throw error(500, "Failed to split audio and video");
 	}
 }
 
@@ -173,9 +155,9 @@ async function setupTFD(client_form_data: FormData, this_form_data: FormData, id
 
 		await Promise.all(promise_arr);
 
-		const out_path = `${out_dir}/og.mkv`;
-		await compressVideo(tmp_path, out_path);
-		await extractAudio(out_path, `${out_dir}/og.wav`);
+		const mkv_path = `${out_dir}/og.mkv`;
+		const wav_path = `${out_dir}/og.wav`;
+		await splitAudioVideo(tmp_path, mkv_path, wav_path);
 
 		await initConvo(id);
 	} catch (e) {
