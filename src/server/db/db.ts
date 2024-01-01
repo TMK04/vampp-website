@@ -5,7 +5,8 @@ const db = knex({
 	client: "better-sqlite3",
 	connection: {
 		filename: `${OUT_DIR}/db.sqlite`
-	}
+	},
+	useNullAsDefault: true
 });
 
 export default db;
