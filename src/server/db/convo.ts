@@ -24,11 +24,11 @@ export async function convoExists(id: string) {
 	return row !== undefined;
 }
 
-export function initConvo(id: string) {
-	return db("convo").insert({ id, ts: Date.now() });
+export function initConvo(convo: Pick<DbConvoType, "id" | "ts">) {
+	return db("convo").insert(convo);
 }
 
-export function delConvo(id: string) {
+export function delConvo(id: DbConvoType["id"]) {
 	return db("convo").where({ id }).del();
 }
 

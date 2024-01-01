@@ -61,16 +61,15 @@
 			return;
 		}
 
-		const db_convo = JSON.parse(body) as DbConvoType;
 		obj_id_convo_store.update((obj) => {
-			setConvo(obj, db_convo);
+			setConvo(obj, body);
 			return obj;
 		});
 
 		alert_linked_list_store.push({
 			type: "success",
 			title: "Success",
-			message: `Created Conversation: ${db_convo.topic}`
+			message: `Created Conversation: ${body.topic}`
 		});
 	}
 

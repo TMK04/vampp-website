@@ -1,4 +1,4 @@
-import { HOST, OUT_DIR } from "$env/static/private";
+import { API_ENDPOINT, OUT_DIR } from "$env/static/private";
 import { REGEX_YTID } from "$lib/shared/validate";
 import { FastApiError, error } from "$server/api";
 import { spawnAndThrow } from "$server/child_process.js";
@@ -125,8 +125,16 @@ const size_1gb = 1024 ** 3;
 /**
  * Setup this_form_data
  */
-async function setupTFD(client_form_data: FormData, this_form_data: FormData, id: string) {
+async function setupTFD(
+	client_form_data: FormData,
+	this_form_data: FormData,
+	id: string,
+	ts: number
+) {
 	try {
+		this_form_data.set("id", id);
+		this_form_data.set("ts", ts.toString());
+
 		const out_dir = `${OUT_DIR}/${id}`;
 		const tmp_path = `${out_dir}/tmp.mkv`;
 
@@ -159,7 +167,7 @@ async function setupTFD(client_form_data: FormData, this_form_data: FormData, id
 		const wav_path = `${out_dir}/og.wav`;
 		await splitAudioVideo(tmp_path, mkv_path, wav_path);
 
-		await initConvo(id);
+		await initConvo({ id, ts });
 	} catch (e) {
 		logError(e);
 		unlinkSync(id);
@@ -174,16 +182,15 @@ export async function POST({ request }) {
 	try {
 		const client_form_data = await request.formData();
 		const id = await mkIdDir(OUT_DIR);
-		await setupTFD(client_form_data, client_form_data, id);
-
+		const ts = Date.now();
 		const this_form_data = new FormData();
-		this_form_data.set("id", id);
+		await setupTFD(client_form_data, this_form_data, id, ts);
 
 		console.info(`POST ${id}`);
 		const controller = new AbortController();
 		// 5 minutes timeout
 		const timeout = setTimeout(() => controller.abort(), 5 * 60 * 1000);
-		const response = await fetch(HOST, {
+		const response = await fetch(API_ENDPOINT, {
 			method: "POST",
 			body: this_form_data,
 			signal: controller.signal
@@ -194,6 +201,8 @@ export async function POST({ request }) {
 			throw FastApiError(response);
 		}
 		const response_body = await response.json();
+		response_body.id = id;
+		response_body.ts = ts;
 		return json(JSON.stringify(response_body));
 	} catch (e) {
 		if (e instanceof Response) {
