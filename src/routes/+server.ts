@@ -1,54 +1,60 @@
 import { API_ENDPOINT, OUT_DIR } from "$env/static/private";
 import { REGEX_YTID } from "$lib/shared/validate";
 import { FastApiError, error } from "$server/api";
-import { spawnAndThrow } from "$server/child_process.js";
+import { awaitProc, spawnAndThrow } from "$server/child_process.js";
 import { logError } from "$server/console.js";
 import { convoExists, initConvo, selectFinishedConvos } from "$server/db/convo";
 import { json } from "@sveltejs/kit";
-import { createWriteStream, mkdirSync, unlinkSync } from "fs";
+import { createWriteStream, mkdirSync, unlink } from "fs";
 import { nanoid } from "nanoid";
+import internal from "stream";
 
 export async function GET() {
 	const convo_arr = await selectFinishedConvos();
 	return json(convo_arr);
 }
 
-async function mkIdDir(out_dir: string) {
+async function mkIdDir() {
 	try {
 		let id: string;
 		do {
 			id = nanoid();
 		} while (await convoExists(id));
-		mkdirSync(`${out_dir}/${id}`);
+		const out_dir = `${OUT_DIR}/${id}`;
+		mkdirSync(out_dir);
 		return id;
 	} catch (e) {
 		logError(e);
 		throw error(500, "Failed to create directory for convo");
 	}
 }
-async function ytdlpVideo(ytid: string, tmp_path: string) {
+
+/**
+ *
+ * @returns [video_url, audio_url]
+ */
+async function ytdlpUrls(ytid: string) {
 	try {
-		const download_proc = await spawnAndThrow("yt-dlp", [
+		const urls_proc = spawnAndThrow("yt-dlp", [
 			"-f",
-			"bv[height<=1080][fps<=60]+ba",
-			"--merge-output-format",
-			"mkv",
-			"-o",
-			tmp_path,
+			"bv[height<=720][fps<=60]+ba",
+			"-g",
 			"--",
 			ytid
 		]);
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-empty
-		for await (const _ of download_proc.stdout) {
+		let urls = "";
+		for await (const chunk of urls_proc.stdout) {
+			urls += chunk;
 		}
+		return urls.trim().split("\n") as [string, string];
 	} catch (e) {
 		logError(e);
-		throw error(500, "Failed to download video");
+		throw error(500, "Failed to download YT video");
 	}
 }
 async function ytdlpTitle(ytid: string) {
 	try {
-		const title_proc = await spawnAndThrow("yt-dlp", [
+		const title_proc = spawnAndThrow("yt-dlp", [
 			"--skip-download",
 			"--no-warning",
 			"--print",
@@ -60,45 +66,49 @@ async function ytdlpTitle(ytid: string) {
 		for await (const chunk of title_proc.stdout) {
 			title += chunk;
 		}
-		title = title.trim();
-		return title;
+		return title.trim();
 	} catch (e) {
 		logError(e);
-		// Empty title is fine since server can generate one
-		return "";
+		throw error(500, "Failed to get YT title");
 	}
 }
-async function videoWrite(video: File, tmp_path: string) {
+async function fileStream(file: File, tmp_path: string) {
 	try {
-		const read_stream = video.stream();
-		const write_stream = createWriteStream(tmp_path, { flags: "w" });
-		const writable_stream = new WritableStream({
-			write(chunk) {
-				write_stream.write(chunk);
-			}
+		const write_stream = createWriteStream(tmp_path);
+		const read_stream = internal.Readable.fromWeb(file.stream());
+		for await (const chunk of read_stream) {
+			write_stream.write(chunk);
+		}
+	} catch (e) {
+		logError(e);
+		throw error(500, "Failed to save tmp file");
+	}
+}
+async function saveFileStream(file: File, tmp_path: string, mkv_path: string, wav_path: string) {
+	try {
+		await fileStream(file, tmp_path);
+		await Promise.all([
+			awaitProc(saveAudio(wav_path, tmp_path)),
+			awaitProc(saveVideo(mkv_path, tmp_path))
+		]);
+		unlink(tmp_path, (err) => {
+			if (err) logError(err);
 		});
-		await read_stream.pipeTo(writable_stream);
-		write_stream.end();
 	} catch (e) {
 		logError(e);
-		throw error(500, "Failed to write video file");
+		throw error(500, "Failed to save video");
 	}
 }
-async function splitAudioVideo(tmp_path: string, mkv_path: string, wav_path: string) {
+/**
+ * Limit to 5 minutes
+ */
+const time_arg_arr = ["-t", "00:05:00"] as const;
+function saveAudio(wav_path: string, i = "-") {
 	try {
-		const splitav_proc = await spawnAndThrow("ffmpeg", [
+		const savea_proc = spawnAndThrow("ffmpeg", [
 			"-i",
-			tmp_path,
-			"-an",
-			"-c:v",
-			"libx265",
-			"-crf",
-			"28",
-			"-vf",
-			"fps=1",
-			"-f",
-			"matroska",
-			mkv_path,
+			i,
+			...time_arg_arr,
 			"-vn",
 			"-c:a",
 			"pcm_s16le",
@@ -110,14 +120,33 @@ async function splitAudioVideo(tmp_path: string, mkv_path: string, wav_path: str
 			"128k",
 			wav_path
 		]);
-
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-empty
-		for await (const _ of splitav_proc.stdout) {
-		}
-		unlinkSync(tmp_path);
+		return savea_proc;
 	} catch (e) {
 		logError(e);
-		throw error(500, "Failed to split audio and video");
+		throw error(500, "Failed to save audio");
+	}
+}
+function saveVideo(mkv_path: string, i = "-") {
+	try {
+		const savev_proc = spawnAndThrow("ffmpeg", [
+			"-i",
+			i,
+			...time_arg_arr,
+			"-an",
+			"-c:v",
+			"libx265",
+			"-crf",
+			"28",
+			"-vf",
+			"fps=1",
+			"-f",
+			"matroska",
+			mkv_path
+		]);
+		return savev_proc;
+	} catch (e) {
+		logError(e);
+		throw error(500, "Failed to save video");
 	}
 }
 
@@ -135,42 +164,41 @@ async function setupTFD(
 		this_form_data.set("id", id);
 		this_form_data.set("ts", ts.toString());
 
-		const out_dir = `${OUT_DIR}/${id}`;
-		const tmp_path = `${out_dir}/tmp.mkv`;
-
 		const topic = client_form_data.get("topic") ?? "";
 		if (typeof topic !== "string") throw error(400, "Topic must be a string");
 		this_form_data.set("topic", topic);
+
+		const out_dir = `${OUT_DIR}/${id}`;
+		const mkv_path = `${out_dir}/og.mkv`;
+		const wav_path = `${out_dir}/og.wav`;
 
 		const promise_arr = [];
 		if (client_form_data.has("ytid")) {
 			const ytid = client_form_data.get("ytid");
 			if (typeof ytid !== "string") throw error(400, "YT ID must be a string");
 			if (!REGEX_YTID.test(ytid)) throw error(400, `Invalid YT ID: Must match ${REGEX_YTID}`);
-
-			promise_arr.push(ytdlpVideo(ytid, tmp_path));
 			if (!topic) {
 				promise_arr.push(ytdlpTitle(ytid).then((title) => this_form_data.set("topic", title)));
 			}
+
+			const [video_url, audio_url] = await ytdlpUrls(ytid);
+			promise_arr.push(awaitProc(saveVideo(mkv_path, video_url)));
+			promise_arr.push(awaitProc(saveAudio(wav_path, audio_url)));
 		} else if (client_form_data.has("video")) {
 			const video = client_form_data.get("video") as File;
 			if (!(video instanceof File)) throw error(400, "Video must be a file");
 			// TODO: Check file type
 			if (video.size > size_1gb) throw error(400, "Video must be under 1GB");
 
-			promise_arr.push(videoWrite(video, tmp_path));
+			const tmp_path = `${out_dir}/tmp.mkv`;
+			promise_arr.push(saveFileStream(video, tmp_path, mkv_path, wav_path));
 		} else throw error(400, "No YT ID or video file provided");
 
 		await Promise.all(promise_arr);
 
-		const mkv_path = `${out_dir}/og.mkv`;
-		const wav_path = `${out_dir}/og.wav`;
-		await splitAudioVideo(tmp_path, mkv_path, wav_path);
-
 		await initConvo({ id, ts });
 	} catch (e) {
 		logError(e);
-		unlinkSync(id);
 		if (e instanceof Response) {
 			throw e;
 		}
@@ -179,14 +207,14 @@ async function setupTFD(
 }
 
 export async function POST({ request }) {
+	const id = await mkIdDir();
+	console.info(`POST ${id}`);
 	try {
 		const client_form_data = await request.formData();
-		const id = await mkIdDir(OUT_DIR);
 		const ts = Date.now();
 		const this_form_data = new FormData();
 		await setupTFD(client_form_data, this_form_data, id, ts);
 
-		console.info(`POST ${id}`);
 		const controller = new AbortController();
 		// 5 minutes timeout
 		const timeout = setTimeout(() => controller.abort(), 5 * 60 * 1000);

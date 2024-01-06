@@ -1,16 +1,22 @@
-import { spawn } from "child_process";
+import { spawn, type ChildProcessWithoutNullStreams } from "child_process";
+import { logError } from "./console";
 
-export async function spawnAndThrow(child_name: string, args: string[]) {
+export function spawnAndThrow(child_name: string, args: string[]) {
 	const child = spawn(child_name, args);
 	let err = "";
-	for await (const chunk of child.stderr) {
-		err += chunk;
-	}
-	const exit_code = await new Promise<number>((resolve) => {
-		child.on("exit", resolve);
+	child.on("error", (e) => {
+		err += e.message;
 	});
-	if (exit_code) {
-		throw new Error(`${child_name} exited with code ${child.exitCode}\n${err}`);
-	}
+	child.on("exit", (code) => {
+		if (code) {
+			logError(`${child_name} exited with code ${code}: ${err}`);
+		}
+	});
 	return child;
+}
+
+export async function awaitProc(proc: ChildProcessWithoutNullStreams) {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-empty
+	for await (const _ of proc.stdout) {
+	}
 }

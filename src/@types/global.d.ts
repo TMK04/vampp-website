@@ -1,3 +1,5 @@
+import type * as streamWeb from "node:stream/web";
+
 export {};
 
 declare global {
@@ -65,4 +67,8 @@ declare global {
 	type DbConvoType = {
 		id: string;
 	} & ConvoType;
+
+	interface Blob {
+		stream(): streamWeb.ReadableStream<Uint8Array>;
+	}
 }
