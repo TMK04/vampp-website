@@ -72,24 +72,16 @@ async function ytdlpTitle(ytid: string) {
 		throw error(500, "Failed to get YT title");
 	}
 }
-async function fileStream(file: File, tmp_path: string) {
+async function saveFileStream(file: File, tmp_path: string, mp4_path: string, wav_path: string) {
 	try {
 		const write_stream = createWriteStream(tmp_path);
 		const read_stream = internal.Readable.fromWeb(file.stream());
 		for await (const chunk of read_stream) {
 			write_stream.write(chunk);
 		}
-	} catch (e) {
-		logError(e);
-		throw error(500, "Failed to save tmp file");
-	}
-}
-async function saveFileStream(file: File, tmp_path: string, mkv_path: string, wav_path: string) {
-	try {
-		await fileStream(file, tmp_path);
 		await Promise.all([
 			awaitProc(saveAudio(wav_path, tmp_path)),
-			awaitProc(saveVideo(mkv_path, tmp_path))
+			awaitProc(saveVideo(mp4_path, tmp_path))
 		]);
 		unlink(tmp_path, (err) => {
 			if (err) logError(err);
@@ -126,7 +118,7 @@ function saveAudio(wav_path: string, i = "-") {
 		throw error(500, "Failed to save audio");
 	}
 }
-function saveVideo(mkv_path: string, i = "-") {
+function saveVideo(mp4_path: string, i = "-") {
 	try {
 		const savev_proc = spawnAndThrow("ffmpeg", [
 			"-i",
@@ -141,7 +133,7 @@ function saveVideo(mkv_path: string, i = "-") {
 			"fps=1",
 			"-f",
 			"matroska",
-			mkv_path
+			mp4_path
 		]);
 		return savev_proc;
 	} catch (e) {
@@ -169,7 +161,7 @@ async function setupTFD(
 		this_form_data.set("topic", topic);
 
 		const out_dir = `${OUT_DIR}/${id}`;
-		const mkv_path = `${out_dir}/og.mkv`;
+		const mp4_path = `${out_dir}/og.mp4`;
 		const wav_path = `${out_dir}/og.wav`;
 
 		const promise_arr = [];
@@ -182,7 +174,7 @@ async function setupTFD(
 			}
 
 			const [video_url, audio_url] = await ytdlpUrls(ytid);
-			promise_arr.push(awaitProc(saveVideo(mkv_path, video_url)));
+			promise_arr.push(awaitProc(saveVideo(mp4_path, video_url)));
 			promise_arr.push(awaitProc(saveAudio(wav_path, audio_url)));
 		} else if (client_form_data.has("video")) {
 			const video = client_form_data.get("video") as File;
@@ -190,8 +182,8 @@ async function setupTFD(
 			// TODO: Check file type
 			if (video.size > size_1gb) throw error(400, "Video must be under 1GB");
 
-			const tmp_path = `${out_dir}/tmp.mkv`;
-			promise_arr.push(saveFileStream(video, tmp_path, mkv_path, wav_path));
+			const tmp_path = `${out_dir}/tmp.mp4`;
+			promise_arr.push(saveFileStream(video, tmp_path, mp4_path, wav_path));
 		} else throw error(400, "No YT ID or video file provided");
 
 		await Promise.all(promise_arr);
