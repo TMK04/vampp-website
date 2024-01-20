@@ -60,6 +60,7 @@ declare global {
 		SpeechScoreType &
 		BeholderScoreType &
 		BeholderScoreJustificationType;
+	type ConvoKey = keyof ConvoType;
 
 	type ObjIdConvo = Record<string, ConvoType>;
 	type Id = string | null;

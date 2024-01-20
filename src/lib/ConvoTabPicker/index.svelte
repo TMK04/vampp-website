@@ -5,7 +5,6 @@
 	import CloseBtn from "./CloseBtn.svelte";
 	import OpenBtn from "./OpenBtn.svelte";
 	import { onDestroy, onMount } from "svelte";
-	import { setConvo } from "$lib/helpers";
 
 	let sidebar_hidden = false;
 
@@ -21,12 +20,12 @@
 	onMount(async () => {
 		const response = await fetch("/");
 		const body = await response.json();
-		console.log(body);
+		console.info("GET /", body);
 		if (body.type === "error") return console.error(body);
 
 		const obj_id_convo: ObjIdConvo = {};
-		for (const convo of body) {
-			setConvo(obj_id_convo, convo);
+		for (const { id, ...convo } of body) {
+			obj_id_convo[id] = convo;
 		}
 
 		obj_id_convo_store.set(obj_id_convo);

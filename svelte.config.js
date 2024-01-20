@@ -20,7 +20,7 @@ const config = {
 
 if (!process.argv.includes("dev")) {
 	const base = process.env.BASE_PATH;
-	console.log("BASE_PATH", base);
+	console.info("BASE_PATH", base);
 	config.paths = {
 		base
 	};

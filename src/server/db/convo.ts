@@ -1,4 +1,18 @@
+import { nanoid } from "nanoid";
 import db from "./db";
+
+const ConvoId_max_tries = 10;
+export async function ConvoId() {
+	let id = nanoid();
+	let convo_exists = await convoExists(id);
+	let remaining_tries = ConvoId_max_tries;
+	while (convo_exists && remaining_tries--) {
+		console.info(`id ${id} already exists`);
+		id = nanoid();
+		convo_exists = await convoExists(id);
+	}
+	return id;
+}
 
 const finished_attr_arr = [
 	"ts",
@@ -24,7 +38,7 @@ export async function convoExists(id: string) {
 	return row !== undefined;
 }
 
-export function initConvo(convo: Pick<DbConvoType, "id" | "ts">) {
+export function insertConvo(convo: DbConvoType) {
 	return db("convo").insert(convo);
 }
 

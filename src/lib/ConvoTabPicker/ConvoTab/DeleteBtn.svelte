@@ -9,7 +9,7 @@
 
 	async function handleClick() {
 		if (active) {
-			console.log("Active on delete:", id);
+			console.info("Active on delete:", id);
 			id_store.set(null);
 		}
 		const response = await fetch(`/${id}`, { method: "DELETE" });

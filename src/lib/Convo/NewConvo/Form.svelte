@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { PUBLIC_STREAM_DELIMITER } from "$env/static/public";
 	import Container from "$lib/Container.svelte";
 	import GradientBtn from "$lib/GradientBtn.svelte";
 	import InputsContainer from "$lib/InputsContainer.svelte";
@@ -6,9 +7,9 @@
 	import TopicInput from "$lib/TopicInput.svelte";
 	import VideoInput from "$lib/VideoInput.svelte";
 	import YtIdsInput from "$lib/YtIdsInput.svelte";
-	import { setConvo } from "$lib/helpers";
 	import { InvalidYtIdsMessage, castYtIdsStr } from "$lib/shared/validate";
 	import { alert_linked_list_store, obj_id_convo_store } from "$lib/stores";
+	import { logError } from "$server/console";
 
 	let topic: string;
 	let video: File | undefined;
@@ -52,25 +53,62 @@
 			method: "POST",
 			body: formData
 		});
-		console.log(response);
-		let body = await response.json();
-		if (typeof body === "string") body = JSON.parse(body);
 
-		if ("type" in body && body.type === "error") {
-			alert_linked_list_store.push(body);
+		if (!response.ok) {
+			alert_linked_list_store.push({
+				type: "error",
+				title: response.status.toString(),
+				message: response.statusText
+			});
 			return;
 		}
 
-		obj_id_convo_store.update((obj) => {
-			setConvo(obj, body);
-			return obj;
-		});
+		if (!response.body) {
+			alert_linked_list_store.push({
+				type: "error",
+				title: "500",
+				message: "Server did not respond" // (did not respond with a body)
+			});
+			return;
+		}
 
-		alert_linked_list_store.push({
-			type: "success",
-			title: "Success",
-			message: `Created Conversation: ${body.topic}`
+		let id: string;
+		/**
+		 * Convo while id has not been received
+		 */
+		const generating_convo = { topic } as any;
+		const writable_stream = new WritableStream({
+			write(chunk: string) {
+				for (const json_str of chunk.split(PUBLIC_STREAM_DELIMITER).slice(1)) {
+					console.info("json_str", json_str);
+					JSON.parse(json_str, function (k, v) {
+						if (id) {
+							obj_id_convo_store.update((obj_id_convo) => {
+								(obj_id_convo[id] as any)[k] = v;
+								return obj_id_convo;
+							});
+						} else if (k === "id") {
+							id = v;
+							obj_id_convo_store.update((obj_id_convo) => {
+								obj_id_convo[id] = generating_convo;
+								return obj_id_convo;
+							});
+						} else {
+							generating_convo[k] = v;
+						}
+					});
+				}
+			},
+
+			close() {
+				alert_linked_list_store.push({
+					type: "success",
+					title: "Success",
+					message: `Created Conversation`
+				});
+			}
 		});
+		await response.body.pipeThrough(new TextDecoderStream()).pipeTo(writable_stream);
 	}
 
 	async function handleSubmit(event: Event) {
@@ -81,7 +119,7 @@
 			for (const ytid of ytid_arr) {
 				const formData = new FormData();
 				formData.append("ytid", ytid);
-				await post(formData).catch(console.error);
+				await post(formData).catch(logError);
 			}
 			return;
 		}
