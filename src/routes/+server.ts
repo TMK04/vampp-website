@@ -5,7 +5,7 @@ import { error } from "$server/api";
 import { awaitProc } from "$server/child_process";
 import { logError } from "$server/console";
 import { ConvoId, selectFinishedConvos } from "$server/db/convo";
-import { predictAudio, predictVideo } from "$server/gradio/predict";
+import { predictAudio, predictScores, predictVideo } from "$server/gradio/predict";
 import { saveAudio, saveTmp, saveVideo } from "$server/local/save";
 import { ytdlpTitle, ytdlpUrls } from "$server/local/ytdlp";
 import { ReadableStreamFromReadable } from "$server/stream";
@@ -79,6 +79,18 @@ export async function POST({ request }) {
 	const subscores_stream = merge2(await Promise.all(substream_promises), {
 		end: false,
 		objectMode: true
+	});
+	subscores_stream.prependOnceListener("queueDrain", async function () {
+		try {
+			subscores_stream.add(await predictScores(id));
+		} catch (e) {
+			subscores_stream.end();
+			logError(e);
+		}
+	});
+	subscores_stream.prependOnceListener("queueDrain", function () {
+		console.info(`POST ${id} done`);
+		subscores_stream.end();
 	});
 
 	return new Response(ReadableStreamFromReadable(subscores_stream), {

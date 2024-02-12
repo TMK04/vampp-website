@@ -13,6 +13,6 @@ export async function predictAudio(id: string, wav_path: string, topic: string) 
 	return submit("/predictAudio", [id, { name: wav_path, data: base64, is_file: false }, topic]);
 }
 
-export async function predictScores(subscores: any) {
-	return submit("/predictScores", [subscores]);
+export async function predictScores(id: string) {
+	return submit("/predictScores", [id]);
 }
