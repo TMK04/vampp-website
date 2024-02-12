@@ -2,7 +2,7 @@ import { PUBLIC_STREAM_DELIMITER } from "$env/static/public";
 import { Readable } from "stream";
 import gradio from "./gradio";
 
-export async function submit(...args: Parameters<typeof gradio.submit>) {
+export function submit(...args: Parameters<typeof gradio.submit>) {
 	const result = gradio.submit(...args);
 	const stream = new Readable({ objectMode: true, read() {} });
 
@@ -28,4 +28,11 @@ export async function submit(...args: Parameters<typeof gradio.submit>) {
 	});
 
 	return stream;
+}
+
+export async function predict<T extends Array<any>>(...args: Parameters<typeof gradio.predict>) {
+	const result = (await gradio.predict(...args)) as { data: T };
+	const data = result.data;
+	console.info("data", data);
+	return data;
 }

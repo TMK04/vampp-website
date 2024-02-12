@@ -1,5 +1,5 @@
 import { readFile } from "fs/promises";
-import { submit } from "./utils";
+import { predict, submit } from "./utils";
 
 export async function predictVideo(id: string, mp4_path: string) {
 	const buffer = await readFile(mp4_path);
@@ -13,6 +13,6 @@ export async function predictAudio(id: string, wav_path: string, topic: string) 
 	return submit("/predictAudio", [id, { name: wav_path, data: base64, is_file: false }, topic]);
 }
 
-export async function predictScores(id: string) {
-	return submit("/predictScores", [id]);
+export function predictScores(id: string) {
+	return predict<[Record<string, number>]>("/predictScores", [id]);
 }

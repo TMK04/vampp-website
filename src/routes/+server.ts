@@ -1,4 +1,5 @@
 import { OUT_DIR } from "$env/static/private";
+import { PUBLIC_STREAM_DELIMITER } from "$env/static/public";
 import { SIZE_1GB } from "$lib/shared/constants";
 import { REGEX_YTID } from "$lib/shared/validate";
 import { error } from "$server/api";
@@ -82,15 +83,16 @@ export async function POST({ request }) {
 	});
 	subscores_stream.prependOnceListener("queueDrain", async function () {
 		try {
-			subscores_stream.add(await predictScores(id));
+			const [scores] = await predictScores(id);
+			for (const k in scores) {
+				subscores_stream.push(PUBLIC_STREAM_DELIMITER + JSON.stringify({ k: scores[k] }));
+			}
+			console.info(`POST ${id} done`);
 		} catch (e) {
-			subscores_stream.end();
 			logError(e);
+		} finally {
+			subscores_stream.end();
 		}
-	});
-	subscores_stream.prependOnceListener("queueDrain", function () {
-		console.info(`POST ${id} done`);
-		subscores_stream.end();
 	});
 
 	return new Response(ReadableStreamFromReadable(subscores_stream), {
