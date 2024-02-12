@@ -8,7 +8,7 @@
 	import VideoInput from "$lib/VideoInput.svelte";
 	import YtIdsInput from "$lib/YtIdsInput.svelte";
 	import { InvalidYtIdsMessage, castYtIdsStr } from "$lib/shared/validate";
-	import { alert_linked_list_store, obj_id_convo_store } from "$lib/stores";
+	import { alert_linked_list_store, id_store, obj_id_convo_store } from "$lib/stores";
 	import { logError } from "$server/console";
 
 	let pitch_topic: string;
@@ -93,6 +93,7 @@
 								obj_id_convo[id] = generating_convo;
 								return obj_id_convo;
 							});
+							id_store.set(id);
 						} else {
 							generating_convo[k] = v;
 						}

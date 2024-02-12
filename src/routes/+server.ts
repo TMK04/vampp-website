@@ -14,7 +14,7 @@ import { json } from "@sveltejs/kit";
 import { mkdirSync } from "fs";
 import merge2 from "merge2";
 import { join } from "path";
-import { Transform, type Readable } from "stream";
+import { Readable, Transform } from "stream";
 
 export async function GET() {
 	const convo_arr = await selectFinishedConvos();
@@ -47,7 +47,9 @@ export async function POST({ request }) {
 	const mp4_path = join(out_dir, "og.mp4");
 	const wav_path = join(out_dir, "og.wav");
 
-	const substream_promises = Array<Promise<Readable>>();
+	const substream_promises: Promise<Readable>[] = [
+		Promise.resolve(Readable.from([`{"id":"${id}"}`]))
+	];
 	if (client_form_data.has("ytid")) {
 		const ytid = client_form_data.get("ytid");
 		if (typeof ytid !== "string") return error(400, "YT ID must be a string");
@@ -90,7 +92,6 @@ export async function POST({ request }) {
 	});
 	convo_stream.prependOnceListener("close", async function () {
 		console.info("insertConvo", convo);
-		convo.ts = Date.now();
 		try {
 			await insertConvo(convo);
 			console.info(`POST ${id} done`);
@@ -107,6 +108,7 @@ export async function POST({ request }) {
 		try {
 			const [scores] = await predictScores(id);
 			subscores_stream.push(scores);
+			subscores_stream.push(`{"ts":${Date.now()}}`);
 		} catch (e) {
 			logError(e);
 		} finally {
