@@ -47,8 +47,10 @@ export async function POST({ request }) {
 	const mp4_path = join(out_dir, "og.mp4");
 	const wav_path = join(out_dir, "og.wav");
 
+	const convo = { id } as any;
+	if (pitch_topic) convo.pitch_topic = pitch_topic;
 	const substream_promises: Promise<Readable>[] = [
-		Promise.resolve(Readable.from([`{"id":"${id}"}`]))
+		Promise.resolve(Readable.from([JSON.stringify(convo)]))
 	];
 	if (client_form_data.has("ytid")) {
 		const ytid = client_form_data.get("ytid");
@@ -58,11 +60,11 @@ export async function POST({ request }) {
 		const [video_url, audio_url] = await ytdlpUrls(ytid);
 		substream_promises.push(saveAndPredictVideo(id, mp4_path, video_url));
 		if (pitch_topic) {
-			substream_promises.push(saveAndPredictAudio(id, wav_path, audio_url, pitch_topic));
+			substream_promises.push(saveAndPredictAudio(id, wav_path, audio_url, pitch_topic, ""));
 		} else {
 			substream_promises.push(
-				ytdlpTitle(ytid).then(function (title) {
-					return saveAndPredictAudio(id, wav_path, audio_url, title);
+				ytdlpTitle(ytid).then(function (yt_title) {
+					return saveAndPredictAudio(id, wav_path, audio_url, "", yt_title);
 				})
 			);
 		}
@@ -76,10 +78,9 @@ export async function POST({ request }) {
 		// const saveTmp_done =
 		await saveTmp(video, tmp_path);
 		substream_promises.push(saveAndPredictVideo(id, mp4_path, tmp_path));
-		substream_promises.push(saveAndPredictAudio(id, wav_path, tmp_path, pitch_topic));
+		substream_promises.push(saveAndPredictAudio(id, wav_path, tmp_path, pitch_topic, ""));
 	} else return error(400, "No YT ID or video file provided");
 
-	const convo: DbConvoType = { id } as any;
 	const convo_stream = new Transform({
 		objectMode: true,
 		transform(chunk, encoding, callback) {
@@ -130,8 +131,14 @@ async function saveAndPredictVideo(id: string, mp4_path: string, i: string) {
 	return subscores_gen;
 }
 
-async function saveAndPredictAudio(id: string, wav_path: string, i: string, pitch_topic: string) {
+async function saveAndPredictAudio(
+	id: string,
+	wav_path: string,
+	i: string,
+	pitch_topic: string,
+	yt_title: string
+) {
 	await awaitProc(saveAudio(wav_path, i));
-	const subscores_gen = await predictAudio(id, wav_path, pitch_topic);
+	const subscores_gen = await predictAudio(id, wav_path, pitch_topic, yt_title);
 	return subscores_gen;
 }
