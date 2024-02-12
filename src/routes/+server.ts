@@ -12,6 +12,7 @@ import { ReadableStreamFromReadable } from "$server/stream";
 import { json } from "@sveltejs/kit";
 import { mkdirSync } from "fs";
 import merge2 from "merge2";
+import { join } from "path";
 import type { Readable } from "stream";
 
 export async function GET() {
@@ -42,8 +43,8 @@ export async function POST({ request }) {
 	const topic = client_form_data.get("topic") ?? "";
 	if (typeof topic !== "string") return error(400, "Topic must be a string");
 
-	const mp4_path = `${out_dir}/og.mp4`;
-	const wav_path = `${out_dir}/og.wav`;
+	const mp4_path = join(out_dir, "og.mp4");
+	const wav_path = join(out_dir, "og.wav");
 
 	const substream_promises = Array<Promise<Readable>>();
 	if (client_form_data.has("ytid")) {
