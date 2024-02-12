@@ -12,9 +12,14 @@ export function submit(...args: Parameters<typeof gradio.submit>) {
 	result.on("log", (ev) => {
 		console.info("log", ev.log);
 	});
+	let prev_stage = "";
 	result.on("status", (ev) => {
-		console.info("status", ev.stage);
-		switch (ev.stage) {
+		const stage = ev.stage;
+		if (prev_stage !== stage) {
+			console.info("status", stage);
+			prev_stage = stage;
+		}
+		switch (stage) {
 			case "error":
 				console.error("error", "Gradio error");
 			// eslint-disable-next-line no-fallthrough
