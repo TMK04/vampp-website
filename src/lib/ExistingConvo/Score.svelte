@@ -1,4 +1,5 @@
 <script lang="ts">
+	export let _slot: any = "";
 	export let label: string;
 	export let score: number | boolean;
 	export let format: "1-10 float" | "1-10 int" | "pct" = "1-10 float";
@@ -28,11 +29,15 @@
 <section
 	class="grow rounded-sm border border-border p-4 md:max-w-[70vw] lg:max-w-[55vw] {className}"
 >
-	<header class="mb-1 basis-full text-center font-bold">
+	<header class="mb-1 basis-full text-center font-bold {formatted_score ? '' : 'animate-pulse'}">
 		<h1>{label}</h1>
-		<p class="text-lg">{formatted_score}</p>
+		<p class="text-lg">{formatted_score || ""}</p>
 	</header>
 	{#if $$slots.default}
 		<p class="flex flex-wrap"><slot /></p>
+	{:else if _slot}
+		<p class="flex flex-wrap">{_slot}</p>
+	{:else}
+		<p class="flex flex-wrap" />
 	{/if}
 </section>

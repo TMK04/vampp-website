@@ -7,45 +7,80 @@
 	import Summary from "./Summary.svelte";
 
 	export let convo: ConvoType;
+	$: ({
+		pitch_topic,
+		pitch_content,
+		pitch_summary,
+		pe,
+		moving,
+		smiling,
+		upright,
+		ec,
+		pa,
+		speech_enthusiasm,
+		clarity,
+		speech_clarity,
+		pitch_Clarity,
+		pitch_Clarity_justification,
+		bv,
+		pitch_Creativity,
+		pitch_Creativity_justification,
+		pitch_Feasibility,
+		pitch_Feasibility_justification,
+		pitch_Impact,
+		pitch_Impact_justification
+	} = convo);
 </script>
 
 <div>
 	<Message role="User">
 		<InputsContainer>
-			<TopicInput pitch_topic={convo.pitch_topic} />
-			<PitchInput pitch_content={convo.pitch_content} />
+			<TopicInput {pitch_topic} />
+			<PitchInput {pitch_content} />
 		</InputsContainer>
 	</Message>
 
 	<Message role="Beholder">
 		<article class="flex flex-wrap gap-2">
 			<InputsContainer class="basis-full">
-				<Summary>{convo.pitch_summary}</Summary>
+				<Summary {pitch_summary} />
 			</InputsContainer>
-			<Score class="basis-[300px]" label="Professionalism & Enthusiasm" score={convo.pe}>
-				<Score label="Moving" score={convo.moving} format="pct" />
-				<Score label="Smiling" score={convo.smiling} format="pct" />
-				<Score label="Upright" score={convo.upright} format="pct" />
-				<Score label="Eye Contact" score={convo.ec} format="pct" />
-				<Score label="Professional Attire" score={convo.pa} format="pct" />
-				<Score label="Speech Enthusiasm" score={convo.speech_enthusiasm} format="pct" />
+			<Score class="basis-[300px]" label="Professionalism & Enthusiasm" score={pe}>
+				<Score label="Moving" score={moving} format="pct" />
+				<Score label="Smiling" score={smiling} format="pct" />
+				<Score label="Upright" score={upright} format="pct" />
+				<Score label="Eye Contact" score={ec} format="pct" />
+				<Score label="Professional Attire" score={pa} format="pct" />
+				<Score label="Speech Enthusiasm" score={speech_enthusiasm} format="pct" />
 			</Score>
-			<Score class="basis-[300px]" label="Clarity" score={convo.clarity}>
-				<Score label="Speech Clarity" score={convo.speech_clarity} format="pct" />
-				<Score label="Content Clarity" score={convo.pitch_Clarity} format="1-10 int">
-					{convo.pitch_Clarity_justification}
-				</Score>
+			<Score class="basis-[300px]" label="Clarity" score={clarity}>
+				<Score label="Speech Clarity" score={speech_clarity} format="pct" />
+				<Score
+					label="Content Clarity"
+					score={pitch_Clarity}
+					format="1-10 int"
+					_slot={pitch_Clarity_justification}
+				/>
 			</Score>
-			<Score class="basis-full" label="Business Value" score={convo.bv}>
-				<Score label="Creativity" score={convo.pitch_Creativity} format="1-10 int">
-					{convo.pitch_Creativity_justification}
-				</Score>
-				<Score label="Feasibility" score={convo.pitch_Feasibility} format="1-10 int">
-					{convo.pitch_Feasibility_justification}
-				</Score>
-				<Score label="Impact" score={convo.pitch_Impact} format="1-10 int">
-					{convo.pitch_Impact_justification}
-				</Score>
+			<Score class="basis-full" label="Business Value" score={bv}>
+				<Score
+					label="Creativity"
+					score={pitch_Creativity}
+					format="1-10 int"
+					_slot={pitch_Creativity_justification}
+				/>
+				<Score
+					label="Feasibility"
+					score={pitch_Feasibility}
+					format="1-10 int"
+					_slot={pitch_Feasibility_justification}
+				/>
+				<Score
+					label="Impact"
+					score={pitch_Impact}
+					format="1-10 int"
+					_slot={pitch_Impact_justification}
+				/>
 			</Score>
 		</article>
 	</Message>
