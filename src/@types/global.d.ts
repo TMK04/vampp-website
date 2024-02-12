@@ -38,28 +38,28 @@ declare global {
 		speech_clarity: number;
 		speech_enthusiasm: number;
 	};
-	type BeholderScoreType = {
-		beholder_creativity: number;
-		beholder_feasibility: number;
-		beholder_impact: number;
-		beholder_clarity: number;
+	type PitchScoreType = {
+		pitch_Creativity: number;
+		pitch_Feasibility: number;
+		pitch_Impact: number;
+		pitch_Clarity: number;
 	};
-	type BeholderScoreJustificationType = {
-		[key in keyof BeholderScoreType as `${key}_justification`]: string;
+	type PitchScoreJustificationType = {
+		[key in keyof PitchScoreType as `${key}_justification`]: string;
 	};
 	type ConvoType = {
 		/**
 		 * Timestamp
 		 */
 		ts: number;
-		topic: string;
-		pitch: string;
-		summary: string;
+		pitch_topic: string;
+		pitch_content: string;
+		pitch_summary: string;
 	} & ScoreType &
 		CvScoreType &
 		SpeechScoreType &
-		BeholderScoreType &
-		BeholderScoreJustificationType;
+		PitchScoreType &
+		PitchScoreJustificationType;
 	type ConvoKey = keyof ConvoType;
 
 	type ObjIdConvo = Record<string, ConvoType>;

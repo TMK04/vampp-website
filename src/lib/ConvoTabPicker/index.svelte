@@ -47,9 +47,9 @@
 		<NewConvoTab active={picked_id === null} />
 		<CloseBtn bind:sidebar_hidden />
 	</div>
-	{#each Object.entries(obj_id_convo).sort((a, b) => b[1].ts - a[1].ts) as [id, { topic }]}
-		<ConvoTab active={picked_id === id} {id} {topic}>
-			{topic}
+	{#each Object.entries(obj_id_convo).sort((a, b) => b[1].ts - a[1].ts) as [id, { pitch_topic }]}
+		<ConvoTab active={picked_id === id} {id} {pitch_topic}>
+			{pitch_topic}
 		</ConvoTab>
 	{/each}
 </nav>

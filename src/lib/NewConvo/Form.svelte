@@ -11,7 +11,7 @@
 	import { alert_linked_list_store, obj_id_convo_store } from "$lib/stores";
 	import { logError } from "$server/console";
 
-	let topic: string;
+	let pitch_topic: string;
 	let video: File | undefined;
 	$: ytids_required = typeof video === "undefined";
 	let ytids_str: string = "";
@@ -42,12 +42,12 @@
 	function handleReset(event: Event) {
 		event.preventDefault();
 		video = undefined;
-		topic = "";
+		pitch_topic = "";
 		ytids_str = "";
 	}
 
 	async function post(formData: FormData) {
-		formData.append("topic", topic);
+		formData.append("pitch_topic", pitch_topic);
 
 		const response = await fetch("/", {
 			method: "POST",
@@ -76,7 +76,7 @@
 		/**
 		 * Convo while id has not been received
 		 */
-		const generating_convo = { topic } as any;
+		const generating_convo = { pitch_topic } as any;
 		const writable_stream = new WritableStream({
 			write(chunk: string) {
 				for (const json_str of chunk.split(PUBLIC_STREAM_DELIMITER).slice(1)) {
@@ -147,7 +147,7 @@
 	</Container>
 	<Container>
 		<InputsContainer>
-			<TopicInput bind:topic />
+			<TopicInput bind:pitch_topic />
 		</InputsContainer>
 	</Container>
 	<fieldset class="mt-3 flex flex-row flex-wrap justify-center gap-2">

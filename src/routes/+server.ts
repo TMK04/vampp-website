@@ -5,7 +5,7 @@ import { REGEX_YTID } from "$lib/shared/validate";
 import { error } from "$server/api";
 import { awaitProc } from "$server/child_process";
 import { logError } from "$server/console";
-import { ConvoId, selectFinishedConvos } from "$server/db/convo";
+import { ConvoId, insertConvo, selectFinishedConvos } from "$server/db/convo";
 import { predictAudio, predictScores, predictVideo } from "$server/gradio/predict";
 import { saveAudio, saveTmp, saveVideo } from "$server/local/save";
 import { ytdlpTitle, ytdlpUrls } from "$server/local/ytdlp";
@@ -14,7 +14,7 @@ import { json } from "@sveltejs/kit";
 import { mkdirSync } from "fs";
 import merge2 from "merge2";
 import { join } from "path";
-import type { Readable } from "stream";
+import { Transform, type Readable } from "stream";
 
 export async function GET() {
 	const convo_arr = await selectFinishedConvos();
@@ -41,8 +41,8 @@ export async function POST({ request }) {
 		return error(500, "Failed to parse form data");
 	}
 
-	const topic = client_form_data.get("topic") ?? "";
-	if (typeof topic !== "string") return error(400, "Topic must be a string");
+	const pitch_topic = client_form_data.get("pitch_topic") ?? "";
+	if (typeof pitch_topic !== "string") return error(400, "Topic must be a string");
 
 	const mp4_path = join(out_dir, "og.mp4");
 	const wav_path = join(out_dir, "og.wav");
@@ -55,8 +55,8 @@ export async function POST({ request }) {
 
 		const [video_url, audio_url] = await ytdlpUrls(ytid);
 		substream_promises.push(saveAndPredictVideo(id, mp4_path, video_url));
-		if (topic) {
-			substream_promises.push(saveAndPredictAudio(id, wav_path, audio_url, topic));
+		if (pitch_topic) {
+			substream_promises.push(saveAndPredictAudio(id, wav_path, audio_url, pitch_topic));
 		} else {
 			substream_promises.push(
 				ytdlpTitle(ytid).then(function (title) {
@@ -74,8 +74,30 @@ export async function POST({ request }) {
 		// const saveTmp_done =
 		await saveTmp(video, tmp_path);
 		substream_promises.push(saveAndPredictVideo(id, mp4_path, tmp_path));
-		substream_promises.push(saveAndPredictAudio(id, wav_path, tmp_path, topic));
+		substream_promises.push(saveAndPredictAudio(id, wav_path, tmp_path, pitch_topic));
 	} else return error(400, "No YT ID or video file provided");
+
+	const convo: DbConvoType = { id } as any;
+	const convo_stream = new Transform({
+		objectMode: true,
+		transform(chunk, encoding, callback) {
+			JSON.parse(chunk, function (k, v) {
+				if (k === "") return;
+				convo[k] = v;
+			});
+			callback(null, PUBLIC_STREAM_DELIMITER + chunk);
+		}
+	});
+	convo_stream.prependOnceListener("close", async function () {
+		console.info("insertConvo", convo);
+		convo.ts = Date.now();
+		try {
+			await insertConvo(convo);
+			console.info(`POST ${id} done`);
+		} catch (e) {
+			logError(e);
+		}
+	});
 
 	const subscores_stream = merge2(await Promise.all(substream_promises), {
 		end: false,
@@ -84,18 +106,16 @@ export async function POST({ request }) {
 	subscores_stream.prependOnceListener("queueDrain", async function () {
 		try {
 			const [scores] = await predictScores(id);
-			for (const k in scores) {
-				subscores_stream.push(PUBLIC_STREAM_DELIMITER + JSON.stringify({ k: scores[k] }));
-			}
-			console.info(`POST ${id} done`);
+			subscores_stream.push(scores);
 		} catch (e) {
 			logError(e);
 		} finally {
 			subscores_stream.end();
 		}
 	});
+	subscores_stream.pipe(convo_stream);
 
-	return new Response(ReadableStreamFromReadable(subscores_stream), {
+	return new Response(ReadableStreamFromReadable(convo_stream), {
 		headers: {
 			"Content-Type": "text/event-stream"
 		}
@@ -108,8 +128,8 @@ async function saveAndPredictVideo(id: string, mp4_path: string, i: string) {
 	return subscores_gen;
 }
 
-async function saveAndPredictAudio(id: string, wav_path: string, i: string, topic: string) {
+async function saveAndPredictAudio(id: string, wav_path: string, i: string, pitch_topic: string) {
 	await awaitProc(saveAudio(wav_path, i));
-	const subscores_gen = await predictAudio(id, wav_path, topic);
+	const subscores_gen = await predictAudio(id, wav_path, pitch_topic);
 	return subscores_gen;
 }
