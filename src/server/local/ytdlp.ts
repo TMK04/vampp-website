@@ -7,7 +7,7 @@ import { spawnAndThrow } from "$server/child_process";
 export async function ytdlpUrls(ytid: string) {
 	const urls_proc = spawnAndThrow("yt-dlp", [
 		"-f",
-		"bv[height<=720][fps<=60]+ba",
+		"bv*[height<=720][fps<=60]+ba/b[height<=720][fps<=60] / wv*+ba/w",
 		"-g",
 		"--",
 		ytid
