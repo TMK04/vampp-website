@@ -49,7 +49,7 @@
 			{#await src_promise then src}
 				{#if src}
 					<!-- svelte-ignore a11y-media-has-caption -->
-					<video class="md:max-w-[70vw] lg:max-w-[55vw]" controls>
+					<video class="w-full md:max-w-[70vw] lg:max-w-[55vw]" controls>
 						<source type="video/mp4" {src} />
 					</video>
 				{/if}
