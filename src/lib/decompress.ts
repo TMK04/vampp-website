@@ -1,3 +1,4 @@
+import { logError } from "$server/console";
 import { XzReadableStream } from "xz-decompress";
 
 async function decompress(uint8arr: Uint8Array): Promise<Uint8Array> {
@@ -14,15 +15,20 @@ async function decompress(uint8arr: Uint8Array): Promise<Uint8Array> {
 }
 
 export async function decompressVideo(base64_str: string): Promise<string> {
-	const binary_str = atob(base64_str);
-	const binary_l = binary_str.length;
-	const uint8arr = new Uint8Array(binary_l);
-	for (let i = 0; i < binary_l; i++) {
-		uint8arr[i] = binary_str.charCodeAt(i);
+	try {
+		const binary_str = atob(base64_str);
+		const binary_l = binary_str.length;
+		const uint8arr = new Uint8Array(binary_l);
+		for (let i = 0; i < binary_l; i++) {
+			uint8arr[i] = binary_str.charCodeAt(i);
+		}
+
+		const decompressed_uint8arr = await decompress(uint8arr);
+
+		const decompressed = URL.createObjectURL(new Blob([decompressed_uint8arr]));
+		return decompressed;
+	} catch (e) {
+		logError(e);
+		return "";
 	}
-
-	const decompressed_uint8arr = await decompress(uint8arr);
-
-	const decompressed = URL.createObjectURL(new Blob([decompressed_uint8arr]));
-	return decompressed;
 }
