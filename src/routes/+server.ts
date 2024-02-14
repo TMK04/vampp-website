@@ -52,9 +52,7 @@ export async function POST({ request }) {
 
 	const convo = { id } as any;
 	if (pitch_topic) convo.pitch_topic = pitch_topic;
-	const substream_promises: Promise<Readable>[] = [
-		Promise.resolve(Readable.from([convo], { objectMode: true }))
-	];
+	const substream_promises: Promise<Readable>[] = [];
 	if (client_form_data.has("ytid")) {
 		const ytid = client_form_data.get("ytid");
 		if (typeof ytid !== "string") return error(400, "YT ID must be a string");
@@ -91,6 +89,7 @@ export async function POST({ request }) {
 			callback(null, data);
 		}
 	});
+	convo_stream.write(convo);
 	const subscores_stream = merge2({
 		end: false,
 		objectMode: true
