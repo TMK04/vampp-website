@@ -1,7 +1,7 @@
 /**
  * From https://webapps.stackexchange.com/a/101153
  */
-export const REGEX_YTID = /^[0-9A-Za-z_-]{10}[048AEIMQUYcgkosw]$/;
+export const REGEX_YTID = /[0-9A-Za-z_-]{10}[048AEIMQUYcgkosw]/;
 
 export function castYtIdArr(temp_ytid_arr: string[]) {
 	const ytid_arr: string[] = [];
@@ -9,7 +9,8 @@ export function castYtIdArr(temp_ytid_arr: string[]) {
 	for (let i = temp_ytid_arr.length; i--; ) {
 		// Trim here to remove leading & trailing spaces
 		const ytid = temp_ytid_arr[i].trim();
-		if (REGEX_YTID.test(ytid)) ytid_arr.push(ytid);
+		const ytid_match = ytid.match(REGEX_YTID);
+		if (ytid_match) ytid_arr.push(ytid_match[0]);
 		else error_i_arr.push(i + 1); // Human-readable index
 	}
 	return { ytid_arr, error_i_arr };
