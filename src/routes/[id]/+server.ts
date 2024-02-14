@@ -1,7 +1,7 @@
 import { delConvo } from "$server/db/convo";
 
 export async function DELETE({ params }) {
-	const id = params.id;
+	const { id } = params;
 	console.info("DELETE", id);
 	const result = await delConvo(id);
 	console.info(result);

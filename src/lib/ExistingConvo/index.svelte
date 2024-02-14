@@ -2,6 +2,8 @@
 	import InputsContainer from "$lib/InputsContainer.svelte";
 	import PitchInput from "$lib/PitchInput.svelte";
 	import TopicInput from "$lib/TopicInput.svelte";
+	import { decompressVideo } from "$lib/decompress";
+	import { onMount } from "svelte";
 	import Message from "./Message.svelte";
 	import Score from "./Score.svelte";
 	import Summary from "./Summary.svelte";
@@ -30,6 +32,11 @@
 		pitch_Impact,
 		pitch_Impact_justification
 	} = convo);
+
+	let src: string;
+	onMount(async () => {
+		if (convo.final_video) src = await decompressVideo(convo.final_video);
+	});
 </script>
 
 <div>
@@ -42,6 +49,12 @@
 
 	<Message role="Beholder">
 		<article class="flex flex-wrap gap-2">
+			{#if src}
+				<!-- svelte-ignore a11y-media-has-caption -->
+				<video class="md:max-w-[70vw] lg:max-w-[55vw]" controls>
+					<source type="video/mp4" {src} />
+				</video>
+			{/if}
 			<InputsContainer class="basis-full">
 				<Summary {pitch_summary} />
 			</InputsContainer>

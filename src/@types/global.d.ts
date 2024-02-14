@@ -48,6 +48,7 @@ declare global {
 		[key in keyof PitchScoreType as `${key}_justification`]: string;
 	};
 	type ConvoType = {
+		id: string;
 		/**
 		 * Timestamp
 		 */
@@ -55,6 +56,7 @@ declare global {
 		pitch_topic: string;
 		pitch_content: string;
 		pitch_summary: string;
+		final_video: string;
 	} & ScoreType &
 		CvScoreType &
 		SpeechScoreType &
@@ -65,9 +67,9 @@ declare global {
 	type ObjIdConvo = Record<string, ConvoType>;
 	type Id = string | null;
 
-	type DbConvoType = {
-		id: string;
-	} & ConvoType;
+	type DbConvoType = Omit<ConvoType, "final_video"> & {
+		final_video: Buffer;
+	};
 
 	interface Blob {
 		stream(): streamWeb.ReadableStream<Uint8Array>;

@@ -1,13 +1,13 @@
 import { Readable } from "stream";
 import gradio from "./gradio";
 
-export function submit(...args: Parameters<typeof gradio.submit>) {
+export function submit(objectMode: boolean, ...args: Parameters<typeof gradio.submit>) {
 	const result = gradio.submit(...args);
-	const stream = new Readable({ objectMode: true, read() {} });
+	const stream = new Readable({ objectMode, read() {} });
 
 	result.on("data", (ev) => {
 		const data = ev.data[0] as string;
-		stream.push(data);
+		stream.push(objectMode ? JSON.parse(data) : data);
 	});
 	result.on("log", (ev) => {
 		console.info("log", ev.log);
@@ -29,7 +29,6 @@ export function submit(...args: Parameters<typeof gradio.submit>) {
 				break;
 		}
 	});
-
 	return stream;
 }
 
@@ -38,3 +37,9 @@ export async function predict<T extends Array<any>>(...args: Parameters<typeof g
 	const data = result.data;
 	return data;
 }
+
+export type GradioFile = {
+	name: string;
+	data: string;
+	is_file: false;
+};

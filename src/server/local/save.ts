@@ -46,14 +46,12 @@ export function saveVideo(mp4_path: string, i = "-") {
 		i,
 		...time_arg_arr,
 		"-an",
+		"-vf",
+		"fps=1,scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:-1:-1",
 		"-c:v",
 		"libx265",
 		"-crf",
 		"28",
-		"-vf",
-		"fps=1,scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:-1:-1",
-		"-f",
-		"matroska",
 		mp4_path
 	]);
 	return savev_proc;

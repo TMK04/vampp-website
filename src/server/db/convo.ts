@@ -37,8 +37,8 @@ export async function convoExists(id: string) {
 	return row !== undefined;
 }
 
-export function insertConvo(convo: DbConvoType) {
-	return db("convo").insert(convo);
+export function insertConvo({ final_video, ...convo }: ConvoType) {
+	return db("convo").insert({ ...convo, final_video: Buffer.from(final_video) });
 }
 
 export function delConvo(id: DbConvoType["id"]) {
@@ -72,6 +72,7 @@ async function main() {
 			table.float("pitch_Clarity").unsigned();
 			table.text("pitch_Clarity_justification");
 			table.boolean("pa");
+			table.binary("final_video");
 		});
 	}
 }

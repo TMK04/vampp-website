@@ -24,8 +24,8 @@
 		if (body.type === "error") return console.error(body);
 
 		const obj_id_convo: ObjIdConvo = {};
-		for (const { id, ...convo } of body) {
-			obj_id_convo[id] = convo;
+		for (const convo of body) {
+			obj_id_convo[convo.id] = convo;
 		}
 
 		obj_id_convo_store.set(obj_id_convo);

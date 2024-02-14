@@ -62,6 +62,9 @@ dependencies:
   vite:
     specifier: ^4.5.1
     version: 4.5.2(@types/node@20.11.5)
+  xz-decompress:
+    specifier: ^0.2.1
+    version: 0.2.1
 
 devDependencies:
   '@types/eventsource':
@@ -2922,6 +2925,11 @@ packages:
         optional: true
     dependencies:
       bufferutil: 4.0.8
+    dev: false
+
+  /xz-decompress@0.2.1:
+    resolution: {integrity: sha512-vgpc2zPchALa6D2lc+IFRrcAB3L4I40KmgUcPV7G70CfeMWzVdmlfDpyEczvsE435WgtH6WYYT/11Um57u7s6A==}
+    engines: {node: '>=16'}
     dev: false
 
   /yallist@4.0.0:

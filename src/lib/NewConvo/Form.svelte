@@ -76,28 +76,37 @@
 		/**
 		 * Convo while id has not been received
 		 */
-		const generating_convo = { pitch_topic } as any;
+		const generating_convo = {} as any;
 		const writable_stream = new WritableStream({
 			write(chunk: string) {
-				for (const json_str of chunk.split(PUBLIC_STREAM_DELIMITER).slice(1)) {
+				const json_strs = chunk.split(PUBLIC_STREAM_DELIMITER).slice(1);
+				for (const json_str of json_strs) {
 					console.info("json_str", json_str);
-					JSON.parse(json_str, function (k, v) {
-						if (id) {
-							obj_id_convo_store.update((obj_id_convo) => {
-								(obj_id_convo[id] as any)[k] = v;
-								return obj_id_convo;
-							});
-						} else if (k === "id") {
-							id = v;
-							obj_id_convo_store.update((obj_id_convo) => {
-								obj_id_convo[id] = generating_convo;
-								return obj_id_convo;
-							});
-							id_store.set(id);
-						} else {
-							generating_convo[k] = v;
-						}
-					});
+					let parsed: any;
+					try {
+						parsed = JSON.parse(json_str);
+					} catch (e) {
+						logError(e);
+						console.error(json_strs.length, "Last 10 characters", json_str.slice(-10));
+					}
+					if (id) {
+						obj_id_convo_store.update((obj_id_convo) => {
+							Object.assign(obj_id_convo[id], parsed);
+							return obj_id_convo;
+						});
+					} else if ("id" in parsed) {
+						id = parsed.id;
+						id_store.set(id);
+						delete parsed.id;
+
+						Object.assign(generating_convo, parsed);
+						obj_id_convo_store.update((obj_id_convo) => {
+							obj_id_convo[id] = generating_convo;
+							return obj_id_convo;
+						});
+					} else {
+						Object.assign(generating_convo, parsed);
+					}
 				}
 			},
 

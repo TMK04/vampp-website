@@ -6,19 +6,22 @@ import { error } from "$server/api";
 import { awaitProc } from "$server/child_process";
 import { logError } from "$server/console";
 import { ConvoId, insertConvo, selectFinishedConvos } from "$server/db/convo";
-import { predictAudio, predictScores, predictVideo } from "$server/gradio/predict";
+import { predictAudio, predictFinal, predictVideo } from "$server/gradio/predict";
 import { saveAudio, saveTmp, saveVideo } from "$server/local/save";
 import { ytdlpTitle, ytdlpUrls } from "$server/local/ytdlp";
 import { ReadableStreamFromReadable } from "$server/stream";
 import { json } from "@sveltejs/kit";
 import { mkdirSync } from "fs";
-import merge2 from "merge2";
+import merge2, { type Merge2Stream } from "merge2";
 import { join } from "path";
 import { Readable, Transform } from "stream";
 
 export async function GET() {
 	const convo_arr = await selectFinishedConvos();
-	return json(convo_arr);
+	for (const convo of convo_arr) {
+		convo.final_video = convo.final_video.toString() as any;
+	}
+	return json(convo_arr as any as ConvoType);
 }
 
 export async function POST({ request }) {
@@ -50,7 +53,7 @@ export async function POST({ request }) {
 	const convo = { id } as any;
 	if (pitch_topic) convo.pitch_topic = pitch_topic;
 	const substream_promises: Promise<Readable>[] = [
-		Promise.resolve(Readable.from([JSON.stringify(convo)]))
+		Promise.resolve(Readable.from([convo], { objectMode: true }))
 	];
 	if (client_form_data.has("ytid")) {
 		const ytid = client_form_data.get("ytid");
@@ -84,39 +87,33 @@ export async function POST({ request }) {
 	const convo_stream = new Transform({
 		objectMode: true,
 		transform(chunk, encoding, callback) {
-			JSON.parse(chunk, function (k, v) {
-				if (k === "") return;
-				convo[k] = v;
-			});
-			callback(null, PUBLIC_STREAM_DELIMITER + chunk);
+			const data = PUBLIC_STREAM_DELIMITER + JSON.stringify(chunk);
+			Object.assign(convo, chunk);
+			callback(null, data);
 		}
 	});
-	convo_stream.prependOnceListener("close", async function () {
-		console.info("insertConvo", convo);
-		try {
-			await insertConvo(convo);
-			console.info(`POST ${id} done`);
-		} catch (e) {
-			logError(e);
-		}
-	});
-
-	const subscores_stream = merge2(await Promise.all(substream_promises), {
+	const subscores_stream = merge2({
 		end: false,
 		objectMode: true
-	});
-	subscores_stream.prependOnceListener("queueDrain", async function () {
-		try {
-			const [scores] = await predictScores(id);
-			subscores_stream.push(scores);
-			subscores_stream.push(`{"ts":${Date.now()}}`);
-		} catch (e) {
-			logError(e);
-		} finally {
-			subscores_stream.end();
-		}
+	}).once("queueDrain", function (this: Merge2Stream) {
+		console.log("subscores_stream queueDrain");
+
+		this.once("queueDrain", function (this: Merge2Stream) {
+			console.log("subscores_stream queueDrain");
+
+			this.end();
+			insertConvo(convo).catch(function (e) {
+				logError(e);
+				console.log("Keys at error:", Object.keys(convo));
+			});
+		});
+
+		this.add(predictFinal(id), Readable.from([{ ts: Date.now() }]));
 	});
 	subscores_stream.pipe(convo_stream);
+	Promise.all(substream_promises).then(function (substreams) {
+		subscores_stream.add(substreams);
+	});
 
 	return new Response(ReadableStreamFromReadable(convo_stream), {
 		headers: {
