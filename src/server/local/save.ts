@@ -1,22 +1,14 @@
 import { spawnAndThrow } from "$server/child_process";
-import { logError } from "$server/console";
-import { createWriteStream, unlink } from "fs";
+import { createWriteStream } from "fs";
 import { Readable } from "stream";
 
-export async function saveTmp(file: File, tmp_path: string, done_n = 2) {
+export async function saveTmp(file: File, tmp_path: string) {
 	const write_stream = createWriteStream(tmp_path);
 	const read_stream = Readable.fromWeb(file.stream());
 	for await (const chunk of read_stream) {
 		write_stream.write(chunk);
 	}
-	return function done() {
-		console.info("saveTmp done in", done_n);
-		if (--done_n) return;
-
-		unlink(tmp_path, (err) => {
-			if (err) logError(err);
-		});
-	};
+	write_stream.close();
 }
 /**
  * Limit to 5 minutes

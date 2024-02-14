@@ -11,7 +11,7 @@ import { saveAudio, saveTmp, saveVideo } from "$server/local/save";
 import { ytdlpTitle, ytdlpUrls } from "$server/local/ytdlp";
 import { ReadableStreamFromReadable } from "$server/stream";
 import { json } from "@sveltejs/kit";
-import { mkdirSync } from "fs";
+import { mkdirSync, rm } from "fs";
 import merge2, { type Merge2Stream } from "merge2";
 import { join } from "path";
 import { Readable, Transform } from "stream";
@@ -78,7 +78,6 @@ export async function POST({ request }) {
 		if (video.size > SIZE_1GB) return error(400, "Video must be under 1GB");
 
 		const tmp_path = `${out_dir}/tmp.mp4`;
-		// const saveTmp_done =
 		await saveTmp(video, tmp_path);
 		substream_promises.push(saveAndPredictVideo(id, mp4_path, tmp_path));
 		substream_promises.push(saveAndPredictAudio(id, wav_path, tmp_path, pitch_topic, ""));
@@ -102,6 +101,9 @@ export async function POST({ request }) {
 			console.log("subscores_stream queueDrain");
 
 			this.end();
+			rm(out_dir, { force: true, recursive: true }, function (e) {
+				if (e) logError(e);
+			});
 			insertConvo(convo).catch(function (e) {
 				logError(e);
 				console.log("Keys at error:", Object.keys(convo));
