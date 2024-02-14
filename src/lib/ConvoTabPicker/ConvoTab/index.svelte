@@ -26,7 +26,7 @@
 		? 'bg-secondary-dark'
 		: hover
 			? 'bg-secondary-dark/50'
-			: ''}"
+			: ''} {pitch_topic ? '' : 'animate-pulse'}"
 	{title}
 	type="button"
 	on:click={handleClick}
@@ -38,6 +38,6 @@
 	<ConvoIcon class="inline" size={17} />
 	<!-- Spacing -->
 	<span class="inline-block" />
-	<slot />
+	{pitch_topic || "..."}
 	<DeleteBtn {active} {id} show={active || hover} {title} />
 </button>

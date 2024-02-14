@@ -84,37 +84,45 @@ export async function POST({ request }) {
 	const convo_stream = new Transform({
 		objectMode: true,
 		transform(chunk, encoding, callback) {
-			const data = PUBLIC_STREAM_DELIMITER + JSON.stringify(chunk);
 			Object.assign(convo, chunk);
+			if ("final_video" in chunk) {
+				delete chunk.final_video;
+			}
+			const data = PUBLIC_STREAM_DELIMITER + JSON.stringify(chunk);
 			callback(null, data);
 		}
+	}).on("error", function (e) {
+		logError(e);
 	});
-	convo_stream.write(convo);
+	Readable.from([convo], { objectMode: true }).pipe(convo_stream, { end: false });
 	const subscores_stream = merge2({
 		end: false,
-		objectMode: true
-	}).once("queueDrain", function (this: Merge2Stream) {
-		console.log("subscores_stream queueDrain");
-
-		this.once("queueDrain", function (this: Merge2Stream) {
+		objectMode: true,
+		pipeError: true
+	})
+		.on("queueDrain", function () {
 			console.log("subscores_stream queueDrain");
+		})
+		.once("queueDrain", function (this: Merge2Stream) {
+			this.once("queueDrain", function (this: Merge2Stream) {
+				this.end();
+				rm(out_dir, { force: true, recursive: true }, function (e) {
+					if (e) logError(e);
+				});
+				insertConvo(convo).catch(function (e) {
+					logError(e);
+					console.log("Keys at error:", Object.keys(convo));
+				});
+			});
 
-			this.end();
-			rm(out_dir, { force: true, recursive: true }, function (e) {
-				if (e) logError(e);
-			});
-			insertConvo(convo).catch(function (e) {
-				logError(e);
-				console.log("Keys at error:", Object.keys(convo));
-			});
+			this.add(predictFinal(id), Readable.from([{ ts: Date.now() }]));
 		});
-
-		this.add(predictFinal(id), Readable.from([{ ts: Date.now() }]));
-	});
 	subscores_stream.pipe(convo_stream);
-	Promise.all(substream_promises).then(function (substreams) {
-		subscores_stream.add(substreams);
-	});
+	Promise.all(substream_promises)
+		.then(function (substreams) {
+			subscores_stream.add(substreams);
+		})
+		.catch(logError);
 
 	return new Response(ReadableStreamFromReadable(convo_stream), {
 		headers: {

@@ -13,23 +13,8 @@ export async function ConvoId() {
 	return id;
 }
 
-const finished_attr_arr = [
-	"ts",
-	"pitch_content",
-	"ec",
-	"pa",
-	"speech_clarity",
-	"pitch_Clarity",
-	"pitch_Clarity_justification",
-	"pe"
-];
-
 export function selectFinishedConvos() {
-	let query = db("convo");
-	for (const attr of finished_attr_arr) {
-		query = query.whereNotNull(attr);
-	}
-	return query;
+	return db("convo").select("*");
 }
 
 export async function convoExists(id: string) {

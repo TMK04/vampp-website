@@ -32,9 +32,9 @@
 	</button>
 	<div>
 		<header class={`font-bold ${obj_type_class[type]}`}>
-			{obj_alert_type_memoized[type].capitalized}
+			{`${obj_alert_type_memoized[type].capitalized}: `}
 			{#if titleProp}
-				: {titleProp}
+				{titleProp}
 			{/if}
 		</header>
 		<p>{message}</p>

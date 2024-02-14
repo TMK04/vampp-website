@@ -73,6 +73,7 @@
 		}
 
 		let id: string;
+		let current_pitch_topic: string;
 		/**
 		 * Convo while id has not been received
 		 */
@@ -81,13 +82,12 @@
 			write(chunk: string) {
 				const json_strs = chunk.split(PUBLIC_STREAM_DELIMITER).slice(1);
 				for (const json_str of json_strs) {
-					console.info("json_str", json_str);
 					let parsed: any;
 					try {
 						parsed = JSON.parse(json_str);
 					} catch (e) {
 						logError(e);
-						console.error(json_strs.length, "Last 10 characters", json_str.slice(-10));
+						return;
 					}
 					if (id) {
 						obj_id_convo_store.update((obj_id_convo) => {
@@ -97,7 +97,6 @@
 					} else if ("id" in parsed) {
 						id = parsed.id;
 						id_store.set(id);
-						delete parsed.id;
 
 						Object.assign(generating_convo, parsed);
 						obj_id_convo_store.update((obj_id_convo) => {
@@ -107,18 +106,21 @@
 					} else {
 						Object.assign(generating_convo, parsed);
 					}
+					if ("pitch_topic" in parsed) current_pitch_topic = parsed.pitch_topic;
 				}
 			},
 
 			close() {
 				alert_linked_list_store.push({
 					type: "success",
-					title: "Success",
-					message: `Created Conversation`
+					title: "Created Conversation",
+					message: current_pitch_topic
 				});
 			}
 		});
-		await response.body.pipeThrough(new TextDecoderStream()).pipeTo(writable_stream);
+		await response.body
+			.pipeThrough(new TextDecoderStream("utf-8", { ignoreBOM: true }))
+			.pipeTo(writable_stream);
 	}
 
 	async function handleSubmit(event: Event) {
