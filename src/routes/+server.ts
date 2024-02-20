@@ -34,7 +34,7 @@ export async function POST({ request }) {
 	}
 	console.info(`POST ${id}`);
 
-	const out_dir = `${OUT_DIR}/${id}`;
+	const out_dir = join(OUT_DIR, id);
 	mkdirSync(out_dir);
 
 	let client_form_data: FormData;
@@ -75,7 +75,7 @@ export async function POST({ request }) {
 		// TODO: Check file type
 		if (video.size > SIZE_1GB) return error(400, "Video must be under 1GB");
 
-		const tmp_path = `${out_dir}/tmp.mp4`;
+		const tmp_path = join(out_dir, "tmp.mp4");
 		await saveTmp(video, tmp_path);
 		substream_promises.push(saveAndPredictVideo(id, mp4_path, tmp_path));
 		substream_promises.push(saveAndPredictAudio(id, wav_path, tmp_path, pitch_topic, ""));
