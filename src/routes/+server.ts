@@ -1,6 +1,6 @@
 import { OUT_DIR } from "$env/static/private";
 import { PUBLIC_STREAM_DELIMITER } from "$env/static/public";
-import { SIZE_1GB } from "$lib/shared/constants";
+import { SIZE_100MB } from "$lib/shared/constants";
 import { REGEX_YTID } from "$lib/shared/validate";
 import { error } from "$server/api";
 import { awaitProc } from "$server/child_process";
@@ -75,7 +75,7 @@ export async function POST({ request }) {
 		const video = client_form_data.get("video") as File;
 		if (!(video instanceof File)) return error(400, "Video must be a file");
 		// TODO: Check file type
-		if (video.size > SIZE_1GB) return error(400, "Video must be under 1GB");
+		if (video.size > SIZE_100MB) return error(413, "Video must be under 100MB");
 
 		const tmp_path = join(out_dir, "tmp.mp4");
 		await saveTmp(video, tmp_path);

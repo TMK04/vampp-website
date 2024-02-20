@@ -1,1 +1,1 @@
-export const SIZE_1GB = 1024 ** 3;
+export const SIZE_100MB = 100 * 1024 ** 2;
