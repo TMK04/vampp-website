@@ -5,7 +5,7 @@
 
 	export let active: boolean;
 	export let pitch_topic: string;
-	$: title = `Conversation: ${pitch_topic}`;
+	$: title = `Analysis: ${pitch_topic}`;
 	export let id: string;
 
 	function handleClick() {

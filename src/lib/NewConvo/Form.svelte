@@ -113,7 +113,7 @@
 			close() {
 				alert_linked_list_store.push({
 					type: "success",
-					title: "Created Conversation",
+					title: "Created Analysis",
 					message: current_pitch_topic
 				});
 			}
