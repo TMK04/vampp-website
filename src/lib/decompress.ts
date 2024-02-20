@@ -1,5 +1,6 @@
 import { logError } from "$server/console";
-import { XzReadableStream } from "xz-decompress";
+import xz_decompress from "xz-decompress";
+const { XzReadableStream } = xz_decompress;
 
 async function decompress(uint8arr: Uint8Array): Promise<Uint8Array> {
 	const readable_stream = new Blob([uint8arr]).stream();
