@@ -59,6 +59,8 @@ export async function POST({ request }) {
 		if (!REGEX_YTID.test(ytid)) return error(400, `Invalid YT ID`);
 
 		const [video_url, audio_url] = await ytdlpUrls(ytid);
+		console.log("video_url:", video_url);
+		console.log("audio_url:", audio_url);
 		substream_promises.push(saveAndPredictVideo(id, mp4_path, video_url));
 		if (pitch_topic) {
 			substream_promises.push(saveAndPredictAudio(id, wav_path, audio_url, pitch_topic, ""));
