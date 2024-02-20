@@ -1,11 +1,12 @@
 <script lang="ts">
+	import Logo from "$lib/static/logo.png";
 	import Form from "./Form.svelte";
 </script>
 
 <header class="px-[10%] pb-5 pt-3.5">
 	<div class="flex justify-center">
 		<a href="/">
-			<img src="/logo.png" alt="logo" class="h-navbar" />
+			<img src={Logo} alt="logo" class="h-navbar" />
 		</a>
 	</div>
 	<h1 class="flex flex-wrap items-end justify-center gap-x-1.5 font-bold sm:gap-x-2 sm:gap-y-1">
