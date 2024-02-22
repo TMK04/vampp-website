@@ -1,13 +1,14 @@
 import { spawnAndThrow } from "$server/child_process";
 import { createWriteStream } from "fs";
-import { Readable } from "stream";
 
-export async function saveTmp(file: File, tmp_path: string) {
+export async function saveTmp(blob: Blob, tmp_path: string) {
 	const write_stream = createWriteStream(tmp_path);
-	const read_stream = Readable.fromWeb(file.stream());
-	for await (const chunk of read_stream) {
-		write_stream.write(chunk);
-	}
+	const intermediate_write_stream = new WritableStream({
+		write(chunk) {
+			write_stream.write(chunk);
+		}
+	});
+	await blob.stream().pipeTo(intermediate_write_stream);
 	write_stream.close();
 }
 /**
