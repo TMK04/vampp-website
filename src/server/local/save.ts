@@ -1,15 +1,9 @@
 import { spawnAndThrow } from "$server/child_process";
-import { createWriteStream } from "fs";
+import { writeFile } from "fs/promises";
 
 export async function saveTmp(blob: Blob, tmp_path: string) {
-	const write_stream = createWriteStream(tmp_path);
-	const intermediate_write_stream = new WritableStream({
-		write(chunk) {
-			write_stream.write(chunk);
-		}
-	});
-	await blob.stream().pipeTo(intermediate_write_stream);
-	write_stream.close();
+	const array_buffer = await blob.arrayBuffer();
+	await writeFile(tmp_path, Buffer.from(array_buffer));
 }
 /**
  * Limit to 10 minutes
