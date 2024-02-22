@@ -12,9 +12,9 @@ export async function saveTmp(blob: Blob, tmp_path: string) {
 	write_stream.close();
 }
 /**
- * Limit to 5 minutes
+ * Limit to 10 minutes
  */
-const time_arg_arr = ["-t", "00:05:00"] as const;
+const time_arg_arr = ["-t", "00:10:00"] as const;
 export function saveAudio(wav_path: string, i = "-") {
 	const savea_proc = spawnAndThrow("ffmpeg", [
 		"-i",
