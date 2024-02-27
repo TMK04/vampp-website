@@ -35,6 +35,9 @@ dependencies:
   knex:
     specifier: ^3.1.0
     version: 3.1.0(better-sqlite3@9.3.0)
+  lzma-web:
+    specifier: ^3.0.1
+    version: 3.0.1
   merge2:
     specifier: ^1.4.1
     version: 1.4.1
@@ -62,9 +65,6 @@ dependencies:
   vite:
     specifier: ^4.5.1
     version: 4.5.2(@types/node@20.11.5)
-  xz-decompress:
-    specifier: ^0.2.1
-    version: 0.2.1
 
 devDependencies:
   '@types/eventsource':
@@ -1820,6 +1820,10 @@ packages:
     dependencies:
       yallist: 4.0.0
 
+  /lzma-web@3.0.1:
+    resolution: {integrity: sha512-sb5cdfd+PLNljK/HUgYzvnz4G7r0GFK8sonyGrqJS0FVyUQjFYcnmU2LqTWFi6r48lH1ZBstnxyLWepKM/t7QA==}
+    dev: false
+
   /magic-string@0.30.5:
     resolution: {integrity: sha512-7xlpfBaQaP/T6Vh8MO/EqXSW5En6INHEvEXQiuff7Gku0PWjU3uf6w/j9o7O+SpB5fOAkrI5HeoNgwjEO0pFsA==}
     engines: {node: '>=12'}
@@ -2925,11 +2929,6 @@ packages:
         optional: true
     dependencies:
       bufferutil: 4.0.8
-    dev: false
-
-  /xz-decompress@0.2.1:
-    resolution: {integrity: sha512-vgpc2zPchALa6D2lc+IFRrcAB3L4I40KmgUcPV7G70CfeMWzVdmlfDpyEczvsE435WgtH6WYYT/11Um57u7s6A==}
-    engines: {node: '>=16'}
     dev: false
 
   /yallist@4.0.0:
